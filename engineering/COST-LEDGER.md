@@ -24,9 +24,10 @@ resources.** API/service spend belongs to this project and is auditable.
 
 | Metric | Value | As of |
 |---|---|---|
-| Total billed | **$0.337** | 2026-10-08 ~12:30 UTC |
-| Credit remaining | **$4.663** | 2026-10-08 ~12:30 UTC |
-| Live instance rate | ~$0.195/hr all-in (GPU $0.1761 + storage $0.0185 + bandwidth) | — |
+| Total billed | **$0.518** | 2026-10-08 ~14:15 UTC (instance stopped) |
+| Credit remaining | **$4.481** | 2026-10-08 ~14:15 UTC |
+| Live instance rate | ~$0.195/hr all-in while running; ~$0.0185/hr storage while stopped | — |
+| Instance state | **STOPPED** (disk/model preserved) | 2026-10-08 |
 
 ## Transactions
 
@@ -34,10 +35,10 @@ resources.** API/service spend belongs to this project and is auditable.
 |---|---|---|---|---|---|---|
 | 2026-10-08 | Instance 54832982 — GPU compute (vLLM image, ~70 min, stalled in image-extract, destroyed) | vast.ai | compute | *pending invoice* | — | Wedged first attempt; GPU charge not yet posted in last invoice batch — expected ~$0.16 |
 | 2026-10-08 | Instance 54832982 — storage | vast.ai | storage | $0.074 | $0.074 | billed |
-| 2026-10-08 | Instance 54838985 — GPU compute (neios-ollama, running) | vast.ai | compute | $0.119 | $0.193 | billed to date; ~$0.1761/hr ongoing |
-| 2026-10-08 | Instance 54838985 — storage (40 GB disk) | vast.ai | storage | $0.014 | $0.207 | ~$0.0185/hr ongoing, incl. while stopped |
-| 2026-10-08 | Instance 54838985 — download bandwidth (4.96 GB model pull @ $0.026/GB) | vast.ai | bandwidth | $0.129 | $0.336 | one-time per instance |
-| 2026-10-08 | Instance 54838985 — upload bandwidth | vast.ai | bandwidth | $0.001 | $0.337 | trivial |
+| 2026-10-08 | Instance 54838985 — GPU compute (neios-ollama, 1.609 hr total, stopped) | vast.ai | compute | $0.283 | $0.357 | billed; instance stopped 2026-10-08 ~14:10 UTC — GPU accrual halted |
+| 2026-10-08 | Instance 54838985 — storage (40 GB disk, 1.678 hr billed to date) | vast.ai | storage | $0.031 | $0.388 | ~$0.0185/hr continues while stopped (disk preserved incl. model) |
+| 2026-10-08 | Instance 54838985 — download bandwidth (4.96 GB model pull @ $0.026/GB) | vast.ai | bandwidth | $0.129 | $0.517 | one-time per instance |
+| 2026-10-08 | Instance 54838985 — upload bandwidth | vast.ai | bandwidth | $0.001 | $0.518 | trivial |
 
 ## Known recurring / future cost drivers
 
