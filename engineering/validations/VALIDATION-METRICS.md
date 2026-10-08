@@ -15,7 +15,7 @@ responses) and `data/audit/audit-log.jsonl` (every pipeline run).
 
 Cold-start guidance for the demo: fire one warm-up request before recording.
 
-## Pipeline outcomes (21 audit records)
+## Pipeline outcomes (22 audit records)
 
 | Final state | Count |
 |---|---|
@@ -23,7 +23,11 @@ Cold-start guidance for the demo: fire one warm-up request before recording.
 | approved | 3 |
 | rejected | 1 |
 | blocked (policy, pre-model) | 3 |
-| failed (parse/network during dev) | 3 |
+| failed (parse/network) | 4 |
+
+Failure mode verified intentionally: with the endpoint unreachable the
+pipeline degrades gracefully — MODEL fails, downstream stages skip, an
+audit record is still appended (`final: failed`), no unhandled error.
 
 ## Validation behaviour
 
@@ -36,8 +40,9 @@ Cold-start guidance for the demo: fire one warm-up request before recording.
   subtotal/total deterministically and each correction is named in the
   trace + audit (`pass (N arithmetic repairs)`). Unit-verified:
   repair produced `160000 / 2410000 / 2410000`, 0 residual issues.
-- Languages exercised: English/Pidgin, Hausa, Yoruba — all produced
-  correct extraction and NGN arithmetic.
+- Languages exercised: English/Pidgin, Hausa, Yoruba, Igbo — correct
+  extraction + NGN arithmetic on structured tasks; Igbo probe returned
+  well-formed Igbo with correct diacritics (1,037 ms).
 
 ## Cost to date
 
