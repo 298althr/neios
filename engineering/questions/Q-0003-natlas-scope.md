@@ -20,10 +20,20 @@ PROJECT OWNER
 docs/01-context/supplied/N-ATLAS STRATEGY.md (dropped into repo root mid-session)
 
 ## Status
-OPEN
+ANSWERED
 
 ## Answer
-TBD
+Option (c)/(a) combined, refined: this repository builds **NEIOS** (N-ATLAS
+Enterprise Integration OS) as the active competition deliverable — not a
+separate project, and not merely "VLTHR HR's roadmap item," but the current
+primary build target. VLTHR HR (Workforce + ARWOS) is explicitly demoted to a
+documented future-extension layer, not built for this competition. The original
+`N-ATLAS STRATEGY.md` (generic meta-strategy) is itself superseded for official
+rules/architecture by the owner-supplied
+`docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md`.
+
+## Answered By / Date
+PROJECT OWNER, via supplied Engineering Direction document — 2026-10-08
 
 ## Resulting Records
-—
+ADR-0003, ADR-0004, `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md`

@@ -1,8 +1,13 @@
-VLTHR HR — Proprietary
+NEIOS (N-ATLAS Enterprise Integration OS) — Proprietary
+Future-extension layer formerly scaffolded as "VLTHR HR" — same license status applies.
 
-Copyright (c) 2026 VLTHR.
+Copyright (c) 2026 the project owner.
 
 All rights reserved. License terms to be confirmed by the project owner.
 
 Status: TBD — formal license selection is an open decision.
 See engineering/questions/ and the DECISION-LOG for the governing record.
+
+Note: this covers the repository's own code/docs license, separate from the
+N-ATLaS model's own license terms (see `docs/legal/N-ATLAS-LICENSING-NOTE.md`,
+to be created per `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md` §25).

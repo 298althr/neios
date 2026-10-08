@@ -23,7 +23,7 @@ Preserved unmodified. Reference them; do not edit them.
 | `ARWOS v1.2.md` | **Normative** ARWOS spec: 138 requirements (P0–P3), 26 open issues (OI-nn) gating adoption | E2, normative |
 | `What Is Arwos.md` | ARWOS explainer | E2 |
 | `MPLOY.txt` | Earlier PRD v0.1 (Hire-an-Agent): role cards, Devin API options, MVP scope, open-source stack | E2, partly superseded by spec |
-| `N-ATLAS STRATEGY.md` | N-ATLAS challenge MVP technical spec — **relationship to VLTHR HR unconfirmed** (see engineering/questions/Q-0003) | E2 |
+| `N-ATLAS STRATEGY.md` | N-ATLAS challenge MVP technical spec — generic meta-strategy, superseded for official rules by `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md` | E2 |
 
 ## Documents
 
@@ -33,4 +33,9 @@ Preserved unmodified. Reference them; do not edit them.
 
 - MPLOY.txt predates the main spec (PRD v0.1). Where they differ (e.g., product name,
   pricing detail), the spec is newer — confirmed by naming decision ADR-0001.
-- Product name is **VLTHR HR**; "Workforce" is the marketplace layer name, not the product.
+- The product described by these supplied documents is **"VLTHR HR"** (Workforce +
+  ARWOS layers) — this is the **future-extension layer**, not the currently active
+  build. The current active build is **NEIOS** (N-ATLAS Enterprise Integration OS),
+  per ADR-0003/ADR-0004 and `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md`.
+  Q-0003 (N-ATLAS relationship to VLTHR HR) is now ANSWERED — see
+  `engineering/questions/Q-0003-natlas-scope.md`.

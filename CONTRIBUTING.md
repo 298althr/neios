@@ -1,4 +1,7 @@
-# Contributing to VLTHR HR
+# Contributing
+
+Current build: **NEIOS** (N-ATLAS Enterprise Integration OS). Future-extension layer:
+"VLTHR HR" (Workforce + ARWOS) — see `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md`.
 
 This repository operates under the Software Engineering Operating Repository model
 (`software-engineering-template-generation-skill.md`).

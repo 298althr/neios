@@ -1,7 +1,10 @@
 # Security Policy
 
-VLTHR HR is a governance-first platform: security and auditability are product features,
-not afterthoughts. Security starts at architecture.
+This repository currently builds **NEIOS** (N-ATLAS Enterprise Integration OS), whose
+security/trust rules are at `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md`
+§24. The policy below describes the future-layer "VLTHR HR" product's (Workforce +
+ARWOS) fuller governance-first security model — still the architectural reference,
+not yet NEIOS's current implementation scope. Security starts at architecture either way.
 
 ## Reporting a vulnerability
 

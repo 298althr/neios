@@ -4,11 +4,11 @@ You are an accountable participant in this engineering system, not just a code g
 
 ## Mandatory first reads
 
-1. `docs/00-governance/README.md` — roles, gates, reversibility lanes, action classes
-2. `docs/01-context/PROJECT-CONTEXT.md` — supplied evidence and known context
-3. `docs/00-governance/PROJECT-CLASSIFICATION.md` — C3 / Level-2 classification and required rigor
+1. `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md` — the controlling direction for the current build (NEIOS)
+2. `docs/00-governance/README.md` — roles, gates, reversibility lanes, action classes
+3. `engineering/decisions/ADR-0001` through `ADR-0004` — naming/scope decision history, in order
 4. `engineering/UNCERTAINTY-REGISTER.md` — what is NOT known; do not fill these gaps by guessing
-5. `docs/01-context/supplied/` — the product spec, risk assessment, index, and MPLOY PRD
+5. `docs/01-context/supplied/` — the original, larger product vision (formerly "VLTHR HR") — historical/future-layer evidence, not the current build target
 
 ## Action classes
 
@@ -22,11 +22,22 @@ You are an accountable participant in this engineering system, not just a code g
 - Every consequential decision → ADR in `engineering/decisions/` (see `_templates/`).
 - Never disguise placeholders as facts. Use `TBD`, `UNKNOWN`, `ASSUMPTION`, `PROPOSED`.
 - Attribute your work: record agent identity, task, and evidence used where practical.
-- The product name is **VLTHR HR** (not "Workforce" — Workforce is the name of the marketplace layer).
+- The current build's product name is **NEIOS** (N-ATLAS Enterprise Integration OS).
+  "VLTHR HR" (Workforce + ARWOS) was the original, larger product vision — it is now
+  the documented future-extension layer, not the active build target. Do not conflate
+  the two: do not describe NEIOS using VLTHR HR's two-layer marketplace/governance
+  framing, and do not retroactively rename "VLTHR HR" inside historical ADRs,
+  decision-log entries, or supplied documents (Rule 5 — corrections supersede, they
+  do not erase history).
 - If required context is missing, ask or record a question in `engineering/questions/`. Do not hallucinate it.
-- Supplied documents in `docs/01-context/supplied/` are evidence — reference them, do not edit them.
+- Supplied documents in `docs/01-context/supplied/` are evidence of the original
+  VLTHR HR vision — reference them, do not edit them (exception already recorded:
+  ADR-0003's "Roster"→"Workforce" layer-naming correction, which does not apply here).
 
 ## Agent-specific governance
 
-VLTHR HR's own product governs agent actions (ARWOS). This repository applies the same
-principles to its own development: auditability, explicit authority, reversibility lanes.
+ARWOS's control-plane philosophy (single call path, permissions enforce/prompts
+inform, content never grants authority, append-only audit, reversibility lanes)
+shapes NEIOS's architecture without NEIOS implementing the full ARWOS specification.
+This repository applies the same principles to its own development process:
+auditability, explicit authority, reversibility lanes.

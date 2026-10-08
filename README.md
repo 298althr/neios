@@ -1,61 +1,64 @@
-# VLTHR HR
+# NEIOS — N-ATLAS Enterprise Integration OS
 
-**Managed AI Workforce & Governance Platform**
+**A governed integration layer for organisations deploying N-ATLAS-powered AI.**
 
-VLTHR HR is a two-layer platform:
+NEIOS standardises how work is requested, contextualised, authorised, executed,
+validated and recorded — so developers move from a raw N-ATLAS model call to
+controlled organisational workflows, rather than rebuilding the same mechanisms
+every time. First worked example: a Nigerian SME procurement request →
+structured, validated, approved invoice draft.
 
-1. **Workforce layer (marketplace):** customers browse, hire, and assign AI employees (Data Analyst, Web Researcher, Software Engineer, etc.), paying per job on a credit system.
-2. **ARWOS layer (governance & control plane):** ensures every agent action is audited, approved according to reversibility, and traceable. All agent access to external systems flows through the tool gateway. The audit log is append-only and tamper-evident.
+- **Status:** Pre-build — engineering direction locked, implementation starting
+- **Current objective:** NAIC 2026 submission ("Build with N-ATLAS"), PS1 — Developer Infrastructure, deadline 2026-10-12 23:59 WAT
+- **Controlling direction:** [`docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md`](docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md) — read this before changing anything
+- **Future extension layer:** the fuller "AI Workforce Infrastructure" vision (originally scaffolded under the working name "VLTHR HR" — Workforce marketplace + ARWOS governance control plane) is *not* this competition deliverable. Its original specification is preserved as context in [`docs/01-context/supplied/`](docs/01-context/supplied/) and its architectural DNA (gateway, single call path, audit, reversibility lanes) shapes NEIOS's design without being fully implemented here.
 
-- **Status:** Bootstrap complete — pre-Phase 0
-- **Primary market:** Nigeria (Pan-Africa Phase 2, Global Phase 3)
-- **Supplied product context:** [`docs/01-context/supplied/`](docs/01-context/supplied/)
+## What NEIOS is NOT
+
+- Not another SDK/prompt-wrapper/playground (explicitly avoided — see direction doc §3).
+- Not a claim of official N-ATLAS/NITDA/Awarri affiliation.
+- Not the full ARWOS specification (138 requirements) or the full Workforce marketplace.
+- Not a system that lets the model itself decide policy, authority, or approval.
 
 ## Repository structure
 
 | Path | Contents |
 |---|---|
-| `apps/vlthr-hr-web/` | Customer-facing marketplace UI (Next.js 15 + shadcn/ui) |
-| `apps/arwos-api/` | Governance & control plane API (FastAPI) |
-| `packages/role-cards/` | Role Card schema — every AI employee is a config file |
+| `apps/vlthr-hr-web/` | Next.js 15 app — reused as the NEIOS UI/playground (folder name is legacy from the original scaffold; see direction doc §18) |
+| `apps/arwos-api/` | Governance API skeleton — retained only if useful per direction doc §18 |
+| `packages/role-cards/` | Role Card config schema — reused for NEIOS Role Cards (config, not authority) |
 | `packages/shared/` | Shared types/utilities |
+| `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md` | **Primary source of truth** for NEIOS: product, architecture, plan, risks |
 | `docs/` | Controlled engineering documentation (00-governance → 15-handover) |
-| `engineering/` | Work-management records: issues, tasks, decisions, risks, evidence, changes |
-| `product/` | Problem, users, use cases, requirements, acceptance |
-| `architecture/` | System, components, interfaces, integrations, security, deployment |
-| `infrastructure/` | Kubernetes / deployment manifests |
-| `tests/` | Integration, E2E, security, load tests |
-| `scripts/`, `tools/` | Dev tooling |
-| `config/`, `migrations/`, `fixtures/`, `examples/`, `benchmarks/` | See READMEs |
+| `engineering/` | Work-management records: issues, tasks, decisions (ADRs), risks, evidence, changes |
+| `product/` | Problem, users, use cases, requirements, acceptance (currently describes the future-layer product; NEIOS-specific requirements are being extracted from the direction doc) |
+| `architecture/` | Structured architecture record (currently describes the future-layer product; superseded for NEIOS by the direction doc) |
 
 ## Engineering workflow
 
 This repository is governed by the Software Engineering Operating Repository model.
-Before writing code, read:
+Before writing code, read, in order:
 
-1. [`docs/00-governance/README.md`](docs/00-governance/README.md) — roles, gates, reversibility lanes
-2. [`docs/01-context/PROJECT-CONTEXT.md`](docs/01-context/PROJECT-CONTEXT.md) — what exists and where it came from
-3. [`docs/00-governance/PROJECT-CLASSIFICATION.md`](docs/00-governance/PROJECT-CLASSIFICATION.md) — C3 / Level-2 classification
-4. [`engineering/`](engineering/) — issues, tasks, decisions, risks, evidence
+1. [`docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md`](docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md) — the controlling NEIOS direction
+2. [`docs/00-governance/README.md`](docs/00-governance/README.md) — roles, gates, reversibility lanes
+3. [`engineering/decisions/`](engineering/decisions/) — ADR-0001 through ADR-0004 (naming/scope history, read in order — later ADRs supersede earlier ones where they conflict)
+4. [`engineering/UNCERTAINTY-REGISTER.md`](engineering/UNCERTAINTY-REGISTER.md) — open blockers
 
 **Key rules:**
 
 - No implementation without a task linked to a requirement.
 - Consequential decisions are recorded as ADRs in `engineering/decisions/`.
-- Corrections supersede; they do not erase history.
+- Corrections supersede; they do not erase history — do not retroactively edit old ADRs/decision-log entries, including ones that use the former "VLTHR HR" product name.
 - Claims without evidence are marked `ASSUMPTION`, `HYPOTHESIS`, or `UNKNOWN`.
 - Material conclusions from chat/email/meetings must be transferred into this repository.
 
 ## Getting started
 
-```bash
-# Frontend (Workforce layer)
-cd apps/vlthr-hr-web && pnpm install && pnpm dev
-
-# Governance API (ARWOS layer)
-cd apps/arwos-api && pip install -e ".[dev]" && uvicorn app.main:app --reload
-```
+Build has not started yet. Quickstart instructions will be written per direction doc
+§26 once the core N-ATLAS integration path (Gate G0) is proven.
 
 ## License
 
-Proprietary — license terms to be confirmed (see `LICENSE`).
+Proprietary — license terms to be confirmed (see `LICENSE`). NEIOS's use of the
+N-ATLAS model is subject to N-ATLaS's own license terms — see
+`docs/legal/N-ATLAS-LICENSING-NOTE.md` (to be created per direction doc §25).

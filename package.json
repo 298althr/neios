@@ -1,8 +1,8 @@
 {
-  "name": "vlthr-hr",
+  "name": "neios",
   "version": "0.0.0",
   "private": true,
-  "description": "VLTHR HR — Managed AI Workforce & Governance Platform (monorepo)",
+  "description": "NEIOS — N-ATLAS Enterprise Integration OS (monorepo). Future-extension layer formerly scaffolded as \"VLTHR HR\" (Workforce + ARWOS) retained under apps/ and docs/01-context/supplied/.",
   "packageManager": "pnpm@9.15.0",
   "scripts": {
     "dev:web": "pnpm --filter vlthr-hr-web dev",

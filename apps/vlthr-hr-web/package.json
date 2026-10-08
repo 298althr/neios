@@ -2,7 +2,7 @@
   "name": "vlthr-hr-web",
   "version": "0.0.0",
   "private": true,
-  "description": "VLTHR HR — Workforce marketplace layer (customer-facing UI)",
+  "description": "NEIOS UI/playground, reusing the future-extension layer's (formerly VLTHR HR Workforce marketplace) customer-facing scaffold.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

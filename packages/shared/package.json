@@ -2,7 +2,7 @@
   "name": "@vlthr/shared",
   "version": "0.0.0",
   "private": true,
-  "description": "Shared types/utilities for VLTHR HR JS/TS packages",
+  "description": "Shared types/utilities. Currently scaffolded for the future-extension layer (formerly \"VLTHR HR\"); may be reused by NEIOS.",
   "main": "src/index.ts",
   "scripts": {
     "lint": "echo \"no lint configured\" && exit 0",

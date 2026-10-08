@@ -8,14 +8,20 @@ created: 2026-10-08
 confidence: HIGH (for documented items)
 ---
 
-# Project context — VLTHR HR
+# Project context
+
+> **Current active build: NEIOS** (N-ATLAS Enterprise Integration OS) — see
+> `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md`. Everything below
+> describes the **future-extension layer**, formerly named "VLTHR HR."
 
 ## What exists
 
 - 7 supplied documents (`supplied/`) — product spec, risk assessment, index,
   normative ARWOS v1.2 spec, ARWOS explainer, earlier PRD, N-ATLAS spec.
-- Empty code repository (this scaffold). No implementation yet.
-- Product name: **VLTHR HR**. Layers: **Workforce** (marketplace) + **ARWOS** (governance).
+- Scaffold code repository, now building NEIOS (see root README.md). No NEIOS
+  implementation yet as of 2026-10-08.
+- Future-extension layer product name: **VLTHR HR**. Layers: **Workforce**
+  (marketplace) + **ARWOS** (governance).
 
 ## Actors (per supplied spec)
 

@@ -7,7 +7,11 @@ owner: SECURITY OWNER (placeholder)
 created: 2026-10-08
 ---
 
-# Threat model — VLTHR HR
+# Threat model — future-extension layer (formerly "VLTHR HR")
+
+> **Not current build scope.** Describes the fuller future-layer product's threat
+> surface. NEIOS's own security/trust rules are at
+> `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md` §24.
 
 ## Assets
 

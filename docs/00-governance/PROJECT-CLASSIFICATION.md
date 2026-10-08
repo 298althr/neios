@@ -1,15 +1,26 @@
 ---
 document_id: GOV-001
-title: Project classification
+title: Project classification — future-extension layer (formerly "VLTHR HR")
 status: ACTIVE
 version: 0.1.0
 owner: PROJECT OWNER (placeholder)
 created: 2026-10-08
 confidence: HIGH
 evidence_level: E2 (documentary — supplied spec)
+scope_note: This classification (C3/Level 2) applies to the future-extension
+  layer's full scope. NEIOS, the current NAIC 2026 build, is intentionally much
+  smaller (modular monolith, no multi-tenant RLS, no hash-chained audit store) —
+  do not apply C3/L2 governance weight to NEIOS's 4-day build. A lighter NEIOS-
+  specific classification should be recorded if/when this distinction causes
+  friction (not yet done — tracked informally via the direction doc's own P0-P3
+  task prioritisation instead of a formal reclassification).
 ---
 
-# Project classification — VLTHR HR
+# Project classification — future-extension layer (formerly "VLTHR HR")
+
+> **Scope note:** this is the classification for the fuller future-extension
+> product, not the current NEIOS build (see scope_note above and
+> `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md`).
 
 Classification per the template-generation skill's classification engine.
 Sources: `docs/01-context/supplied/` (E2 documentary evidence).

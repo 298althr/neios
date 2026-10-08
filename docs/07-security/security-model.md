@@ -8,7 +8,11 @@ created: 2026-10-08
 confidence: MEDIUM — derived from spec, needs security review
 ---
 
-# Security model — VLTHR HR
+# Security model — future-extension layer (formerly "VLTHR HR")
+
+> **Not current build scope.** NEIOS's security/trust rules are at
+> `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md` §24. This document
+> is the fuller future-layer reference that NEIOS's principles are drawn from.
 
 Security is a product feature (ARWOS). Source: supplied spec §2, FR-A01–A10, ARWOS v1.2.
 

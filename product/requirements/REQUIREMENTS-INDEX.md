@@ -7,7 +7,12 @@ created: 2026-10-08
 source_of_truth: docs/01-context/supplied/ (until REQ extraction)
 ---
 
-# Requirements index — VLTHR HR
+# Requirements index — future-extension layer (formerly "VLTHR HR")
+
+> **Not current build scope.** These requirements (FR-R/FR-A/FR-I, ARWOS v1.2)
+> describe the fuller future-extension layer. NEIOS's own requirements are in
+> `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md` §5 and §12
+> (API contract) — not yet extracted into this directory's REQ-* format.
 
 Pre-extraction index of requirement IDs defined in supplied documents (E2).
 
