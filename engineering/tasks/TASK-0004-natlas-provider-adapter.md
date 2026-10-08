@@ -15,7 +15,8 @@ Agent
 P0
 
 ## Status
-TODO — depends on TASK-0001 resolving the access path
+TODO — depends on TASK-0001 resolving the access path (decided: vast.ai + vLLM,
+D-0015; base URL will be the SSH-tunneled `http://localhost:8000/v1`)
 
 ## Preconditions
 TASK-0001 complete (access path chosen and proven).

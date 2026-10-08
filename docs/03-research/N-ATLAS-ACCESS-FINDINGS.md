@@ -43,32 +43,54 @@ demo mode is explicitly fake. This independently confirms: nobody in the public
 ecosystem currently has a free, reliable, hosted N-ATLAS endpoint. Self-hosting (in
 some form) is not a fallback — it is the realistic primary path.
 
-## Revised priority (recommendation — supersedes direction doc §9's ordering)
+## DECIDED (2026-10-08, D-0015 — supersedes D-0013's HF Inference Endpoint pick)
 
-1. **Ollama + a quantized GGUF build of NCAIR1/N-ATLaS, run locally** (the model
-   page lists 5 existing community quantizations). Free, no ongoing cost, works
-   offline, but needs a machine with enough RAM (8B model, quantized ≈ 5–8GB) and
-   is slower than a GPU endpoint. **Fastest to try today — zero cost, zero signup
-   beyond what's already needed.**
-2. **Hugging Face Inference Endpoint** (paid, dedicated GPU, minutes to provision)
-   — use if (1) is too slow for a smooth live demo, or the owner's machine can't
-   run an 8B model locally. Reliable, fully within our control.
-3. **Hunt for a working community Space** — deprioritized given the evidence above.
-   Only revisit if both (1) and (2) are blocked.
-4. **Rent a GPU (RunPod/Vast.ai) and self-host via vLLM** — fallback if (2) is
-   rejected on cost grounds; more setup time than (2).
+Owner constraint clarified: **zero budget except an existing $5 credit on vast.ai**
+(no HF billing card to be added). This rules out HF Inference Endpoints (D-0013)
+entirely, regardless of merit — not a cost comparison, a hard constraint.
+
+**Decided path: vast.ai GPU rental + self-hosted vLLM.**
+
+Live pricing checked 2026-10-08: RTX 3090/4090 (24GB, sufficient for N-ATLaS 8B
+in BF16) available on vast.ai from **$0.08–0.15/hr on interruptible/spot
+listings** (on-demand ~$0.40/hr for guaranteed uptime, e.g. for the final demo
+recording). At the low end, $5 buys 30–60+ hours — comfortably more than the
+remaining build window needs.
+
+vLLM has first-class support for gated Hugging Face models via `HF_TOKEN`:
+
+```bash
+docker run --runtime nvidia --gpus all \
+  -v ~/.cache/huggingface:/root/.cache/huggingface \
+  --env "HF_TOKEN=$HF_TOKEN" -p 8000:8000 --ipc=host \
+  vllm/vllm-openai:latest --model NCAIR1/N-ATLaS --dtype auto --api-key devkey123
+```
+
+This exposes a real OpenAI-compatible `/v1/chat/completions` endpoint, confirming
+the "reuse the `openai` npm package" plan below works unchanged.
+
+## Final priority order
+
+1. **vast.ai + vLLM (Docker), interruptible instance for dev/test, on-demand for final demo recording.** — DECIDED, D-0015.
+2. Ollama local quantized model — not applicable, owner has no 8B-capable local machine (D-0013).
+3. HF Inference Endpoint — ruled out by budget constraint (D-0013 superseded).
+4. Community Gradio Space hunting — deprioritized (most observed broken, see above).
+
+## Operational workflow
+
+1. Rent cheapest RTX 3090/4090 interruptible listing with a PyTorch/CUDA template.
+2. SSH in; run the Docker command above (HF token from https://huggingface.co/settings/tokens, read-scope).
+3. From the local dev machine, SSH tunnel: `ssh -N -L 8000:localhost:8000 -p <port> root@<ip>`.
+4. `NAtlasProvider` targets `http://localhost:8000/v1` with the chosen `--api-key`.
+5. **Stop (not destroy)** the instance between sessions to pause compute billing
+   while keeping the downloaded model cached on disk (avoids re-downloading ~16GB
+   each session).
+6. For the Day-4 demo recording specifically, switch to an **on-demand** instance
+   (no preemption risk) for that session only.
 
 ## Practical implementation implication
 
-Options 1, 2, and 4 all can expose an **OpenAI-compatible HTTP API** (Ollama,
-HF TGI/Inference Endpoints, and vLLM all support this). This means our
-`NAtlasProvider` adapter does not need bespoke HTTP/retry/timeout code — it can
-use the well-known `openai` npm package pointed at a custom `baseURL`, swapping
-only the base URL depending on which option is live. This is a meaningful build-
-time saver and is reflected in the roadmap's task list.
-
-## Owner decision needed
-
-See the roadmap's Day-1 task list. Specifically: can your machine run an 8B
-(quantized) model locally via Ollama at acceptable speed, or should we go straight
-to a paid HF Inference Endpoint (estimate: a few dollars for the build+demo window)?
+vast.ai/vLLM, like the other options, exposes an **OpenAI-compatible HTTP API**.
+`NAtlasProvider` uses the well-known `openai` npm package pointed at the tunneled
+`baseURL` — no bespoke HTTP/retry/timeout code needed. Unchanged from the original
+plan, just pointed at a different (better-fitting, zero-extra-cost) backend.
