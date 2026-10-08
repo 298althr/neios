@@ -1,0 +1,90 @@
+{
+  "mode": "--blocked",
+  "intake": {
+    "who": {
+      "requester": "demo-user",
+      "organisation": "Fictional Demo Ventures Ltd (fictional)"
+    },
+    "what": {
+      "workType": "wire_transfer",
+      "requestedOutput": "invoice_draft",
+      "sourceText": "Oga please prepare invoice for our customer: 50 bags of Mama Gold rice at 45000 naira each and 20 cartons of Indomie at 8000 naira each. Supplier na Fictional Adaeze Foods. Buyer na Fictional Demo Ventures Ltd. Delivery by next Friday."
+    },
+    "why": {
+      "purpose": "monthly canteen restock procurement",
+      "criticality": "medium",
+      "severity": "low"
+    },
+    "when": {
+      "urgency": "routine",
+      "dueAt": null
+    }
+  },
+  "requestId": "65ad7820-525d-47e8-99f6-fb75bf48b70e",
+  "trace": [
+    {
+      "stage": "REQUEST",
+      "status": "ok",
+      "detail": "request 65ad7820-525d-47e8-99f6-fb75bf48b70e from demo-user"
+    },
+    {
+      "stage": "CONTEXT",
+      "status": "ok",
+      "detail": "APSOS intake packaged for role \"procurement-assistant\""
+    },
+    {
+      "stage": "POLICY",
+      "status": "fail",
+      "detail": "BLOCK — work type \"wire_transfer\" is not in role's allowed actions"
+    },
+    {
+      "stage": "MODEL",
+      "status": "skipped",
+      "detail": "blocked by policy"
+    },
+    {
+      "stage": "RESULT",
+      "status": "skipped",
+      "detail": "blocked by policy"
+    },
+    {
+      "stage": "EVIDENCE",
+      "status": "skipped",
+      "detail": "blocked by policy"
+    },
+    {
+      "stage": "APPROVAL",
+      "status": "skipped",
+      "detail": "blocked by policy"
+    },
+    {
+      "stage": "AUDIT",
+      "status": "ok",
+      "detail": "record appended to C:\\Users\\Sav-Dev\\Documents\\VLTHR-HR\\data\\audit\\audit-log.jsonl"
+    }
+  ],
+  "policy": {
+    "decision": "BLOCK",
+    "lane": 2,
+    "reasons": [
+      "work type \"wire_transfer\" is not in role's allowed actions"
+    ]
+  },
+  "issues": [],
+  "approval": "blocked_before_model",
+  "auditFile": "C:\\Users\\Sav-Dev\\Documents\\VLTHR-HR\\data\\audit\\audit-log.jsonl",
+  "auditRecord": {
+    "timestamp": "2026-10-08T11:34:22.841Z",
+    "requestId": "65ad7820-525d-47e8-99f6-fb75bf48b70e",
+    "requester": "demo-user",
+    "role": "procurement-assistant",
+    "inputHash": "4eb58363827fd91b6810306cb8840d9f173da5e982ebb8ac2b47dce7310fb687",
+    "policyResult": "BLOCK (lane 2)",
+    "provider": "openai-compat:http://localhost:8000/v1",
+    "modelRequestId": null,
+    "outputHash": null,
+    "validationResult": "pass",
+    "approvalResult": "blocked_before_model",
+    "finalState": "blocked"
+  }
+}

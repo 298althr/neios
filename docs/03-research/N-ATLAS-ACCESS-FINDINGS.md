@@ -88,9 +88,33 @@ the "reuse the `openai` npm package" plan below works unchanged.
 6. For the Day-4 demo recording specifically, switch to an **on-demand** instance
    (no preemption risk) for that session only.
 
+## OUTCOME (2026-10-08, same day — D-0016)
+
+The vLLM plan above hit a real operational failure on first use: instance
+54832982 (RTX 3090, $0.139/hr) spent **>60 minutes** extracting the ~18 GB
+`vllm/vllm-openai` image on a host with a ~90 MB/s disk + gVisor runtime —
+unacceptable on a per-second budget. Instance destroyed (~$0.23 spent).
+
+**Pivoted to `ollama/ollama` + `QuantFactory/N-ATLaS-GGUF` (Q4_K_M):**
+
+- The GGUF mirror is **ungated** — no HF token needed for download at all.
+- Ollama image ~1.5 GB → up in ~3 min on a fast-disk host (offer 53250098,
+  3200 MB/s disk, $0.178/hr, ~$0.195/hr all-in).
+- Model pull: 4.9 GB at ~150 MB/s ≈ 33 s.
+- Ollama exposes the same OpenAI-compatible `/v1` API — `NAtlasProvider`
+  (custom fetch impl in `packages/natlas-adapter`, not the `openai` npm pkg —
+  zero-dependency) worked unchanged.
+- **G0 PASSED**: first real response 45.7 s cold, 1.8–4.1 s warm; English,
+  Hausa and Yoruba probes all produced correct structured extraction.
+  Evidence in `engineering/evidence/`.
+
+Caveat recorded for honesty: the served weights are the official
+NCAIR1/N-ATLaS 8B in a third-party GGUF quantization, not the raw safetensors —
+genuine N-ATLAS integration (same model), quantized serving form.
+
 ## Practical implementation implication
 
-vast.ai/vLLM, like the other options, exposes an **OpenAI-compatible HTTP API**.
-`NAtlasProvider` uses the well-known `openai` npm package pointed at the tunneled
-`baseURL` — no bespoke HTTP/retry/timeout code needed. Unchanged from the original
-plan, just pointed at a different (better-fitting, zero-extra-cost) backend.
+vast.ai + Ollama (like vLLM / HF Endpoints / Ollama-local) exposes an
+**OpenAI-compatible HTTP API**. `NAtlasProvider` targets the tunneled
+`baseURL` (`http://localhost:11434/v1`); config-driven, backend-swappable.
+Daily ops in `engineering/runbooks/VASTAI-NATLAS.md`.

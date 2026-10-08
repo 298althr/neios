@@ -15,8 +15,10 @@ Agent
 P0
 
 ## Status
-TODO — depends on TASK-0001 resolving the access path (decided: vast.ai + vLLM,
-D-0015; base URL will be the SSH-tunneled `http://localhost:8000/v1`)
+IN_PROGRESS — adapter implemented at `packages/natlas-adapter/` (interface +
+OpenAI-compatible concrete impl, timeout/retry/typed errors, endpoint from
+env). Smoke test `scripts/natlas-smoke-test.ts` runs under Node 24 native TS.
+Blocked only on the vast.ai endpoint coming up (instance 54832982 loading).
 
 ## Preconditions
 TASK-0001 complete (access path chosen and proven).

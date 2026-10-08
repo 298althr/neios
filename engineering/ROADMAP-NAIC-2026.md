@@ -23,7 +23,7 @@ current state.
 
 | Gate | Condition | Status |
 |---|---|---|
-| G0 | Real N-ATLAS request/response captured, with endpoint + timestamp | **IN_PROGRESS** — access path decided (vast.ai + vLLM, D-0015), awaiting owner's instance rental + credentials, see TASK-0001 |
+| G0 | Real N-ATLAS request/response captured, with endpoint + timestamp | **PASS** — 2026-10-08, vast.ai Ollama + N-ATLaS Q4_K_M GGUF; evidence in engineering/evidence/ (TASK-0001) |
 | G1 | No UI-to-N-ATLAS direct calls; single controlled path | TODO |
 | G2 | Blocked action demonstrated without N-ATLAS executing it | TODO |
 | G3 | Valid structured JSON or deterministic parser recovery | TODO |

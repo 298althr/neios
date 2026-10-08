@@ -1,0 +1,13 @@
+{
+  "gate": "G0",
+  "kind": "natlas-smoke-test",
+  "endpoint": "http://localhost:11434/v1",
+  "requestedAt": "2026-10-08T12:05:47.927Z",
+  "modelRequested": "(from /models)",
+  "modelReported": "hf.co/QuantFactory/N-ATLaS-GGUF:Q4_K_M",
+  "backendRequestId": "chatcmpl-638",
+  "latencyMs": 1757,
+  "finishReason": "stop",
+  "prompt": "Jowo se invoice fun mi: 50 apo iresi (bags of rice) ni 45000 naira fun okan, lowo supplier Fictional Adaeze Foods, fun buyer Fictional Demo Ventures Ltd. Draft the invoice line items in JSON.",
+  "responseText": "{\n  \"supplier\": \"Adaeze Foods\",\n  \"buyer\": \"Demo Ventures Ltd.\",\n  \"items\": [\n    {\n      \"product\": \"apo iresi (bag of rice)\",\n      \"quantities\": 50,\n      \"price_per_item\": 45000,\n      \"unit\": \"naira\"\n    }\n  ]\n}"
+}

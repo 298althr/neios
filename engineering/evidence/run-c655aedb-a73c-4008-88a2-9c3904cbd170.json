@@ -1,0 +1,89 @@
+{
+  "mode": "--missing",
+  "intake": {
+    "who": {
+      "requester": ""
+    },
+    "what": {
+      "workType": "procurement_invoice",
+      "requestedOutput": "invoice_draft",
+      "sourceText": "Oga please prepare invoice for our customer: 50 bags of Mama Gold rice at 45000 naira each and 20 cartons of Indomie at 8000 naira each. Supplier na Fictional Adaeze Foods. Buyer na Fictional Demo Ventures Ltd. Delivery by next Friday."
+    },
+    "why": {
+      "purpose": "monthly canteen restock procurement",
+      "criticality": "medium",
+      "severity": "low"
+    },
+    "when": {
+      "urgency": "routine",
+      "dueAt": null
+    }
+  },
+  "requestId": "c655aedb-a73c-4008-88a2-9c3904cbd170",
+  "trace": [
+    {
+      "stage": "REQUEST",
+      "status": "ok",
+      "detail": "request c655aedb-a73c-4008-88a2-9c3904cbd170 from "
+    },
+    {
+      "stage": "CONTEXT",
+      "status": "ok",
+      "detail": "APSOS intake packaged for role \"procurement-assistant\""
+    },
+    {
+      "stage": "POLICY",
+      "status": "fail",
+      "detail": "BLOCK — missing required intake fields: who.requester, what.items"
+    },
+    {
+      "stage": "MODEL",
+      "status": "skipped",
+      "detail": "blocked by policy"
+    },
+    {
+      "stage": "RESULT",
+      "status": "skipped",
+      "detail": "blocked by policy"
+    },
+    {
+      "stage": "EVIDENCE",
+      "status": "skipped",
+      "detail": "blocked by policy"
+    },
+    {
+      "stage": "APPROVAL",
+      "status": "skipped",
+      "detail": "blocked by policy"
+    },
+    {
+      "stage": "AUDIT",
+      "status": "ok",
+      "detail": "record appended to C:\\Users\\Sav-Dev\\Documents\\VLTHR-HR\\data\\audit\\audit-log.jsonl"
+    }
+  ],
+  "policy": {
+    "decision": "BLOCK",
+    "lane": 2,
+    "reasons": [
+      "missing required intake fields: who.requester, what.items"
+    ]
+  },
+  "issues": [],
+  "approval": "blocked_before_model",
+  "auditFile": "C:\\Users\\Sav-Dev\\Documents\\VLTHR-HR\\data\\audit\\audit-log.jsonl",
+  "auditRecord": {
+    "timestamp": "2026-10-08T11:34:23.019Z",
+    "requestId": "c655aedb-a73c-4008-88a2-9c3904cbd170",
+    "requester": "",
+    "role": "procurement-assistant",
+    "inputHash": "4501f4c889e4f84e909890d5c140937b923ae1dbbe6c689119242fb6ecaddf8d",
+    "policyResult": "BLOCK (lane 2)",
+    "provider": "openai-compat:http://localhost:8000/v1",
+    "modelRequestId": null,
+    "outputHash": null,
+    "validationResult": "pass",
+    "approvalResult": "blocked_before_model",
+    "finalState": "blocked"
+  }
+}

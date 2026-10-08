@@ -2,6 +2,7 @@
   "name": "neios",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "description": "NEIOS — N-ATLAS Enterprise Integration OS (monorepo). Future-extension layer formerly scaffolded as \"VLTHR HR\" (Workforce + ARWOS) retained under apps/ and docs/01-context/supplied/.",
   "packageManager": "pnpm@9.15.0",
   "scripts": {

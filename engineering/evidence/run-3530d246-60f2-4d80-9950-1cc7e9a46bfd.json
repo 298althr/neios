@@ -1,0 +1,105 @@
+{
+  "mode": "--normal",
+  "intake": {
+    "who": {
+      "requester": "demo-user",
+      "organisation": "Fictional Demo Ventures Ltd (fictional)"
+    },
+    "what": {
+      "workType": "procurement_invoice",
+      "requestedOutput": "invoice_draft",
+      "sourceText": "Oga please prepare invoice for our customer: 50 bags of Mama Gold rice at 45000 naira each and 20 cartons of Indomie at 8000 naira each. Supplier na Fictional Adaeze Foods. Buyer na Fictional Demo Ventures Ltd. Delivery by next Friday.",
+      "items": [
+        "see sourceText"
+      ]
+    },
+    "why": {
+      "purpose": "monthly canteen restock procurement",
+      "criticality": "medium",
+      "severity": "low"
+    },
+    "when": {
+      "urgency": "routine",
+      "dueAt": null
+    }
+  },
+  "requestId": "3530d246-60f2-4d80-9950-1cc7e9a46bfd",
+  "trace": [
+    {
+      "stage": "REQUEST",
+      "status": "ok",
+      "detail": "request 3530d246-60f2-4d80-9950-1cc7e9a46bfd from demo-user"
+    },
+    {
+      "stage": "CONTEXT",
+      "status": "ok",
+      "detail": "APSOS intake packaged for role \"procurement-assistant\""
+    },
+    {
+      "stage": "POLICY",
+      "status": "warn",
+      "detail": "REVIEW — lane >= 2 or high criticality — human approval required before output is final"
+    },
+    {
+      "stage": "MODEL",
+      "status": "ok",
+      "detail": "openai-compat:http://localhost:11434/v1 responded in 3871ms (hf.co/QuantFactory/N-ATLaS-GGUF:Q4_K_M)"
+    },
+    {
+      "stage": "RESULT",
+      "status": "fail",
+      "detail": "model output could not be parsed into invoice_draft schema"
+    },
+    {
+      "stage": "EVIDENCE",
+      "status": "skipped",
+      "detail": "no structured output to annotate"
+    },
+    {
+      "stage": "APPROVAL",
+      "status": "warn",
+      "detail": "draft pending human approval (lane 2)"
+    },
+    {
+      "stage": "AUDIT",
+      "status": "ok",
+      "detail": "record appended to C:\\Users\\Sav-Dev\\Documents\\VLTHR-HR\\data\\audit\\audit-log.jsonl"
+    }
+  ],
+  "policy": {
+    "decision": "REVIEW",
+    "lane": 2,
+    "reasons": [
+      "lane >= 2 or high criticality — human approval required before output is final"
+    ]
+  },
+  "issues": [
+    {
+      "field": "output",
+      "issue": "Expected ',' or '}' after property value in JSON at position 414 (line 11 column 20)"
+    }
+  ],
+  "approval": "required",
+  "auditFile": "C:\\Users\\Sav-Dev\\Documents\\VLTHR-HR\\data\\audit\\audit-log.jsonl",
+  "auditRecord": {
+    "timestamp": "2026-10-08T12:09:26.745Z",
+    "requestId": "3530d246-60f2-4d80-9950-1cc7e9a46bfd",
+    "requester": "demo-user",
+    "role": "procurement-assistant",
+    "inputHash": "aba6f65dce4e4470c17a46c1f6f477b6b0b60e4b772d63bc6bdfbea428e71152",
+    "policyResult": "REVIEW (lane 2)",
+    "provider": "openai-compat:http://localhost:11434/v1",
+    "modelRequestId": "chatcmpl-503",
+    "outputHash": "c0b7b3c04a19d62cf54bfde94e7f54a2012fa2f553972e7c60eccf7afb7c24a3",
+    "validationResult": "1 issue(s)",
+    "approvalResult": "required",
+    "finalState": "failed"
+  },
+  "modelResponse": {
+    "text": "{\n  \"document_type\": \"invoice_draft\",\n  \"supplier\": {\"name\": \"Adaeze Foods\"},\n  \"buyer\": {\"name\": \"Demo Ventures Ltd\"},\n  \"currency\": \"NGN\",\n  \"items\": [\n    {\"description\": \"50 bags of Mama Gold rice\", \"quantity\": 50, \"unit_price\": 45000, \"line_total\": 2250000},\n    {\"description\": \"20 cartons of Indomie\", \"quantity\": 20, \"unit_price\": 8000, \"line_total\": 160000}\n  ],\n  \"subtotal\": 2250000 + 160000,\n  \"total\": 2250000 + 160000 + null,\n  \"delivery_terms\": null,\n  \"missing_fields\": [\n    \"requestedOutput\",\n    \"sourceText\",\n    \"urgency\",\n    \"dueAt\",\n    \"field_provenance\"\n  ],\n  \"review_required\": true\n}",
+    "model": "hf.co/QuantFactory/N-ATLaS-GGUF:Q4_K_M",
+    "requestId": "chatcmpl-503",
+    "latencyMs": 3871,
+    "finishReason": "stop"
+  }
+}

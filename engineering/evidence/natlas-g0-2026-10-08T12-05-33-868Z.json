@@ -1,0 +1,13 @@
+{
+  "gate": "G0",
+  "kind": "natlas-smoke-test",
+  "endpoint": "http://localhost:11434/v1",
+  "requestedAt": "2026-10-08T12:05:33.868Z",
+  "modelRequested": "(from /models)",
+  "modelReported": "hf.co/QuantFactory/N-ATLaS-GGUF:Q4_K_M",
+  "backendRequestId": "chatcmpl-870",
+  "latencyMs": 2181,
+  "finishReason": "stop",
+  "prompt": "Ina son ka shirya min invoice: 50 jaka shinkafa (bags of rice) a 45000 naira kowanne, daga supplier Fictional Adaeze Foods, ga buyer Fictional Demo Ventures Ltd. Draft the invoice line items in JSON.",
+  "responseText": "```json\n{\n  \"supplier_name\": \"Fictional Adaeze Foods\",\n  \"receiver_name\": \"Fictional Demo Ventures Ltd\",\n  \"items\": [\n    {\n      \"item_name\": \"Jaka Shinkafa (Bags of rice)\",\n      \"quantity\": 50,\n      \"unit_price\": 45000,\n      \"total_price\": 2250000\n    }\n  ],\n  \"transport_cost\": 0,\n  \"total\": 2250000\n}\n```"
+}

@@ -1,0 +1,13 @@
+{
+  "gate": "G0",
+  "kind": "natlas-smoke-test",
+  "endpoint": "http://localhost:11434/v1",
+  "requestedAt": "2026-10-08T12:03:18.743Z",
+  "modelRequested": "(from /models)",
+  "modelReported": "hf.co/QuantFactory/N-ATLaS-GGUF:Q4_K_M",
+  "backendRequestId": "chatcmpl-395",
+  "latencyMs": 45674,
+  "finishReason": "stop",
+  "prompt": "A trader at Balogun Market in Lagos wants an invoice for 50 bags of rice at 45000 naira each from supplier Adaeze Foods. Draft the invoice line items in JSON.",
+  "responseText": "{\n  \"quantity\": 50,\n  \"unitprice\": 45000,\n  \"item\": \"bags of rice\"\n}"
+}
