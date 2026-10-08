@@ -23,3 +23,10 @@ truth). Product changes are tracked via `engineering/changes/` records and CHANG
 | 2026-10-08 | Researched live N-ATLAS access paths; found most community Gradio Spaces broken, competing SDK project's demo mode is mocked; revised access priority to Ollama/local \u2192 paid HF Endpoint | REVERSIBLE | Devin (agent) | docs/03-research/N-ATLAS-ACCESS-FINDINGS.md, D-0012 |
 | 2026-10-08 | ADCOS scoped to "deterministic policy-before-model" only | ACCEPTED | PROJECT OWNER | D-0011 |
 | 2026-10-08 | Created engineering/ROADMAP-NAIC-2026.md master task board + TASK-0001, TASK-0004; stubbed docs/legal/N-ATLAS-LICENSING-NOTE.md and OSS-THIRD-PARTY.md | REVERSIBLE | Devin (agent) | — |
+| 2026-10-08 | Owner provided vast.ai API key + HF token via .env.local; agent installed vastai CLI, registered SSH pubkey (vast key id 1514879) | REVERSIBLE | Devin (agent) | — |
+| 2026-10-08 | Instance 54832982 created (vLLM image) — stalled >60 min in image extraction on slow-disk gVisor host; destroyed | IRREVERSIBLE (resource destroyed, $ billed) | Devin (agent) | D-0016, engineering/COST-LEDGER.md |
+| 2026-10-08 | Serving runtime pivoted to ollama/ollama + QuantFactory/N-ATLaS-GGUF:Q4_K_M on instance 54838985; G0 PASSED (real responses EN/HA/YO) | REVERSIBLE | Devin (agent) | D-0016, TASK-0001, engineering/evidence/ |
+| 2026-10-08 | Built packages/natlas-adapter + packages/governance (APSOS/policy/validation/provenance/audit/pipeline), scripts/neios-run.ts + natlas-smoke-test.ts, /api/work + /api/approve routes, playground UI | REVERSIBLE | Devin (agent) | TASK-0004 |
+| 2026-10-08 | pnpm workspace install via corepack; typecheck clean across all 4 TS projects | REVERSIBLE | Devin (agent) | — |
+| 2026-10-08 | SSH tunnel moved to port 18000 — local Ollama (llama3.2:1b) already owned 127.0.0.1:11434; wrong-model responses caught and corrected | REVERSIBLE | Devin (agent) | runbook note |
+| 2026-10-08 | Cost ledger created (owner directive: document every dollar); $0.337 billed / $4.663 remaining of $5 credit | — | PROJECT OWNER directive, Devin (agent) | engineering/COST-LEDGER.md |

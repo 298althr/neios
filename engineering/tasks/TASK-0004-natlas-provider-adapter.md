@@ -15,10 +15,9 @@ Agent
 P0
 
 ## Status
-IN_PROGRESS — adapter implemented at `packages/natlas-adapter/` (interface +
-OpenAI-compatible concrete impl, timeout/retry/typed errors, endpoint from
-env). Smoke test `scripts/natlas-smoke-test.ts` runs under Node 24 native TS.
-Blocked only on the vast.ai endpoint coming up (instance 54832982 loading).
+DONE (2026-10-08) — `packages/natlas-adapter/` live against the vast.ai Ollama
+endpoint (instance 54838985). Smoke test + full governed loop + `/api/work`
+all verified with the real model; typecheck clean.
 
 ## Preconditions
 TASK-0001 complete (access path chosen and proven).
@@ -43,11 +42,11 @@ Access path details (base URL, auth) from TASK-0001.
 and a passing smoke-test script.
 
 ## Acceptance Criteria
-- [ ] `NAtlasProvider.generate()` interface defined per §5.E
-- [ ] One concrete implementation works against the chosen backend
-- [ ] Timeout/retry/error handling present
-- [ ] Endpoint configurable, not hardcoded
-- [ ] `scripts/natlas-smoke-test.ts` runs and prints a real model response
+- [x] `NAtlasProvider.generate()` interface defined per §5.E (`src/provider.ts`)
+- [x] One concrete implementation works against the chosen backend (`OpenAICompatProvider`, zero-dep fetch)
+- [x] Timeout/retry/error handling present (AbortController timeout, retryable-status backoff, `NAtlasProviderError` kinds)
+- [x] Endpoint configurable, not hardcoded (`NATLAS_BASE_URL`/`NATLAS_API_KEY`/`NATLAS_MODEL` env)
+- [x] `scripts/natlas-smoke-test.ts` runs and prints a real model response (evidence JSONs in engineering/evidence/)
 
 ## Dependencies
 TASK-0001
@@ -61,7 +60,11 @@ budget extra time if so.
 Smoke-test script + its captured output (feeds TASK-0005).
 
 ## Validation
-Manual run of the smoke-test script against the real backend.
+Manual run of the smoke-test script against the real backend. — PASSED.
 
 ## Completion Record
-(to be filled when complete)
+Completed 2026-10-08 alongside TASK-0001. Backend: Ollama serving
+QuantFactory/N-ATLaS-GGUF:Q4_K_M on vast.ai instance 54838985 via SSH tunnel
+on local port 18000 (port 11434 owned by local Ollama — collision documented
+in runbook). Notable fix: strict-mode types + Node-24 erasable-syntax
+constraints (no constructor parameter properties).
