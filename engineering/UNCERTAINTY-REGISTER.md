@@ -24,3 +24,7 @@ via `engineering/validations/`. Do not fill these gaps by inference.
 | U-010 | Confirmed OpenAI/Devin pricing at build time (docs flag prices change) | Unit economics, credit pricing | PRODUCT OWNER | OPEN |
 | U-011 | ARWOS v1.2 open issues OI-01–OI-26 — each must be answered by named owner before its gating phase | Phase 0–3 work per ARWOS v1.2 §23 | Named per-issue owners | OPEN — extraction task needed |
 | U-012 | Observability stack final choice (Langfuse+OTel proposed in MPLOY) | Ops readiness | DEVOPS/SRE | OPEN |
+| U-013 | Hugging Face account + NCAIR1/N-ATLaS model gate acceptance not yet confirmed complete | N-ATLAS API integration spike (Phase 1 of NAIC build) | PROJECT OWNER | OPEN — owner confirmed doing today 2026-10-08 |
+| U-014 | NAIC Track B registration (ondi.innox.africa/apply/naic/naic-innovation-enterprise) not yet confirmed complete | Submission eligibility | PROJECT OWNER | OPEN — owner confirmed doing today 2026-10-08 |
+| U-015 | N-ATLAS inference path not yet chosen (community HF Space vs paid Inference Endpoint vs self-hosted) | Build architecture for ARWOS Kit | Agent (Devin), pending U-013 | OPEN |
+| U-016 | N-ATLaS license (research/innovation license, 1000-user cap, listed permitted uses) — does our MSME/invoicing use case + eventual commercial VLTHR HR use clearly qualify, or does it need Awarri's separate commercial license sign-off? | Legal exposure for both the competition entry and VLTHR HR's long-term roadmap | PROJECT OWNER + counsel | OPEN |

@@ -20,7 +20,7 @@ Where a person is unknown, the role placeholder stands — do not invent names.
 | PRODUCT OWNER | product decisions, roadmap | TBD |
 | TECHNICAL LEAD | architecture, gateway, audit | TBD |
 | ENGINEER (backend ×2) | ARWOS identity/policies; manager+worker agents | TBD |
-| ENGINEER (frontend) | Roster UI, job workspace, billing | TBD |
+| ENGINEER (frontend) | Workforce UI, job workspace, billing | TBD |
 | DEVOPS/SRE | Kubernetes, Postgres, monitoring, DR | TBD |
 | PM | customer feedback, GTM | TBD |
 | QA/VALIDATION | test plan, E2E, security tests | TBD |

@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: apps/roster-web
+        working-directory: apps/vlthr-hr-web
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4

@@ -11,7 +11,7 @@ source_of_truth: docs/01-context/supplied/ (until REQ extraction)
 
 Pre-extraction index of requirement IDs defined in supplied documents (E2).
 
-## Roster (marketplace) — spec §3.1
+## Workforce (marketplace) — spec §3.1
 
 | ID | Title |
 |---|---|

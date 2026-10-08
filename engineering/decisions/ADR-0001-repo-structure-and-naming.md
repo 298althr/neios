@@ -12,12 +12,12 @@ PROJECT OWNER (confirmed via user direction)
 ## Context
 New repository for VLTHR HR. Supplied docs exist (product spec, risk assessment,
 index, MPLOY PRD, ARWOS v1.2, ARWOS explainer, N-ATLAS spec). Product was formerly
-called "Roster"; spec says name is now VLTHR HR with Roster as the marketplace layer.
+called "Workforce"; spec says name is now VLTHR HR with Workforce as the marketplace layer.
 
 ## Decision
-1. **Monorepo** covering Roster web app, ARWOS API, shared packages, infrastructure,
+1. **Monorepo** covering Workforce web app, ARWOS API, shared packages, infrastructure,
    and the engineering governance system.
-2. **Product name: VLTHR HR** in all generated documentation. "Roster" is retained
+2. **Product name: VLTHR HR** in all generated documentation. "Workforce" is retained
    only as the name of the marketplace layer; "ARWOS" as the governance layer.
 3. **Supplied documents preserved unmodified** under `docs/01-context/supplied/` as
    Layer-0 evidence (E2). They are referenced, not edited. Corrections to them happen
@@ -25,7 +25,7 @@ called "Roster"; spec says name is now VLTHR HR with Roster as the marketplace l
 
 ## Rationale
 - Single repo keeps traceability intact across both layers while team is small.
-- Renaming avoids spec/implementation drift (spec already states "formerly Roster").
+- Renaming avoids spec/implementation drift (spec already states "formerly Workforce").
 - Supplied docs are evidence; editing them would destroy provenance.
 
 ## Consequences

@@ -22,7 +22,7 @@ You are an accountable participant in this engineering system, not just a code g
 - Every consequential decision → ADR in `engineering/decisions/` (see `_templates/`).
 - Never disguise placeholders as facts. Use `TBD`, `UNKNOWN`, `ASSUMPTION`, `PROPOSED`.
 - Attribute your work: record agent identity, task, and evidence used where practical.
-- The product name is **VLTHR HR** (not "Roster" — Roster is the name of the marketplace layer).
+- The product name is **VLTHR HR** (not "Workforce" — Workforce is the name of the marketplace layer).
 - If required context is missing, ask or record a question in `engineering/questions/`. Do not hallucinate it.
 - Supplied documents in `docs/01-context/supplied/` are evidence — reference them, do not edit them.
 

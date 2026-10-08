@@ -5,7 +5,7 @@
   "description": "VLTHR HR — Managed AI Workforce & Governance Platform (monorepo)",
   "packageManager": "pnpm@9.15.0",
   "scripts": {
-    "dev:web": "pnpm --filter roster-web dev",
+    "dev:web": "pnpm --filter vlthr-hr-web dev",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
     "typecheck": "pnpm -r typecheck",

@@ -11,8 +11,8 @@
 /docs/07-security/                   @vlthr-admin
 /engineering/                        @vlthr-admin
 
-# Marketplace layer (Roster)
-/apps/roster-web/                    @vlthr-admin
+# Marketplace layer (Workforce)
+/apps/vlthr-hr-web/                  @vlthr-admin
 
 # Agent runtime & role cards
 /packages/role-cards/                @vlthr-admin

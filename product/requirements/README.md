@@ -5,7 +5,7 @@ Source of truth for product requirements once extracted. Until extraction comple
 
 | Range | Source |
 |---|---|
-| FR-R01–R07 (Roster) | `docs/01-context/supplied/VLTHR-HR-Complete-Product-Spec.md` §3.1 |
+| FR-R01–R07 (Workforce) | `docs/01-context/supplied/VLTHR-HR-Complete-Product-Spec.md` §3.1 |
 | FR-A01–A10 (ARWOS) | spec §3.2 |
 | FR-I01–I05 (integrations) | spec §3.3 |
 | NFRs | spec §3.4 |

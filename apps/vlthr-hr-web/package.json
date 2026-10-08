@@ -1,8 +1,8 @@
 {
-  "name": "roster-web",
+  "name": "vlthr-hr-web",
   "version": "0.0.0",
   "private": true,
-  "description": "VLTHR HR — Roster marketplace layer (customer-facing UI)",
+  "description": "VLTHR HR — Workforce marketplace layer (customer-facing UI)",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

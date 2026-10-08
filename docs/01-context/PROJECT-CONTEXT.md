@@ -15,7 +15,7 @@ confidence: HIGH (for documented items)
 - 7 supplied documents (`supplied/`) — product spec, risk assessment, index,
   normative ARWOS v1.2 spec, ARWOS explainer, earlier PRD, N-ATLAS spec.
 - Empty code repository (this scaffold). No implementation yet.
-- Product name: **VLTHR HR**. Layers: **Roster** (marketplace) + **ARWOS** (governance).
+- Product name: **VLTHR HR**. Layers: **Workforce** (marketplace) + **ARWOS** (governance).
 
 ## Actors (per supplied spec)
 
@@ -25,7 +25,7 @@ confidence: HIGH (for documented items)
 
 ## System boundary (per spec §2)
 
-- Upper layer: Roster marketplace (browse → hire → brief → workspace → billing).
+- Upper layer: Workforce marketplace (browse → hire → brief → workspace → billing).
 - Lower layer: ARWOS control plane (identity, gateway, approvals, audit, compliance).
 - External integrations: GitHub, Slack, Postgres/DuckDB, email, MCP servers, Paystack.
 

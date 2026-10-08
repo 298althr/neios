@@ -4,7 +4,7 @@
 
 VLTHR HR is a two-layer platform:
 
-1. **Roster layer (marketplace):** customers browse, hire, and assign AI employees (Data Analyst, Web Researcher, Software Engineer, etc.), paying per job on a credit system.
+1. **Workforce layer (marketplace):** customers browse, hire, and assign AI employees (Data Analyst, Web Researcher, Software Engineer, etc.), paying per job on a credit system.
 2. **ARWOS layer (governance & control plane):** ensures every agent action is audited, approved according to reversibility, and traceable. All agent access to external systems flows through the tool gateway. The audit log is append-only and tamper-evident.
 
 - **Status:** Bootstrap complete — pre-Phase 0
@@ -15,7 +15,7 @@ VLTHR HR is a two-layer platform:
 
 | Path | Contents |
 |---|---|
-| `apps/roster-web/` | Customer-facing marketplace UI (Next.js 15 + shadcn/ui) |
+| `apps/vlthr-hr-web/` | Customer-facing marketplace UI (Next.js 15 + shadcn/ui) |
 | `apps/arwos-api/` | Governance & control plane API (FastAPI) |
 | `packages/role-cards/` | Role Card schema — every AI employee is a config file |
 | `packages/shared/` | Shared types/utilities |
@@ -49,8 +49,8 @@ Before writing code, read:
 ## Getting started
 
 ```bash
-# Frontend (Roster layer)
-cd apps/roster-web && pnpm install && pnpm dev
+# Frontend (Workforce layer)
+cd apps/vlthr-hr-web && pnpm install && pnpm dev
 
 # Governance API (ARWOS layer)
 cd apps/arwos-api && pip install -e ".[dev]" && uvicorn app.main:app --reload
