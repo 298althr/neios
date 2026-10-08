@@ -1,0 +1,14 @@
+{
+  "name": "vlthr-hr",
+  "version": "0.0.0",
+  "private": true,
+  "description": "VLTHR HR — Managed AI Workforce & Governance Platform (monorepo)",
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "dev:web": "pnpm --filter roster-web dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test"
+  }
+}

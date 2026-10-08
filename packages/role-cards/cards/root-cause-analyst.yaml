@@ -1,0 +1,14 @@
+# Example role card — from MPLOY.txt §3 (E2 documentary). Status: PROPOSED.
+id: root-cause-analyst
+title: Root Cause Analyst
+runtime: openai # openai | devin | openai->devin
+instructions: playbooks/rca.md # becomes a Devin playbook when runtime=devin
+tools: [code_interpreter, file_search]
+mcp: [duckdb, postgres_readonly] # gateway-enforced allow-list (FR-I05)
+guardrails: [pii_redact, no_final_decisions, cite_sources]
+budget:
+  max_usd_per_job: 5
+  max_active_minutes: 60
+price:
+  credits_per_hour: 40
+deliverables: [report.md, charts/, data/]

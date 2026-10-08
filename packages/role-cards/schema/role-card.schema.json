@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vlthr.dev/schemas/role-card.schema.json",
+  "title": "Role Card",
+  "description": "Every AI employee is one config file. Adding an employee = adding a card, no new code. Schema derived from MPLOY.txt §3 — status: PROPOSED, requires Phase 0 validation.",
+  "type": "object",
+  "required": ["id", "title", "runtime", "instructions"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Stable slug, e.g. root-cause-analyst"
+    },
+    "title": { "type": "string" },
+    "runtime": {
+      "type": "string",
+      "enum": ["openai", "devin", "openai->devin"],
+      "description": "openai = light employee; devin = Devin session; openai->devin = OpenAI plans, Devin executes"
+    },
+    "instructions": {
+      "type": "string",
+      "description": "Path to playbook/instructions file; becomes a Devin playbook when runtime=devin"
+    },
+    "tools": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Hosted tools, e.g. code_interpreter, file_search, web_search"
+    },
+    "mcp": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Allow-listed MCP server names — enforced by gateway (FR-I05)"
+    },
+    "guardrails": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "e.g. pii_redact, no_final_decisions, cite_sources"
+    },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "max_usd_per_job": { "type": "number" },
+        "max_active_minutes": { "type": "integer" }
+      }
+    },
+    "price": {
+      "type": "object",
+      "properties": {
+        "credits_per_hour": { "type": "number" }
+      }
+    },
+    "deliverables": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Expected output paths/types, e.g. report.md, charts/"
+    },
+    "clearance": {
+      "type": "string",
+      "description": "ARWOS clearance level — field added for ARWOS integration, TBD pending spec alignment"
+    }
+  }
+}
