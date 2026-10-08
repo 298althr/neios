@@ -14,10 +14,11 @@ Owner decision (which path) + Agent (implementation)
 P0 — blocking. No meaningful UI work proceeds until this passes.
 
 ## Status
-BLOCKED — awaiting owner decision between:
-(a) Ollama + local quantized GGUF build of `NCAIR1/N-ATLaS` (free, needs capable local machine)
-(b) Paid Hugging Face Inference Endpoint (reliable, costs money, minutes to provision)
-See `docs/03-research/N-ATLAS-ACCESS-FINDINGS.md` for the evidence behind this choice.
+IN_PROGRESS — owner has no local 8B-capable machine (D-0013). **Access path decided:
+Hugging Face Inference Endpoint, NVIDIA L4 x1 ($0.80/hr).** Awaiting owner to
+complete signup steps (HF account, model gate acceptance, billing, deploy) —
+see links given 2026-10-08. Agent will build TASK-0004 against this endpoint
+once it's live.
 
 ## Preconditions
 - Hugging Face account created, `NCAIR1/N-ATLaS` model gate accepted (TASK-0002).

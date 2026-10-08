@@ -87,8 +87,8 @@ Objective: turn the core system into a judge-readable product.
 | TASK-0022 | Bilingual/local-context worked example wired end-to-end (Nigerian SME procurement → invoice draft, §6) — test English, Hausa, Igbo, Yoruba; pick most reliable for demo | TODO |
 | TASK-0023 | Developer API/SDK example in docs (satisfies PS1's "working examples" ask) | TODO |
 | TASK-0024 | Run internal test suite (15 test classes, §15.2) | TODO |
-| TASK-0025 | **External beta tester 1 session** — capture tester ID, date, task, input language, completed?, failures, usefulness, friction, suggestion | **Owner must schedule** |
-| TASK-0026 | **External beta tester 2 session** — same capture fields | **Owner must schedule** |
+| TASK-0025 | **External beta tester 1 (technical) session** — see `engineering/validations/BETA-TESTER-ONBOARDING.md` | **Owner must schedule** |
+| TASK-0026 | **External beta tester 2 (ops/business) session** — see `engineering/validations/BETA-TESTER-ONBOARDING.md` | **Owner must schedule** |
 | TASK-0027 | Fix only high-severity failures found above | TODO |
 
 ---
