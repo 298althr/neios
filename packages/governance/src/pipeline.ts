@@ -7,7 +7,7 @@ import type { NAtlasProvider, NAtlasResponse } from "@neios/natlas-adapter";
 import type { ApsosIntake } from "./apsos.ts";
 import { getRole } from "./role.ts";
 import { evaluatePolicy, type PolicyResult } from "./policy.ts";
-import { parseInvoiceDraft, validateInvoiceDraft, fieldProvenance, type InvoiceDraft, type ValidationIssue } from "./invoice.ts";
+import { parseInvoiceDraft, validateInvoiceDraft, repairInvoiceArithmetic, fieldProvenance, type InvoiceDraft, type ValidationIssue } from "./invoice.ts";
 import { appendAudit, sha256, type AuditRecord } from "./audit.ts";
 
 export type StageStatus = "ok" | "warn" | "fail" | "skipped";
@@ -25,6 +25,7 @@ export interface PipelineResult {
   modelResponse?: NAtlasResponse;
   invoice?: InvoiceDraft;
   issues: ValidationIssue[];
+  repairs: string[];
   approval: "required" | "not_required" | "blocked_before_model";
   auditFile?: string;
   auditRecord: AuditRecord;
@@ -60,6 +61,7 @@ export async function runWorkRequest(opts: {
   const requestId = randomUUID();
   const trace: TraceStage[] = [];
   const issues: ValidationIssue[] = [];
+  const repairs: string[] = [];
   const push = (stage: string, status: StageStatus, detail: string) => trace.push({ stage, status, detail });
 
   push("REQUEST", "ok", `request ${requestId} from ${intake.who.requester}`);
@@ -78,7 +80,7 @@ export async function runWorkRequest(opts: {
   if (policy.decision === "BLOCK") {
     push("POLICY", "fail", `BLOCK — ${policy.reasons.join("; ")}`);
     for (const s of ["MODEL", "RESULT", "EVIDENCE", "APPROVAL"]) push(s, "skipped", "blocked by policy");
-    return finish(policy, trace, issues, "blocked_before_model", requestId, intake, roleId, providerName, auditDir);
+    return finish(policy, trace, issues, repairs, "blocked_before_model", requestId, intake, roleId, providerName, auditDir);
   }
   push("POLICY", policy.decision === "REVIEW" ? "warn" : "ok", `${policy.decision} — ${policy.reasons.join("; ") || "no issues"}`);
 
@@ -90,7 +92,7 @@ export async function runWorkRequest(opts: {
   } catch (err) {
     push("MODEL", "fail", String(err instanceof Error ? err.message : err));
     for (const s of ["RESULT", "EVIDENCE", "APPROVAL"]) push(s, "skipped", "model call failed");
-    return finish(policy, trace, issues, "blocked_before_model", requestId, intake, roleId, providerName, auditDir);
+    return finish(policy, trace, issues, repairs, "blocked_before_model", requestId, intake, roleId, providerName, auditDir);
   }
 
   // RESULT — structure + validate (one repair retry on malformed output; the
@@ -116,8 +118,11 @@ export async function runWorkRequest(opts: {
     }
   }
   if (invoice) {
+    repairs.push(...repairInvoiceArithmetic(invoice));
     issues.push(...validateInvoiceDraft(invoice));
-    push("RESULT", issues.length ? "warn" : "ok", issues.length ? `${issues.length} validation issue(s)` : "schema + arithmetic valid");
+    const detail = [issues.length ? `${issues.length} validation issue(s)` : "schema + arithmetic valid"];
+    if (repairs.length) detail.push(`${repairs.length} field(s) corrected deterministically [${repairs.join(", ")}]`);
+    push("RESULT", issues.length || repairs.length ? "warn" : "ok", detail.join(" — "));
   } else if (!issues.some((i) => i.field === "output")) {
     push("RESULT", "fail", "no structured output produced");
   }
@@ -134,7 +139,7 @@ export async function runWorkRequest(opts: {
   const approval = policy.lane >= 2 || policy.decision === "REVIEW" ? "required" : "not_required";
   push("APPROVAL", approval === "required" ? "warn" : "ok", approval === "required" ? "draft pending human approval (lane 2)" : "no approval required");
 
-  const result = finish(policy, trace, issues, approval, requestId, intake, roleId, providerName, auditDir, modelResponse.text, modelResponse.requestId);
+  const result = finish(policy, trace, issues, repairs, approval, requestId, intake, roleId, providerName, auditDir, modelResponse.text, modelResponse.requestId);
   result.modelResponse = modelResponse;
   result.invoice = invoice;
   return result;
@@ -144,6 +149,7 @@ function finish(
   policy: PolicyResult,
   trace: TraceStage[],
   issues: ValidationIssue[],
+  repairs: string[],
   approval: PipelineResult["approval"],
   requestId: string,
   intake: ApsosIntake,
@@ -167,12 +173,12 @@ function finish(
     provider: providerName,
     modelRequestId: modelRequestId ?? null,
     outputHash: modelOutputText ? sha256(modelOutputText) : null,
-    validationResult: issues.length ? `${issues.length} issue(s)` : "pass",
+    validationResult: issues.length ? `${issues.length} issue(s)` : repairs.length ? `pass (${repairs.length} arithmetic repairs)` : "pass",
     approvalResult: approval,
     finalState,
   };
   const auditFile = appendAudit(auditDir, record);
   trace.push({ stage: "AUDIT", status: "ok", detail: `record appended to ${auditFile}` });
 
-  return { requestId, trace, policy, issues, approval, auditFile, auditRecord: record };
+  return { requestId, trace, policy, issues, repairs, approval, auditFile, auditRecord: record };
 }

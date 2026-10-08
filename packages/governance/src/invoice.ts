@@ -67,6 +67,37 @@ export function parseInvoiceDraft(text: string): InvoiceDraft {
 
 const round2 = (n: number) => Math.round(n * 100) / 100;
 
+/** Deterministic arithmetic enforcement: recompute line_total, subtotal and
+ *  total from quantity/unit_price when the model's values disagree. Every
+ *  correction is returned so the caller can surface it in the trace/audit —
+ *  repairs are never silent. Only applied when inputs are verifiable numbers;
+ *  semantic errors (wrong quantity, missing fields) are left for validation
+ *  and human review. */
+export function repairInvoiceArithmetic(draft: InvoiceDraft): string[] {
+  const repaired: string[] = [];
+  draft.items.forEach((item, i) => {
+    if (typeof item.quantity === "number" && item.quantity > 0 &&
+        typeof item.unit_price === "number" && item.unit_price >= 0 &&
+        Math.abs((item.line_total ?? NaN) - round2(item.quantity * item.unit_price)) > 0.01) {
+      item.line_total = round2(item.quantity * item.unit_price);
+      repaired.push(`items[${i}].line_total`);
+    }
+  });
+  const subtotal = round2(draft.items.reduce((s, i) => s + (typeof i.line_total === "number" ? i.line_total : 0), 0));
+  if (typeof draft.subtotal === "number" && Math.abs(draft.subtotal - subtotal) > 0.01) {
+    draft.subtotal = subtotal;
+    repaired.push("subtotal");
+  }
+  if (typeof draft.subtotal === "number") {
+    const total = round2(draft.subtotal + (typeof draft.tax === "number" ? draft.tax : 0));
+    if (typeof draft.total === "number" && Math.abs(draft.total - total) > 0.01) {
+      draft.total = total;
+      repaired.push("total");
+    }
+  }
+  return repaired;
+}
+
 /** Deterministic checks only — never delegated to the model (§5.G). */
 export function validateInvoiceDraft(draft: InvoiceDraft): ValidationIssue[] {
   const issues: ValidationIssue[] = [];

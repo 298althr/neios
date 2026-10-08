@@ -30,3 +30,6 @@ truth). Product changes are tracked via `engineering/changes/` records and CHANG
 | 2026-10-08 | pnpm workspace install via corepack; typecheck clean across all 4 TS projects | REVERSIBLE | Devin (agent) | — |
 | 2026-10-08 | SSH tunnel moved to port 18000 — local Ollama (llama3.2:1b) already owned 127.0.0.1:11434; wrong-model responses caught and corrected | REVERSIBLE | Devin (agent) | runbook note |
 | 2026-10-08 | Cost ledger created (owner directive: document every dollar); $0.337 billed / $4.663 remaining of $5 credit | — | PROJECT OWNER directive, Devin (agent) | engineering/COST-LEDGER.md |
+| 2026-10-08 | Deterministic arithmetic repair added to validation layer (model emitted 20×8000=1,600,000 on Hausa run — corrected + surfaced in trace/audit) | REVERSIBLE | Devin (agent) | packages/governance/src/invoice.ts |
+| 2026-10-08 | /api/audit endpoint + audit-log viewer in playground UI; EN/HA/YO one-click example requests added; approve/reject verified end-to-end (audit shows linked approval event) | REVERSIBLE | Devin (agent) | apps/vlthr-hr-web/ |
+| 2026-10-08 | README rewritten with real quickstart (tunnel, install, smoke test, governed loop, UI); VALIDATION-METRICS.md created from evidence + audit data | REVERSIBLE | Devin (agent) | README.md, engineering/validations/ |
