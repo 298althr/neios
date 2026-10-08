@@ -91,6 +91,6 @@ evidence → approval → audit trace, with one-click example requests in Englis
 
 ## License
 
-Proprietary — license terms to be confirmed (see `LICENSE`). NEIOS's use of the
-N-ATLAS model is subject to N-ATLaS's own license terms — see
-`docs/legal/N-ATLAS-LICENSING-NOTE.md` (to be created per direction doc §25).
+[MIT](LICENSE) — covers this repository's own code and documentation.
+Use of the N-ATLaS model itself is subject to the model's own license
+terms — see `docs/legal/N-ATLAS-LICENSING-NOTE.md`.

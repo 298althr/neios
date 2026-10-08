@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>NEIOS — Technical Documentation (NAIC 2026, PS1)</title>
+<style>
+  @page { margin: 18mm 16mm; }
+  body { font-family: Georgia, serif; color: #1a1a1a; max-width: 780px; margin: 0 auto; font-size: 10.5pt; line-height: 1.45; }
+  h1 { font-size: 20pt; margin-bottom: 2px; }
+  h2 { font-size: 13pt; border-bottom: 1.5px solid #333; padding-bottom: 3px; margin-top: 22px; }
+  h3 { font-size: 11pt; margin-bottom: 4px; }
+  .sub { color: #555; font-size: 10pt; margin-top: 0; }
+  code, pre { font-family: Consolas, monospace; font-size: 8.5pt; }
+  pre { background: #f4f4f4; border: 1px solid #ddd; padding: 8px; white-space: pre-wrap; }
+  table { border-collapse: collapse; width: 100%; font-size: 9.5pt; }
+  th, td { border: 1px solid #bbb; padding: 4px 7px; text-align: left; vertical-align: top; }
+  th { background: #eee; }
+  .trace { color: #0a5; }
+  .warn { color: #b60; }
+  .fail { color: #c00; }
+  ul { margin: 4px 0; }
+</style>
+</head>
+<body>
+
+<h1>NEIOS — N-ATLAS Enterprise Integration OS</h1>
+<p class="sub">Technical Documentation — NAIC 2026, Track: Innovation &amp; Enterprise, Problem Statement PS1 (Developer Infrastructure)<br>
+Repository: github.com/vlthrlabs/NEIOS &nbsp;·&nbsp; License: MIT &nbsp;·&nbsp; Date: 2026-10-08</p>
+
+<h2>1. What NEIOS is</h2>
+<p>NEIOS is governed developer infrastructure for N-ATLAS. It is the layer between a raw
+model endpoint and an organisational workflow: work is requested through structured intake,
+authorised by a deterministic policy gate <em>before</em> any model call, executed by N-ATLAS,
+validated against a strict schema, annotated with field-level provenance, routed to human
+approval when consequential, and recorded in an append-only audit trail. The model never
+decides its own authority.</p>
+<p><b>Explicitly not:</b> a prompt wrapper, a chat playground, a claim of official
+N-ATLAS/NITDA/Awarri affiliation, or a system where the LLM decides policy.</p>
+
+<h2>2. Architecture</h2>
+<p>Modular TypeScript monorepo (pnpm). One call path — all model access flows through a
+single provider interface; all output flows through the same governed loop.</p>
+<table>
+<tr><th>Component</th><th>Role</th></tr>
+<tr><td><code>packages/natlas-adapter</code></td><td><code>NAtlasProvider</code> interface + OpenAI-compatible implementation. Endpoint, model and key fully configurable via env (<code>NATLAS_BASE_URL</code>, <code>NATLAS_MODEL</code>, <code>NATLAS_API_KEY</code>) — works against Ollama, vLLM or HF Inference Endpoints with zero code changes.</td></tr>
+<tr><td><code>packages/governance</code></td><td>The governed loop: APSOS intake packager, deterministic policy engine, invoice schema validation + deterministic arithmetic repair, field provenance annotator, approval routing, JSONL audit writer.</td></tr>
+<tr><td><code>apps/vlthr-hr-web</code></td><td>Next.js 15 control-first UI + API routes (<code>/api/work</code>, <code>/api/approve</code>, <code>/api/audit</code>). Shows the live 8-stage execution trace — not a chat box.</td></tr>
+<tr><td><code>data/audit/audit-log.jsonl</code></td><td>Append-only audit trail; every run — successful, blocked, failed, approved, rejected — appends a record with input/output SHA-256 hashes.</td></tr>
+</table>
+
+<h2>3. The governed loop</h2>
+<pre>REQUEST → CONTEXT → POLICY → MODEL → RESULT → EVIDENCE → APPROVAL → AUDIT</pre>
+<table>
+<tr><th>Stage</th><th>Behaviour</th></tr>
+<tr><td>REQUEST</td><td>Human/system work request enters with a request ID.</td></tr>
+<tr><td>CONTEXT</td><td>APSOS intake (WHO/WHAT/WHY/WHEN) packaged; missing material fields flagged before any model call.</td></tr>
+<tr><td>POLICY</td><td>Deterministic gate. Deny-by-default. BLOCK short-circuits the pipeline — the model is never invoked. REVIEW/ALLOW proceed.</td></tr>
+<tr><td>MODEL</td><td>The only place the provider is called. Latency and model identity recorded.</td></tr>
+<tr><td>RESULT</td><td>Output parsed into a strict <code>invoice_draft</code> schema; arithmetic verified deterministically and repaired where verifiable — each correction is named in the trace and audit record. One bounded retry on malformed JSON.</td></tr>
+<tr><td>EVIDENCE</td><td>Every field annotated <code>input_fact</code> / <code>model_derived</code> / <code>system_derived</code> — claims vs. verified inputs are distinguishable.</td></tr>
+<tr><td>APPROVAL</td><td>Lane-2+ (consequential) output remains a draft until a human approves or rejects; the decision itself is audited.</td></tr>
+<tr><td>AUDIT</td><td>Record appended for every run regardless of outcome — including policy blocks and model failures.</td></tr>
+</table>
+
+<h2>4. Model integration</h2>
+<ul>
+<li><b>Model:</b> N-ATLaS 8B — <code>hf.co/QuantFactory/N-ATLaS-GGUF:Q4_K_M</code> (ungated community GGUF mirror of the official NCAIR1 weights).</li>
+<li><b>Serving:</b> Ollama on a rented RTX 3090 (vast.ai), OpenAI-compatible API at <code>/v1/chat/completions</code>.</li>
+<li><b>Access:</b> SSH tunnel only (<code>127.0.0.1:18000</code>). No public model port — Ollama ships without auth, so the auto-mapped port is explicitly not used.</li>
+<li><b>Fallback path (documented):</b> vLLM serving the gated <code>NCAIR1/N-ATLaS</code> weights with <code>HF_TOKEN</code>; the adapter is endpoint-agnostic.</li>
+</ul>
+
+<h2>5. Verified results (evidence: <code>engineering/evidence/</code>, <code>data/audit/</code>)</h2>
+<table>
+<tr><th>Metric</th><th>Value</th></tr>
+<tr><td>Cold latency (first call after model load)</td><td>45.7 s</td></tr>
+<tr><td>Warm latency (min / median / max)</td><td>1.76 / 3.66 / 4.15 s (6 runs)</td></tr>
+<tr><td>Languages verified live</td><td>English/Nigerian Pidgin, Hausa, Yoruba, Igbo — real work requests, not translated demos</td></tr>
+<tr><td>Audit records written</td><td>22 — 11 pending_approval, 3 approved, 1 rejected, 3 policy-blocked, 4 controlled failures</td></tr>
+<tr><td>Failure handling</td><td>Endpoint unreachable → MODEL fails, downstream skips, audit still appended. No unhandled errors.</td></tr>
+<tr><td>Arithmetic enforcement</td><td>Model emitted 20×8000 as 1,600,000 — caught by validator, corrected deterministically to 160,000/2,410,000, repairs named in trace + audit</td></tr>
+</table>
+
+<h3>Live trace — Hausa request → approved invoice (real output)</h3>
+<pre><span class="trace">✓ REQUEST   request f1339a9f-… from demo-user</span>
+<span class="trace">✓ CONTEXT   APSOS intake packaged for role "procurement-assistant"</span>
+<span class="warn">! POLICY    REVIEW — lane ≥ 2 — human approval required before output is final</span>
+<span class="trace">✓ MODEL     openai-compat:http://127.0.0.1:18000/v1 responded in 3679ms (N-ATLaS-GGUF:Q4_K_M)</span>
+<span class="trace">✓ RESULT    schema + arithmetic valid</span>
+<span class="trace">✓ EVIDENCE  field provenance assigned (input_fact / model_derived / system_derived)</span>
+<span class="warn">! APPROVAL  draft pending human approval (lane 2)</span>
+<span class="trace">✓ AUDIT     record appended to data/audit/audit-log.jsonl</span>
+→ human approved → linked audit record: finalState "approved", total ₦2,410,000</pre>
+
+<h3>Policy block — the model is never called</h3>
+<pre><span class="trace">✓ REQUEST   request … from demo-user</span>
+<span class="trace">✓ CONTEXT   APSOS intake packaged</span>
+<span class="fail">✗ POLICY    BLOCK — wire/payment transfer outside role authority</span>
+· MODEL/RESULT/EVIDENCE/APPROVAL   skipped (blocked by policy)
+<span class="trace">✓ AUDIT     record appended — finalState "blocked"</span></pre>
+
+<h2>6. Security &amp; operations</h2>
+<ul>
+<li>Policy before model — the model cannot escalate its own authority (deterministic control, not prompt instruction).</li>
+<li>Secrets in <code>.env.local</code> only — gitignored, never committed; history verified clean pre-push.</li>
+<li>SSH-tunnelled model access; no public inference port.</li>
+<li>Append-only audit with SHA-256 input/output hashes — tamper-evident.</li>
+<li>Full deployment + restart runbook: <code>engineering/runbooks/VASTAI-NATLAS.md</code>. Running cost to date: $0.337 of a $5 credit (itemised in <code>engineering/COST-LEDGER.md</code>).</li>
+</ul>
+
+<h2>7. Reproduce</h2>
+<pre>corepack pnpm install
+ssh -N -L 18000:localhost:11434 -p &lt;port&gt; root@&lt;host&gt;   # model tunnel
+node --experimental-strip-types scripts/natlas-smoke-test.ts
+node --experimental-strip-types scripts/neios-run.ts [--blocked|--missing]
+corepack pnpm --filter vlthr-hr-web dev                  # http://localhost:3000</pre>
+
+<h2>8. Status &amp; roadmap</h2>
+<p>Gate G0 (real N-ATLAS inference through the governed loop) passed 2026-10-08.
+Remaining to submission: external beta sessions (2 testers, protocol ready in
+<code>engineering/validations/BETA-TESTER-ONBOARDING.md</code>), demo video, submission
+assembly. Full task board: <code>engineering/ROADMAP-NAIC-2026.md</code>.</p>
+
+</body>
+</html>
