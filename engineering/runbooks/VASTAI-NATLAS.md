@@ -11,7 +11,7 @@
 | Offer | #53250098 — 1× RTX 3090 24 GB, Sweden, verified, EPYC 7443, ~3200 MB/s disk, ~7.8 Gbps net |
 | Rate | ~$0.178/hr compute (~$0.195/hr all-in incl. 40 GB disk) |
 | SSH | `ssh -p 15170 root@ssh3.vast.ai` (proxy; key `~/.ssh/id_ed25519`, registered as vast key id 1514879) |
-| Public IP | `194.14.47.19` (port 11434 auto-mapped to :23326 — do **not** rely on it; unauthenticated) |
+| Public IP | `194.14.47.19` (port 11434 auto-mapped to :23326 — **unauthenticated**, do not rely on it) |
 | Image | `ollama/ollama:latest` (~1.5 GB — boots in minutes, unlike the 18 GB vLLM image that stalled >60 min on a slow-disk host) |
 | Model | `hf.co/QuantFactory/N-ATLaS-GGUF:Q4_K_M` — official NCAIR1/N-ATLaS 8B weights, Q4_K_M quant, **ungated mirror** (no HF token needed) |
 | API | Ollama OpenAI-compatible server on container `:11434` |
@@ -33,15 +33,19 @@ VASTAI="/c/Users/Sav-Dev/AppData/Local/Programs/Python/Python313/Scripts/vastai.
 "$VASTAI" show instance 54838985       # wait for actual_status=running
 #    (ssh port may CHANGE on restart — re-check ssh_host/ssh_port in the raw output)
 
-# 2. tunnel the API to localhost (separate terminal, leave running)
-ssh -N -L 11434:localhost:11434 -o ServerAliveInterval=30 -i ~/.ssh/id_ed25519 -p 15170 root@ssh3.vast.ai
+# 2. tunnel the API to localhost:18000 (separate terminal, leave running)
+#    DO NOT use local port 11434 — this machine runs its own Ollama
+#    (llama3.2:1b) on 127.0.0.1:11434; hitting it silently swaps the model.
+ssh -N -L 18000:localhost:11434 -o ServerAliveInterval=30 -i ~/.ssh/id_ed25519 -p 15170 root@ssh3.vast.ai
 
-# 3. verify model is present (persists on disk across stop/start)
-curl -s http://localhost:11434/v1/models
+# 3. verify you reached N-ATLaS, NOT local Ollama:
+curl -s http://127.0.0.1:18000/v1/models
+#    must show hf.co/QuantFactory/N-ATLaS-GGUF:Q4_K_M — if it shows llama3.2
+#    you hit the local Ollama by mistake.
 
 # 4. run things
 node scripts/natlas-smoke-test.ts            # G0 evidence -> engineering/evidence/
-NATLAS_BASE_URL=http://localhost:11434/v1 node scripts/neios-run.ts
+node scripts/neios-run.ts                    # full governed loop
 pnpm --filter vlthr-hr-web dev               # playground UI on :3000
 
 # 5. STOP WHEN DONE — billing does not pause by itself

@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "body must include intake and roleId" }, { status: 400 });
   }
 
-  const baseUrl = process.env.NATLAS_BASE_URL ?? "http://localhost:8000/v1";
+  const baseUrl = process.env.NATLAS_BASE_URL ?? "http://127.0.0.1:18000/v1";
   const provider = new OpenAICompatProvider({
     baseUrl,
     apiKey: process.env.NATLAS_API_KEY ?? "devkey123",

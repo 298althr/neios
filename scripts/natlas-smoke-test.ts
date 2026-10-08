@@ -15,7 +15,9 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { OpenAICompatProvider } from "../packages/natlas-adapter/src/index.ts";
 
-const baseUrl = process.env.NATLAS_BASE_URL ?? "http://localhost:8000/v1";
+// NOTE: 127.0.0.1:18000 — local Ollama already owns :11434
+// on Windows and won't fall back, but the SSH tunnel binds IPv4 only.
+const baseUrl = process.env.NATLAS_BASE_URL ?? "http://127.0.0.1:18000/v1";
 const apiKey = process.env.NATLAS_API_KEY ?? "devkey123";
 const prompt =
   process.argv[2] ??

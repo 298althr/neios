@@ -40,7 +40,7 @@ const intake: ApsosIntake =
       : { ...baseIntake, what: { ...baseIntake.what, items: ["see sourceText"] } };
 
 const provider = new OpenAICompatProvider({
-  baseUrl: process.env.NATLAS_BASE_URL ?? "http://localhost:8000/v1",
+  baseUrl: process.env.NATLAS_BASE_URL ?? "http://127.0.0.1:18000/v1",
   apiKey: process.env.NATLAS_API_KEY ?? "devkey123",
   model: process.env.NATLAS_MODEL,
   timeoutMs: 180_000,
@@ -50,7 +50,7 @@ const result = await runWorkRequest({
   intake,
   roleId: "procurement-assistant",
   provider,
-  providerName: `openai-compat:${process.env.NATLAS_BASE_URL ?? "http://localhost:8000/v1"}`,
+  providerName: `openai-compat:${process.env.NATLAS_BASE_URL ?? "http://127.0.0.1:18000/v1"}`,
   auditDir: join(process.cwd(), "data", "audit"),
 });
 

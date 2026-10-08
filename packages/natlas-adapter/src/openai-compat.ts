@@ -25,6 +25,12 @@ export class NAtlasProviderError extends Error {
 
 const RETRYABLE_STATUS = new Set([408, 409, 425, 429, 500, 502, 503, 504]);
 
+interface ChatCompletion {
+  id?: string;
+  model?: string;
+  choices?: { message?: { content?: unknown }; finish_reason?: string }[];
+}
+
 export class OpenAICompatProvider implements NAtlasProvider {
   private readonly config: OpenAICompatConfig;
 
@@ -51,7 +57,7 @@ export class OpenAICompatProvider implements NAtlasProvider {
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       const started = Date.now();
       try {
-        const res = await this.post("/chat/completions", body);
+        const res = await this.post<ChatCompletion>("/chat/completions", body);
         const latencyMs = Date.now() - started;
         const choice = res?.choices?.[0];
         const text = choice?.message?.content;
@@ -89,13 +95,13 @@ export class OpenAICompatProvider implements NAtlasProvider {
     return id;
   }
 
-  private async post(path: string, body: unknown): Promise<Record<string, unknown>> {
+  private async post<T>(path: string, body: unknown): Promise<T> {
     const res = await this.request("POST", path, body);
     if (!res.ok) {
       const detail = await res.text().catch(() => "");
       throw new NAtlasProviderError(`POST ${path} -> ${res.status} ${detail.slice(0, 200)}`, "http", res.status);
     }
-    return (await res.json()) as Record<string, unknown>;
+    return (await res.json()) as T;
   }
 
   private request(method: string, path: string, body?: unknown): Promise<Response> {

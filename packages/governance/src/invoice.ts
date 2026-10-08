@@ -107,7 +107,8 @@ export function fieldProvenance(draft: InvoiceDraft, intakeText: string): Record
     prov[k] = typeof v === "string" && v && haystack.includes(v.toLowerCase()) ? "input_fact" : "model_derived";
   }
   draft.items.forEach((item, i) => {
-    prov[`items[${i}].description`] = haystack.includes(item.description.toLowerCase()) ? "input_fact" : "model_derived";
+    const desc = item.description?.trim().toLowerCase();
+    prov[`items[${i}].description`] = desc && haystack.includes(desc) ? "input_fact" : "model_derived";
   });
   prov.subtotal = "system_derived";
   prov.tax = "model_derived";
