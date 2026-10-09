@@ -43,7 +43,7 @@ async function click(sel) {
 }
 
 // ---- chapters ----------------------------------------------------------------
-async function runExample(label) {
+async function runExample(label, dwellMs = 0) {
   await page.goto(`${BASE}/?cursor=1`, { waitUntil: "networkidle" });
   await zoom();
   await sleep(1200);
@@ -52,50 +52,56 @@ async function runExample(label) {
   await click('button:has-text("Run governed pipeline")');
   await page.waitForSelector("text=/AUDIT.*record appended/", { timeout: 120000 });
   await sleep(1500);
+  // dwell on the result: scroll through invoice + provenance
+  if (dwellMs) {
+    await page.locator(".data-table").scrollIntoViewIfNeeded().catch(() => {});
+    await sleep(dwellMs / 2);
+    await page.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })).catch(() => {});
+    await sleep(dwellMs / 2);
+  }
 }
 
 if (chapter === "ch2") {
   await page.goto(`${BASE}/?cursor=1`, { waitUntil: "networkidle" });
   await zoom();
   await sleep(1500);
-  for (const sel of ["text=Work Request", "button:has-text('Hausa')", "text=Run governed pipeline"]) {
+  for (const sel of ["a:has-text('Approvals')", "a:has-text('Audit')", "a:has-text('Intake')",
+    "text=WORK REQUEST", "button:has-text('Hausa')", "button:has-text('Igbo')",
+    "text=Run governed pipeline"]) {
     await moveTo(sel);
+    await sleep(900);
   }
-  await sleep(1500);
+  await sleep(2500);
 } else if (chapter === "ch3") {
-  await runExample("English (Pidgin)");
-  await page.locator(".data-table").scrollIntoViewIfNeeded().catch(() => {});
-  await moveTo("text=Field Provenance").catch(() => {});
-  await sleep(2500);
+  await runExample("English (Pidgin)", 22000);
 } else if (chapter === "ch4") {
-  await runExample("Hausa");
-  await page.locator(".data-table").scrollIntoViewIfNeeded().catch(() => {});
-  await sleep(2500);
+  await runExample("Hausa", 8000);
 } else if (chapter === "ch4b") {
-  await runExample("Igbo");
-  await page.locator(".data-table").scrollIntoViewIfNeeded().catch(() => {});
-  await sleep(2500);
+  await runExample("Yoruba", 6000);
+} else if (chapter === "ch4c") {
+  await runExample("Igbo", 6000);
 } else if (chapter === "ch6") {
-  await page.goto(`${BASE}/?cursor=1`, { waitUntil: "networkidle" });
+  await page.goto(`${BASE}/approvals?cursor=1`, { waitUntil: "networkidle" });
   await zoom();
-  await runExample("English (Pidgin)");
-  await click('a:has-text("Open approvals queue")').catch(() => page.goto(`${BASE}/approvals?cursor=1`));
+  await sleep(2000);
+  await moveTo("text=Approvals");
   await sleep(1200);
   await click('button:has-text("Approve")');
-  await sleep(2000);
+  await sleep(1500);
+  await click('a:has-text("Audit")');
+  await sleep(4000);
 } else if (chapter === "ch7") {
   await page.goto(`${BASE}/audit?cursor=1`, { waitUntil: "networkidle" });
   await zoom();
   await sleep(2000);
   await moveTo("text=Audit Log");
-  await page.locator(".data-table").hover();
-  await page.evaluate(() => window.scrollTo({ top: 300, behavior: "smooth" }));
-  await sleep(4000);
+  await page.evaluate(() => window.scrollTo({ top: 350, behavior: "smooth" }));
+  await sleep(5000);
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: "smooth" }));
-  await sleep(2000);
+  await sleep(3000);
 } else if (["ch1", "ch5", "ch8"].includes(chapter)) {
   const file = { ch1: "ch1_title.html", ch5: "ch5_terminal.html", ch8: "ch8_outro.html" }[chapter];
-  const secs = { ch1: 6, ch5: 14, ch8: 6 }[chapter];
+  const secs = { ch1: 26, ch5: 15, ch8: 17 }[chapter];
   await page.goto("file:///" + join(RAW, "pages", file).replace(/\\/g, "/"));
   await sleep(secs * 1000);
 }

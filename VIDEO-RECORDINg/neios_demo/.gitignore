@@ -2,4 +2,6 @@ tools/node_modules/
 raw/*.webm
 raw/*.png
 raw/pages/
+raw/segments/
+raw/audio/
 final/
