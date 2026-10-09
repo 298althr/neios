@@ -3,14 +3,14 @@
 Nothing consequential ships itself.
 
 2
-00:00:02,937 --> 00:00:05,375
-The draft waits on a human.
+00:00:02,937 --> 00:00:06,175
+The invoice draft waits in the approvals queue.
 
 3
-00:00:05,375 --> 00:00:12,375
-Approving appends a second audit record linked by request ID — the decision is part of the trail, not a side-channel.
+00:00:06,175 --> 00:00:13,650
+Approving appends a second audit record under the same request ID — the human decision is part of the trail, not a side-channel.
 
 4
-00:00:12,375 --> 00:00:14,700
-Reject works the same way.
+00:00:13,650 --> 00:00:16,012
+Rejection works the same way.
 

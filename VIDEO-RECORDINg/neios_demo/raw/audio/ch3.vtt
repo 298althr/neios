@@ -1,28 +1,28 @@
 1
-00:00:00,100 --> 00:00:08,650
-A real request, in Nigerian business English: fifty bags of rice at forty-five thousand, twenty cartons of Indomie at eight thousand.
+00:00:00,100 --> 00:00:11,050
+A field request, in Nigerian business English: twelve butterfly valves at a hundred and eighty-five thousand, forty gasket kits at twelve-five, fifty coveralls at eighteen thousand.
 
 2
-00:00:08,600 --> 00:00:10,450
+00:00:11,000 --> 00:00:12,850
 Watch the trace.
 
 3
-00:00:10,450 --> 00:00:17,362
-Policy runs first — before the model — and flags this as lane two: consequential, needs human review.
+00:00:12,850 --> 00:00:20,025
+Policy runs first — before the model — and puts this in lane two: consequential, human approval required.
 
 4
-00:00:17,362 --> 00:00:23,375
-Then the actual N-ATLAS call, about three and a half seconds on a rented RTX 3090.
+00:00:20,025 --> 00:00:25,850
+Then the real N-ATLAS call — about three and a half seconds on a rented RTX 3090.
 
 5
-00:00:23,375 --> 00:00:27,550
-The output isn't prose — it's a validated invoice draft.
+00:00:25,850 --> 00:00:28,337
+The output isn't prose.
 
 6
-00:00:27,550 --> 00:00:33,962
-Two million four hundred and ten thousand naira — the arithmetic was checked deterministically, not by the model.
+00:00:28,337 --> 00:00:36,762
+It's a validated invoice draft — three million six hundred and twenty thousand naira, arithmetic checked deterministically, never by the model.
 
 7
-00:00:33,962 --> 00:00:40,712
-And every field carries provenance: what came from the request, what the model inferred, what the system computed.
+00:00:36,762 --> 00:00:43,325
+Every field carries provenance: what came from the request, what the model inferred, what the system computed.
 

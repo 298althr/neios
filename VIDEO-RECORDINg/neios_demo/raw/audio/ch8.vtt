@@ -1,12 +1,8 @@
 1
-00:00:00,100 --> 00:00:07,537
-That's NEIOS: real N-ATLAS inference, inside deterministic controls, with evidence a regulator could read.
+00:00:00,100 --> 00:00:07,262
+That's NEIOS: real N-ATLAS inference inside deterministic controls, with evidence a regulator could read.
 
 2
-00:00:07,487 --> 00:00:14,175
-Built in days, documented as it was built — and the whole demo ran on less than a dollar of rented GPU.
-
-3
-00:00:14,175 --> 00:00:19,837
-The code, runbooks, cost ledger and validation metrics are all in the repository.
+00:00:07,212 --> 00:00:15,325
+The whole demo ran on less than a dollar of rented GPU — and the cost ledger is in the repository, because every dollar was documented too.
 

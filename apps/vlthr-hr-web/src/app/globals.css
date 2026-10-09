@@ -1,0 +1,161 @@
+/* NEIOS design tokens — dark control-room aesthetic.
+   Status colors mirror pipeline stage semantics: ok/warn/fail/skipped. */
+:root {
+  --bg: #07090d;
+  --panel: #0d1219;
+  --panel-2: #131a24;
+  --border: #1d2735;
+  --border-bright: #2c3a4f;
+  --text: #e8eef5;
+  --dim: #8494a8;
+  --faint: #4d5b70;
+  --accent: #f0a02c;          /* energy amber */
+  --accent-dim: #7a5114;
+  --ok: #3fb950;
+  --warn: #d29922;
+  --fail: #f85149;
+  --info: #58a6ff;
+  --skip: #3d4a5c;
+  --radius: 8px;
+  --font-ui: ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-data: ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* ---------- shell ---------- */
+.topnav {
+  display: flex; align-items: center; gap: 28px;
+  padding: 0 24px; height: 56px;
+  background: var(--panel); border-bottom: 1px solid var(--border);
+}
+.brand { font-family: var(--font-data); font-weight: 700; font-size: 17px; letter-spacing: 0.04em; }
+.brand em { color: var(--accent); font-style: normal; }
+.nav { display: flex; gap: 4px; }
+.nav a {
+  color: var(--dim); text-decoration: none; padding: 6px 14px;
+  border-radius: var(--radius); font-size: 14px;
+}
+.nav a:hover { color: var(--text); background: var(--panel-2); }
+.nav a.active { color: var(--text); background: var(--panel-2); box-shadow: inset 0 -2px 0 var(--accent); }
+.status-pill {
+  margin-left: auto; font-family: var(--font-data); font-size: 12px; color: var(--dim);
+  border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px;
+}
+.status-pill b { color: var(--ok); font-weight: 600; }
+
+.shell { max-width: 1100px; margin: 0 auto; padding: 28px 24px 80px; }
+.page-title { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
+.page-sub { color: var(--dim); margin: 0 0 24px; font-size: 14px; }
+
+/* ---------- cards & panels ---------- */
+.card {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; margin-bottom: 20px;
+}
+.card-label {
+  font-family: var(--font-data); font-size: 11px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--faint); margin-bottom: 12px;
+}
+
+/* ---------- controls ---------- */
+.btn {
+  font-family: var(--font-ui); font-size: 14px; font-weight: 600;
+  padding: 9px 20px; border-radius: var(--radius); border: 1px solid var(--border-bright);
+  background: var(--panel-2); color: var(--text); cursor: pointer;
+}
+.btn:hover { border-color: var(--dim); }
+.btn:disabled { opacity: 0.5; cursor: default; }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: #1a1206; }
+.btn-primary:hover { background: #f5ae45; }
+.btn-ok { background: var(--ok); border-color: var(--ok); color: #04140a; }
+.btn-danger { background: transparent; border-color: var(--fail); color: var(--fail); }
+.btn-sm { padding: 5px 12px; font-size: 13px; }
+
+.chip {
+  font-family: var(--font-data); font-size: 12px;
+  padding: 5px 12px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--border-bright); background: transparent; color: var(--dim);
+}
+.chip:hover { color: var(--text); border-color: var(--dim); }
+.chip.selected { color: var(--accent); border-color: var(--accent-dim); background: #f0a02c14; }
+
+textarea.intake {
+  width: 100%; background: var(--bg); color: var(--text);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  font-family: var(--font-data); font-size: 13.5px; padding: 12px; resize: vertical;
+}
+textarea.intake:focus { outline: none; border-color: var(--accent-dim); }
+
+/* ---------- execution trace ---------- */
+.trace { font-family: var(--font-data); font-size: 13.5px; }
+.trace-row { display: flex; gap: 10px; padding: 4px 0; }
+.trace-ico { width: 18px; text-align: center; flex: none; }
+.trace-name { width: 84px; flex: none; font-weight: 600; }
+.st-ok { color: var(--ok); }
+.st-warn { color: var(--warn); }
+.st-fail { color: var(--fail); }
+.st-skipped { color: var(--skip); }
+.trace-detail { color: var(--dim); }
+.st-fail .trace-detail { color: var(--fail); }
+.st-warn .trace-detail { color: #e0b45e; }
+
+/* ---------- invoice ---------- */
+.data-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.data-table th {
+  text-align: left; color: var(--faint); font-family: var(--font-data);
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 6px 10px; border-bottom: 1px solid var(--border);
+}
+.data-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); font-family: var(--font-data); white-space: nowrap; }
+.data-table tr:last-child td { border-bottom: none; }
+.num { text-align: right; }
+.total-row td { font-weight: 700; color: var(--accent); border-top: 1px solid var(--border-bright); }
+
+.badge {
+  display: inline-block; font-family: var(--font-data); font-size: 11px;
+  padding: 2px 9px; border-radius: 999px; border: 1px solid var(--border-bright);
+}
+.b-ok { color: var(--ok); border-color: var(--ok); }
+.b-warn { color: var(--warn); border-color: var(--warn); }
+.b-fail { color: var(--fail); border-color: var(--fail); }
+.b-info { color: var(--info); border-color: var(--info); }
+.b-skip { color: var(--skip); border-color: var(--skip); }
+
+.prov { display: flex; flex-wrap: wrap; gap: 6px; }
+.prov-item { font-family: var(--font-data); font-size: 11.5px; padding: 3px 9px; border-radius: 4px; }
+.p-input_fact { background: #3fb95018; color: var(--ok); }
+.p-model_derived { background: #d2992218; color: var(--warn); }
+.p-system_derived { background: #58a6ff18; color: var(--info); }
+.p-human_confirmed { background: #d2a8ff18; color: #d2a8ff; }
+
+.empty { color: var(--faint); font-family: var(--font-data); font-size: 13px; padding: 20px 0; text-align: center; }
+.kv { font-family: var(--font-data); font-size: 13px; color: var(--dim); }
+.kv b { color: var(--text); font-weight: 600; }
+
+/* ---------- demo cursor overlay (only mounted with ?cursor=1) ---------- */
+.demo-cursor {
+  position: fixed; z-index: 99999; pointer-events: none;
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2.5px solid var(--accent); background: #f0a02c33;
+  transform: translate(-50%, -50%);
+  transition: left 0.5s cubic-bezier(.25,.8,.3,1), top 0.5s cubic-bezier(.25,.8,.3,1);
+}
+.demo-ripple {
+  position: fixed; z-index: 99998; pointer-events: none;
+  width: 10px; height: 10px; border-radius: 50%;
+  border: 2px solid var(--accent); transform: translate(-50%, -50%);
+  animation: ripple 0.6s ease-out forwards;
+}
+@keyframes ripple { to { width: 44px; height: 44px; opacity: 0; } }
+
+/* hide Next.js dev-tools badge during development recordings */
+nextjs-portal { display: none !important; }

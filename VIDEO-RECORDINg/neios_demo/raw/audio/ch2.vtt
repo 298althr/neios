@@ -1,12 +1,12 @@
 1
-00:00:00,100 --> 00:00:04,925
-This is the playground — deliberately a control panel, not a chat box.
+00:00:00,100 --> 00:00:04,437
+This is the console — a control surface, not a chat box.
 
 2
-00:00:04,875 --> 00:00:10,987
-Up top: the work request, with one-click examples in Nigerian English, Hausa and Yoruba.
+00:00:04,387 --> 00:00:12,987
+Intake is where requests are raised; Approvals is where consequential drafts wait for a human; Audit is the append-only record of everything the system did.
 
 3
-00:00:10,987 --> 00:00:22,812
-Below it, the execution trace will show every governed stage — request, context, policy, model, result, evidence, approval, audit — and at the bottom, the append-only audit log.
+00:00:12,987 --> 00:00:21,750
+The role on screen is the Energy Procurement Officer — a role card that fixes what this agent may do, in which languages, and what must be approved.
 

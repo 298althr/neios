@@ -11,6 +11,6 @@ But an enterprise can't put a raw model call inside a real work process — ther
 NEIOS is the integration layer that fixes that.
 
 4
-00:00:17,012 --> 00:00:24,162
-This demo shows a real procurement request running through the full governed pipeline, live, on actual N-ATLAS inference.
+00:00:17,012 --> 00:00:24,825
+This demo shows a real oil-and-gas procurement request running through the full governed pipeline, live, on actual N-ATLAS inference.
 

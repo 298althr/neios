@@ -3,14 +3,14 @@
 Governance only matters if it can say no.
 
 2
-00:00:03,125 --> 00:00:09,200
-Here's a request to wire funds — the deterministic policy gate blocks it before the model is ever called.
+00:00:03,125 --> 00:00:08,637
+Here a request to move funds hits the policy gate and is blocked — before the model is ever called.
 
 3
-00:00:09,200 --> 00:00:13,050
-The model never sees it, can't talk its way around it.
+00:00:08,637 --> 00:00:12,225
+The model never sees it; it can't be talked around.
 
 4
-00:00:13,050 --> 00:00:15,900
-And the block itself is still audited.
+00:00:12,225 --> 00:00:14,812
+And the block itself is audited.
 

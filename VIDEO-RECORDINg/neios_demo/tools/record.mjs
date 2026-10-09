@@ -1,6 +1,7 @@
-// NEIOS demo recorder — Playwright viewport capture, 1920x1080.
-// Usage: node record.mjs <chapter>   (ch2|ch3|ch4|ch5|ch6|ch7)
-// Requires: dev server on :3000 (ch2-4,6,7), model tunnel for ch3/ch4.
+// NEIOS demo recorder — Playwright viewport capture, 1920x1080, with visible
+// cursor overlay (?cursor=1 drives window.__neiosCursor).
+// Usage: node record.mjs <chapter>   (ch1|ch2|ch3|ch4|ch5|ch6|ch7|ch8)
+// Requires: dev server on :3000; model tunnel for live-model chapters.
 
 import { chromium } from "playwright";
 import { mkdirSync } from "node:fs";
@@ -13,7 +14,7 @@ mkdirSync(RAW, { recursive: true });
 
 const BASE = "http://localhost:3000";
 const chapter = process.argv[2];
-if (!chapter) { console.error("usage: node record.mjs <ch2|ch3|ch4|ch5|ch6|ch7>"); process.exit(1); }
+if (!chapter) { console.error("usage: node record.mjs <chapter>"); process.exit(1); }
 
 const browser = await chromium.launch({ headless: false });
 const ctx = await browser.newContext({
@@ -22,50 +23,80 @@ const ctx = await browser.newContext({
 });
 const page = await ctx.newPage();
 const sleep = (ms) => page.waitForTimeout(ms);
-// The app is compact (~860px wide); zoom so it fills the 1080p frame.
 const zoom = () => page.evaluate(() => { document.body.style.zoom = "1.55"; });
 
+// ---- visible cursor helpers -------------------------------------------------
+const cursorMove = (x, y) => page.evaluate(([cx, cy]) => window.__neiosCursor?.moveTo(cx, cy), [x, y]);
+const cursorClickFx = () => page.evaluate(() => window.__neiosCursor?.click());
+
+async function moveTo(sel) {
+  const box = await page.locator(sel).first().boundingBox();
+  if (!box) return;
+  await cursorMove(box.x + box.width / 2, box.y + box.height / 2);
+  await sleep(700); // let the animated cursor visibly travel
+}
+async function click(sel) {
+  await moveTo(sel);
+  await cursorClickFx();
+  await sleep(350);
+  await page.locator(sel).first().click();
+}
+
+// ---- chapters ----------------------------------------------------------------
 async function runExample(label) {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto(`${BASE}/?cursor=1`, { waitUntil: "networkidle" });
   await zoom();
-  await page.getByRole("button", { name: label }).click();
-  await sleep(800);
-  await page.getByRole("button", { name: /^Run$/ }).click();
-  // wait for AUDIT stage = pipeline finished (max 120 s incl. retry)
-  await page.waitForSelector("text=/AUDIT.*record appended/", { timeout: 120000 });
   await sleep(1200);
+  await click(`button:has-text("${label}")`);
+  await sleep(700);
+  await click('button:has-text("Run governed pipeline")');
+  await page.waitForSelector("text=/AUDIT.*record appended/", { timeout: 120000 });
+  await sleep(1500);
 }
 
 if (chapter === "ch2") {
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto(`${BASE}/?cursor=1`, { waitUntil: "networkidle" });
   await zoom();
-  await sleep(2000);
-  // slow tour: hover each panel
-  for (const sel of ["text=WORK REQUEST", "text=English (Pidgin)", "text=NEIOS"]) {
-    await page.locator(sel).first().hover().catch(() => {});
-    await sleep(1500);
+  await sleep(1500);
+  for (const sel of ["text=Work Request", "button:has-text('Hausa')", "text=Run governed pipeline"]) {
+    await moveTo(sel);
   }
-  await sleep(2000);
+  await sleep(1500);
 } else if (chapter === "ch3") {
   await runExample("English (Pidgin)");
-  await page.locator("pre").scrollIntoViewIfNeeded().catch(() => {});
-  await sleep(4000);
+  await page.locator(".data-table").scrollIntoViewIfNeeded().catch(() => {});
+  await moveTo("text=Field Provenance").catch(() => {});
+  await sleep(2500);
 } else if (chapter === "ch4") {
   await runExample("Hausa");
-  await page.locator("pre").scrollIntoViewIfNeeded().catch(() => {});
-  await sleep(4000);
-} else if (chapter === "ch6") {
-  // assumes a pending_approval run just happened in this same context
-  await page.goto(BASE, { waitUntil: "networkidle" });
-  await runExample("English (Pidgin)");
-  await page.getByRole("button", { name: "Approve" }).click();
+  await page.locator(".data-table").scrollIntoViewIfNeeded().catch(() => {});
   await sleep(2500);
-} else if (chapter === "ch1" || chapter === "ch5" || chapter === "ch7" || chapter === "ch8") {
-  // rendered pages built by build_pages.py from real evidence/audit data
-  const file = { ch1: "ch1_title.html", ch5: "ch5_terminal.html", ch7: "ch7_audit.html", ch8: "ch8_outro.html" }[chapter];
-  const secs = { ch1: 6, ch5: 14, ch7: 16, ch8: 6 }[chapter];
+} else if (chapter === "ch4b") {
+  await runExample("Igbo");
+  await page.locator(".data-table").scrollIntoViewIfNeeded().catch(() => {});
+  await sleep(2500);
+} else if (chapter === "ch6") {
+  await page.goto(`${BASE}/?cursor=1`, { waitUntil: "networkidle" });
+  await zoom();
+  await runExample("English (Pidgin)");
+  await click('a:has-text("Open approvals queue")').catch(() => page.goto(`${BASE}/approvals?cursor=1`));
+  await sleep(1200);
+  await click('button:has-text("Approve")');
+  await sleep(2000);
+} else if (chapter === "ch7") {
+  await page.goto(`${BASE}/audit?cursor=1`, { waitUntil: "networkidle" });
+  await zoom();
+  await sleep(2000);
+  await moveTo("text=Audit Log");
+  await page.locator(".data-table").hover();
+  await page.evaluate(() => window.scrollTo({ top: 300, behavior: "smooth" }));
+  await sleep(4000);
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "smooth" }));
+  await sleep(2000);
+} else if (["ch1", "ch5", "ch8"].includes(chapter)) {
+  const file = { ch1: "ch1_title.html", ch5: "ch5_terminal.html", ch8: "ch8_outro.html" }[chapter];
+  const secs = { ch1: 6, ch5: 14, ch8: 6 }[chapter];
   await page.goto("file:///" + join(RAW, "pages", file).replace(/\\/g, "/"));
-  if (chapter === "ch7") await page.locator("table").evaluate((el) => el.scrollIntoView());
   await sleep(secs * 1000);
 }
 

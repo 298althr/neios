@@ -1,16 +1,24 @@
 1
-00:00:00,100 --> 00:00:02,625
-Now the same workflow in Hausa.
+00:00:00,100 --> 00:00:06,850
+Now the same governed workflow in Hausa — the model extracts the line items and the validator enforces the arithmetic.
 
 2
-00:00:02,575 --> 00:00:09,675
-Same pipeline, same controls — the model extracts the line items correctly and the validator enforces the arithmetic.
+00:00:06,800 --> 00:00:08,225
+Yoruba.
 
 3
-00:00:09,675 --> 00:00:17,587
-If the model miscalculates — and small models do — the system corrects line totals deterministically and names every repair in the trace.
+00:00:08,225 --> 00:00:09,525
+Igbo.
 
 4
-00:00:17,587 --> 00:00:19,962
+00:00:09,525 --> 00:00:13,812
+Four languages, one pipeline, identical controls.
+
+5
+00:00:13,812 --> 00:00:22,200
+If the model ever miscalculates — and small models do — the system repairs the arithmetic deterministically and names every correction in the trace.
+
+6
+00:00:22,200 --> 00:00:24,575
 Nothing is silently fixed.
 
