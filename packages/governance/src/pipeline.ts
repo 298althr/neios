@@ -73,7 +73,7 @@ export async function runWorkRequest(opts: {
     `Work type: ${intake.what.workType}\nRequester: ${intake.who.requester}\n` +
     `Purpose: ${intake.why.purpose}\nItems: ${intakeJson}\n` +
     (intake.what.sourceText ? `Source text: ${intake.what.sourceText}\n` : "");
-  push("CONTEXT", "ok", `APSOS intake packaged for role "${roleId}"`);
+  push("CONTEXT", "ok", `APSOS intake packaged for role "${role?.name ?? roleId}"`);
 
   // POLICY — deterministic, before any model call
   const policy = evaluatePolicy(intake, role);
