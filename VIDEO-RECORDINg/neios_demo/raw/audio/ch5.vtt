@@ -1,0 +1,16 @@
+1
+00:00:00,100 --> 00:00:03,175
+Governance only matters if it can say no.
+
+2
+00:00:03,125 --> 00:00:09,200
+Here's a request to wire funds — the deterministic policy gate blocks it before the model is ever called.
+
+3
+00:00:09,200 --> 00:00:13,050
+The model never sees it, can't talk its way around it.
+
+4
+00:00:13,050 --> 00:00:15,900
+And the block itself is still audited.
+

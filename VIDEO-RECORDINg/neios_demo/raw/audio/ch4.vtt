@@ -1,0 +1,16 @@
+1
+00:00:00,100 --> 00:00:02,625
+Now the same workflow in Hausa.
+
+2
+00:00:02,575 --> 00:00:09,675
+Same pipeline, same controls — the model extracts the line items correctly and the validator enforces the arithmetic.
+
+3
+00:00:09,675 --> 00:00:17,587
+If the model miscalculates — and small models do — the system corrects line totals deterministically and names every repair in the trace.
+
+4
+00:00:17,587 --> 00:00:19,962
+Nothing is silently fixed.
+
