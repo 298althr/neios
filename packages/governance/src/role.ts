@@ -20,9 +20,9 @@ export interface NeiosRoleCard {
 export const ROLE_REGISTRY: NeiosRoleCard[] = [
   {
     id: "procurement-assistant",
-    name: "Procurement Assistant",
+    name: "Energy Procurement Officer",
     purpose:
-      "Convert a Nigerian SME staff purchase request into a structured, reviewable invoice draft. Produces drafts only — never executes real procurement, payment, or ERP writes.",
+      "Convert an oil & gas / energy sector purchase request (valves, gaskets, AGO diesel, PPE, field consumables) into a structured, reviewable invoice draft. Produces drafts only — never executes real procurement, payment, or ERP writes.",
     allowedInputTypes: ["text", "structured"],
     allowedOutputTypes: ["invoice_draft"],
     allowedActions: ["procurement_invoice"],
