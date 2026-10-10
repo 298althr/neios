@@ -45,3 +45,9 @@ Thumbs.db
 *.duckdb
 tmp/
 logs/
+
+# Local ASR secrets + caches
+services/natlas-asr/.env
+services/natlas-asr/__pycache__/
+services/natlas-asr/*.mp3
+services/natlas-asr/*.wav

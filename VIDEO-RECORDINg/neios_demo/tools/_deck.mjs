@@ -1,0 +1,13 @@
+import { chromium } from 'playwright';
+const b = await chromium.launchPersistentContext('', { headless: true, viewport: { width: 1440, height: 900 } });
+const p = await b.newPage();
+const errs=[]; p.on('pageerror', e=>errs.push(String(e)));
+await p.goto('file:///C:/Users/Sav-Dev/Documents/NEIOS/NEIOS-PROJECT-REVIEW/neios-prd-review.html');
+await p.waitForTimeout(800);
+await p.screenshot({ path: 'deck_1.png' });
+for(let k=0;k<9;k++) await p.keyboard.press('ArrowRight'), await p.waitForTimeout(120);
+await p.waitForTimeout(400); await p.screenshot({ path: 'deck_10.png' });
+for(let k=0;k<8;k++) await p.keyboard.press('ArrowRight'), await p.waitForTimeout(120);
+await p.waitForTimeout(400); await p.screenshot({ path: 'deck_19.png' });
+console.log('errors:', errs.length?errs:'none', '| slides:', await p.locator('.slide').count());
+await b.close();

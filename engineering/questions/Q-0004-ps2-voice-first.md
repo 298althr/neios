@@ -18,6 +18,30 @@ accuracy review and decision.
   voice), plus a WhatsApp/USSD/IVR or low-bandwidth channel, plus 50+ real
   interactions — a much heavier validation bar than PS1's 2 beta testers.
 
+## Fact update (agent, 2026-10-10) — the official ASR exists and is cheap
+- `NCAIR1/Hausa-ASR`, `NCAIR1/Igbo-ASR`, `NCAIR1/Yoruba-ASR`,
+  `NCAIR1/NigerianAccentedEnglish` on Hugging Face — Whisper Small fine-tunes,
+  ~244M params each (~1 GB per checkpoint), released under the N-ATLaS license
+  (derivative works must carry "Powered by Awarri" attribution).
+- An official serving kit exists (natlas-docs.vercel.app/integration): multipart
+  `POST /v1/audio/transcriptions`, ffmpeg normalises to 16 kHz mono, >30 s audio
+  is chunked on silence. OpenAI-compatible shape — our adapter pattern fits.
+
+## Cost estimate to add a real PS2 wedge to NEIOS
+- **Model weights:** $0 (HF downloads; ~4 GB total for all four languages,
+  ~$0.10 bandwidth if pulled onto the Vast instance).
+- **Compute:** Whisper Small runs comfortably on the same RTX 3090 beside the
+  8B LLM (~1 GB VRAM) or even CPU-only for short clips — so $0.18/hr sessions
+  only when needed, same as now. No second instance required.
+- **Engineering:** one `asr-adapter` (multipart → transcript), a mic/upload
+  control on intake, transcript → existing APSOS path. Small, real work.
+- **The real cost is operational, not financial:** PS2 validation needs **50+
+  documented real user interactions** — recruiting, logging, and a channel
+  (WhatsApp/USSD/IVR or a low-bandwidth web voice UI). That is days of fieldwork,
+  not dollars.
+- **Blocker unchanged:** competition rules on one product entering two tracks
+  are UNKNOWN — ask the organisers before committing build effort.
+
 ## Why It Matters / What It Blocks
 - **Honest claims:** the video may say "produced by AI tooling" (true — the
   `demo-video-production` skill generated narration, capture, assembly), but must
@@ -50,5 +74,5 @@ Owner message 2026-10-09; `docs/15-handover/HANDOFF-NAIC-2026-ARWOS-KIT.md`
 ## Status
 OPEN — awaiting owner decision. Sub-questions for owner:
 1. Do NAIC rules allow one product to enter two tracks?
-2. Is an official N-ATLAS ASR endpoint/model available to us (auth, cost)?
-3. If yes to both: option (a), (b), or (c)?
+2. ASR access is confirmed cheap/available via HF — build the wedge post-PS1?
+3. If yes: option (a), (b), or (c)?

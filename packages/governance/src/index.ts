@@ -9,4 +9,4 @@ export { parseInvoiceDraft, validateInvoiceDraft, repairInvoiceArithmetic, field
 export type { AuditRecord } from "./audit.ts";
 export { appendAudit, sha256 } from "./audit.ts";
 export type { PipelineResult, TraceStage, StageStatus } from "./pipeline.ts";
-export { runWorkRequest } from "./pipeline.ts";
+export { runWorkRequest, PROMPT_VERSION } from "./pipeline.ts";
