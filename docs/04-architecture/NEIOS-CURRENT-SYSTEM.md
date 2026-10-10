@@ -19,11 +19,18 @@ operations/business readers.
 
 ## The one-sentence version
 
-NEIOS takes a work request — **typed or spoken**, in English (Nigerian accent),
-Pidgin, Hausa, Yoruba, or Igbo — and pushes it through a governed pipeline in
-which a deterministic policy gate runs *before* the model is ever called, the
-model's output is validated and deterministically repaired, a human must approve
-anything consequential, and every step lands in an append-only audit log.
+**NEIOS is developer infrastructure for N-ATLAS** (per ADR-0005): a TypeScript
+SDK, a deterministic governance toolkit, a golden-fixture evaluation harness
+and a local official-ASR serving shim — each independently usable. The
+procurement app (`apps/vlthr-hr-web`) is the **reference implementation**
+demonstrating the stack end-to-end.
+
+Inside that reference app: a work request — **typed or spoken**, in English
+(Nigerian accent), Pidgin, Hausa, Yoruba, or Igbo — goes through a governed
+pipeline in which a deterministic policy gate runs *before* the model is ever
+called, the model's output is validated and deterministically repaired, a human
+must approve anything consequential, and every step lands in an append-only
+audit log.
 
 ```
  spoken request ──► official N-ATLAS ASR (local GPU)

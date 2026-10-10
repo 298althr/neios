@@ -43,15 +43,15 @@ def write(name, body, css=LIGHT):
 # --- ch1 title card ---
 write("ch1_title.html", """<div class=card>
 <h1>NEI<b>OS</b></h1>
-<h2>N-ATLAS Enterprise Integration OS</h2>
-<h2 class=dim>Voice and text work requests, in four Nigerian languages, governed end to end</h2>
+<h2>Developer infrastructure for N-ATLAS</h2>
+<h2 class=dim>SDK &middot; governance toolkit &middot; evaluation harness &middot; local ASR shim &mdash; demonstrated by a working reference app</h2>
 <div class=sub>NAIC 2026 &middot; PS1 &mdash; Developer Infrastructure</div>
 </div>""")
 
 # --- ch9 outro card ---
 write("ch9_outro.html", """<div class=card>
 <h1>NEI<b>OS</b></h1>
-<h2>Real N-ATLAS inference &middot; official N-ATLAS ASR &middot; deterministic controls &middot; auditable evidence</h2>
+<h2>SDK &middot; governance toolkit &middot; eval harness &middot; ASR shim &mdash; real N-ATLAS inference throughout</h2>
 <h2 class=dim>Voice-first wedge included &mdash; PS2-ready architecture</h2>
 <div class=sub>github.com/vlthrlabs/NEIOS</div>
 </div>""")
