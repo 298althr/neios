@@ -82,9 +82,9 @@ Objective: turn the core system into a judge-readable product.
 
 | ID | Task | Status |
 |---|---|---|
-| TASK-0020 | Polish primary screen (§7.1 layout: role/status, work request, execution trace, result, evidence, approve/reject) | TODO |
-| TASK-0021 | Evidence/provenance panel (field → input_fact / model_derived / system_derived / human_confirmed) | TODO |
-| TASK-0022 | Bilingual/local-context worked example wired end-to-end (Nigerian SME procurement → invoice draft, §6) — test English, Hausa, Igbo, Yoruba; pick most reliable for demo | TODO |
+| TASK-0020 | Polish primary screen (§7.1 layout: role/status, work request, execution trace, result, evidence, approve/reject) | DONE 2026-10-09 — superseded by TASK-0050 design-system port |
+| TASK-0021 | Evidence/provenance panel (field → input_fact / model_derived / system_derived / human_confirmed) | DONE |
+| TASK-0022 | Bilingual/local-context worked example wired end-to-end — test English, Hausa, Igbo, Yoruba | DONE — all 4 verified live; oil & gas flowstation resupply is the anchor case |
 | TASK-0023 | Developer API/SDK example in docs (satisfies PS1's "working examples" ask) | TODO |
 | TASK-0024 | Run internal test suite (15 test classes, §15.2) | TODO |
 | TASK-0025 | **External beta tester 1 (technical) session** — see `engineering/validations/BETA-TESTER-ONBOARDING.md` | **Owner must schedule** |
@@ -126,6 +126,43 @@ Objective: submit by 20:00 WAT.
 | TASK-0045 | Final README review | TODO |
 | TASK-0046 | Backup archive of the full submission | TODO |
 | TASK-0047 | **Submit** | **Owner** (submission portal requires owner's registered account) |
+
+---
+
+## Update 2026-10-10 — prototype pivot and gap-closure plan
+
+Owner feedback on the first prototype: too many artifacts, pages and tabs busy,
+accessibility fatigue; prototype must carry real-life and engineered edge cases;
+prompt engineering needs a benchmark/scoring model. Plan below supersedes any
+conflicting ordering above for the remaining days.
+
+### Done today
+
+| ID | Task |
+|---|---|
+| TASK-0048 | `NEIOS-PROJECT-REVIEW/neios-workflow-prototype.html` — standalone governed-workflow prototype (compose → policy → N-ATLaS draft → human approval → dispatch & audit), 3 domains, 4 request languages, seeded examples | DONE |
+| TASK-0049 | `NEIOS-PROJECT-REVIEW/neios-prd-review.html` — 19-slide project review deck (product concept readable by non-coders) | DONE |
+| TASK-0052 | Prototype declutter pass: duplicate nav/tabs removed, per-field badges only when AI-suggested, trial log trimmed, tick card dropped | DONE |
+| TASK-0053 | Edge/engineered cases added: scenarios Clean drafts / Arithmetic slips / Injection attempt / Malformed output / Model offline; draft **quality score** (parse 40 + extraction 40 + arithmetic 20, pass ≥ 80) | DONE |
+| TASK-0054 | Tester kit: `BETA-TESTER-SESSION-SCRIPT.md` + `BETA-TESTER-REPORT-TEMPLATE.md` | DONE |
+
+### Remaining gates before push/submission
+
+| Gate | Task | Exit test |
+|---|---|---|
+| G1 | Port the light design system + stage-rail mental model into `apps/vlthr-hr-web` (same decluttering rules: one nav, provenance chips kept, no duplicated status rows) | routes render, `pnpm -r typecheck` clean, screenshot pass |
+| G2 | Eval harness (`packages/eval` or `scripts/eval`): golden request set → real model → benchmark report (schema-valid %, extraction completeness, repair count, quality score) | JSON report in `engineering/metrics/` |
+| G3 | Beta sessions: 2 testers run the session script on the prototype (file or screen-share; zero GPU) | 2 filled report templates committed |
+| G4 | Video v2: re-record against the ported app, same demo-video-production skill | QA log green + owner watch-through |
+| G5 | Final assembly: README refresh, cost reconciliation, submission | owner submits |
+
+### PS2 wedge (Q-0004) — cost answer
+
+Official N-ATLAS ASR exists (`NCAIR1/*-ASR`, Whisper Small ~244M each, plus an
+official `/v1/audio/transcriptions` serving kit). Marginal money cost is near
+zero (free weights, shares the same GPU or CPU). The real cost is the PS2
+validation bar: 50+ documented real user interactions and a channel. Decision
+parked in Q-0004 pending the two-track rule answer.
 
 ---
 
