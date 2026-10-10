@@ -31,6 +31,11 @@ export interface PipelineResult {
   auditRecord: AuditRecord;
 }
 
+/** Prompt version pinned into every audit record — change the version string
+    when the system prompt changes so eval reports and audit trails can be
+    attributed to a specific prompt (benchmarks/eval.ts reports per version). */
+export const PROMPT_VERSION = "invoice-v1";
+
 const INVOICE_SYSTEM = `You are the structured-output engine inside a governed enterprise workflow.
 The user message contains a Nigerian SME procurement request. Return ONLY a JSON object — no prose — matching:
 {
@@ -170,6 +175,7 @@ function finish(
     role: roleId,
     inputHash: sha256(JSON.stringify(intake)),
     policyResult: `${policy.decision} (lane ${policy.lane})`,
+    promptVersion: modelRequestId || modelOutputText ? PROMPT_VERSION : undefined,
     provider: providerName,
     modelRequestId: modelRequestId ?? null,
     outputHash: modelOutputText ? sha256(modelOutputText) : null,

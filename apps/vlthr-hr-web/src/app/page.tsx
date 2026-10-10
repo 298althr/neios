@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import VoiceIntake from "./VoiceIntake";
 
 interface TraceStage { stage: string; status: "ok" | "warn" | "fail" | "skipped"; detail: string }
 interface AuditRecord {
@@ -109,6 +110,7 @@ export default function IntakePage() {
 
       <div className="card">
         <div className="card-label">Work Request — role: Energy Procurement Officer</div>
+        <VoiceIntake onTranscript={(text) => { setSourceText(text); setSelected(""); }} />
         <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
           {Object.keys(EXAMPLES).map((lang) => (
             <button

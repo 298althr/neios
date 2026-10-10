@@ -13,6 +13,8 @@ export interface AuditRecord {
   /** sha256 of the intake — a safe input reference, not the raw input. */
   inputHash: string;
   policyResult: string;
+  /** Versioned prompt used for the model call, when one happened. */
+  promptVersion?: string;
   provider: string;
   modelRequestId: string | null;
   outputHash: string | null;
