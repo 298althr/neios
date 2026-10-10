@@ -44,6 +44,19 @@ The web app proxies `/api/asr` → this service (`NEIOS_ASR_URL` overrides the
 default `http://127.0.0.1:8765`). The Intake page's voice row shows
 "ASR service offline" when the shim is not running — text intake is unaffected.
 
+## Troubleshooting
+
+- **Downloads stall / a language load hangs forever:** killed downloads leave a
+  stale `*.lock` + `*.incomplete` blob in
+  `%USERPROFILE%\.cache\huggingface\hub\.locks\models--NCAIR1--<repo>\` —
+  every subsequent `pipeline()` load blocks on that lock. Fix: stop the service,
+  delete the repo's `.lock` files, then resume with
+  `HF_HUB_DISABLE_XET=1` + `snapshot_download("NCAIR1/<repo>")` — the plain-HTTPS
+  path is more reliable on this machine than the xet backend.
+- **`torch_dtype` deprecation warning** under transformers 5.x is cosmetic.
+- Windows symlink warning (no Developer Mode) is cosmetic — the cache works in
+  degraded mode (more disk, slower).
+
 ## Positioning
 
 This is the **PS2-ready voice wedge**: mic or uploaded audio → official N-ATLAS
