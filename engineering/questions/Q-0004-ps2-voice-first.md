@@ -63,16 +63,31 @@ accuracy review and decision.
 - **(c)** Full PS2 entry — needs the 50+ user validation and a channel
   (WhatsApp bot / USSD sim / IVR); significantly larger effort.
 
+## Resolution update (agent, 2026-10-10) — wedge is built and verified
+- `services/natlas-asr/` — local FastAPI shim serving the four gated NCAIR1
+  checkpoints at `POST /v1/audio/transcriptions` on the owner's RTX 4060 (8 GB;
+  ~7.8 GB free measured, Whisper-Small fp16 fits all four).
+- **Verified live:** `NCAIR1/NigerianAccentedEnglish` downloaded (~927 MB) and
+  transcribed a real audio clip end-to-end through the service; Hausa/Yoruba/
+  Igbo checkpoints same path (owner accepted all four gated repos 2026-10-10).
+- `apps/vlthr-hr-web` Intake now has a voice row: mic record or audio upload →
+  `/api/asr` proxy → editable transcript → the existing governed pipeline.
+- Runs on the owner's local GPU at $0 — no Vast spend for the ASR wedge.
+- Effective outcome: option (b) was built ahead of schedule because the owner's
+  local GPU removed the hosting cost entirely.
+
 ## Owner
 PROJECT OWNER
 
 ## Source
 Owner message 2026-10-09; `docs/15-handover/HANDOFF-NAIC-2026-ARWOS-KIT.md`
 (PS2 requirements, line ~84); `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md`
-(track list, ~1708).
+(track list, ~1708); services/natlas-asr/README.md (verified setup, 2026-10-10).
 
 ## Status
-OPEN — awaiting owner decision. Sub-questions for owner:
-1. Do NAIC rules allow one product to enter two tracks?
-2. ASR access is confirmed cheap/available via HF — build the wedge post-PS1?
-3. If yes: option (a), (b), or (c)?
+PARTIALLY RESOLVED — the PS2 wedge exists and is demonstrable. Remaining owner
+decisions:
+1. Do NAIC rules allow one product to enter two tracks? (organiser question)
+2. Label the wedge "PS2-ready" only — a full PS2 submission still needs a real
+   channel (WhatsApp/USSD/IVR) and 50+ documented real user interactions, which
+   is not achievable before the PS1 deadline.
