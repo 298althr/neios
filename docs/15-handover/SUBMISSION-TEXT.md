@@ -42,7 +42,7 @@ in the UI.
 
 | Required component | Where it lives |
 |---|---|
-| Working artefact | This repository — `README.md` quickstart reproduces it |
+| Working artefact | This repository — `README.md` quickstart reproduces it. Public mirror: **https://github.com/298althr/neios** |
 | N-ATLAS integration evidence | `engineering/metrics/eval-invoice-v1-*.json`, `engineering/evidence/*.json`, `data/audit/audit-log.jsonl`, README §quickstart |
 | Real-world validation | `engineering/validations/` (benchmark report now; 2 beta reports pending — see roadmap G3) |
 | Technical documentation | `docs/04-architecture/NEIOS-CURRENT-SYSTEM.md`, `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md`, package/service READMEs |
