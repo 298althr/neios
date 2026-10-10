@@ -53,7 +53,7 @@ write("ch9_outro.html", """<div class=card>
 <h1>NEI<b>OS</b></h1>
 <h2>SDK &middot; governance toolkit &middot; eval harness &middot; ASR shim &mdash; real N-ATLAS inference throughout</h2>
 <h2 class=dim>Voice-first wedge included &mdash; PS2-ready architecture</h2>
-<div class=sub>github.com/vlthrlabs/NEIOS</div>
+<div class=sub>github.com/298althr/neios</div>
 </div>""")
 
 # --- ch6: benchmark results from the real eval report ---

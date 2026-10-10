@@ -1,0 +1,83 @@
+1
+00:00:00,000 --> 00:00:20,894
+NEIOS is developer infrastructure for N-ATLAS — an SDK, a governance toolkit, an evaluation harness and a local speech service that take you from a raw model to a system you can actually deploy.
+
+2
+00:00:20,894 --> 00:00:26,064
+This is the reference app proving it end to end.
+
+3
+00:00:27,500 --> 00:00:51,455
+For a developer, N-ATLAS arrives as an endpoint — but a real system needs intake structure, a policy check before the model ever runs, output validation, field-level provenance, human approval and an audit trail.
+
+4
+00:00:51,455 --> 00:01:01,172
+NEIOS ships all of that as packages, plus a playground to test against the live model.
+
+5
+00:01:02,500 --> 00:01:07,798
+Voice input is part of the infrastructure too.
+
+6
+00:01:07,798 --> 00:01:34,516
+This service runs the four official N-ATLAS speech checkpoints locally and exposes the official transcriptions API — so any N-ATLAS app can accept spoken Hausa, Yoruba, Igbo or Nigerian English without standing up its own ASR stack.
+
+7
+00:01:36,000 --> 00:01:56,994
+One real call through the pipeline: deterministic policy fires first, then the model drafts, then validators repair what they can prove — watch the corrected fields — and every value keeps a provenance tag.
+
+8
+00:01:56,994 --> 00:02:03,312
+Nothing is mocked; the audit log gets a real model request ID.
+
+9
+00:02:04,800 --> 00:02:13,900
+The same pipeline in Hausa, Yoruba and Igbo — four live model calls, same controls.
+
+10
+00:02:13,900 --> 00:02:22,890
+When extraction slips, validation catches it and the draft still waits on a human.
+
+11
+00:02:22,890 --> 00:02:29,688
+Multilingual support is inherited from N-ATLAS, not bolted on.
+
+12
+00:02:30,200 --> 00:02:51,973
+And because infrastructure has to be measurable: a golden-fixture harness scores the pipeline against real N-ATLAS — ten cases covering four languages, an injection attempt, missing fields and an arithmetic trap.
+
+13
+00:02:51,973 --> 00:02:59,059
+Ten for ten, mean ninety-three, every run pinned to a prompt version.
+
+14
+00:02:59,059 --> 00:03:01,832
+Any developer can rerun it.
+
+15
+00:03:03,200 --> 00:03:18,373
+The safety case: a wire-transfer request is blocked by policy before a single token is generated — the model never sees it, and the refusal is still audited.
+
+16
+00:03:18,373 --> 00:03:24,752
+That's the difference between prompting a model and governing one.
+
+17
+00:03:26,200 --> 00:03:30,549
+Consequential output waits for a person.
+
+18
+00:03:30,549 --> 00:03:48,160
+Approval is one-shot and binding, and the whole trail — request, model response, repairs, decision — lands in one append-only log your auditors can actually read.
+
+19
+00:03:49,700 --> 00:04:06,569
+NEIOS: the SDK, governance toolkit, evaluation harness and ASR shim for N-ATLAS — plus a working reference app in four languages.
+
+20
+00:04:06,569 --> 00:04:15,069
+Clone it, point it at your endpoint, and ship something governed.
+
+21
+00:04:15,069 --> 00:04:17,684
+Built for NAIC 2026.

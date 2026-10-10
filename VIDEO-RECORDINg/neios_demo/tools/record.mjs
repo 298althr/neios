@@ -71,9 +71,9 @@ if (chapter === "ch2") {
     ".voice-row", "button:has-text('Hausa')", "button:has-text('Igbo')",
     "text=Run governed pipeline"]) {
     await moveTo(sel);
-    await sleep(1400);
+    await sleep(1800);
   }
-  await sleep(6000);
+  await sleep(16000);
 } else if (chapter === "ch3") {
   // voice intake: upload an audio clip -> ASR -> editable transcript
   await page.goto(`${BASE}/?cursor=1`, { waitUntil: "networkidle" });
@@ -98,7 +98,7 @@ if (chapter === "ch2") {
   await moveTo("textarea.intake");
   await cursorClickFx();
   await page.locator("textarea.intake").click();
-  await sleep(5000);
+  await sleep(22000);
 } else if (chapter === "ch4") {
   await runExample("English (Pidgin)", 16000);
 } else if (chapter === "ch5a") {
@@ -123,7 +123,7 @@ if (chapter === "ch2") {
 } else if (["ch1", "ch6", "ch7", "ch9"].includes(chapter)) {
   // rendered pages: title, benchmark results, blocked-run terminal, outro
   const file = { ch1: "ch1_title.html", ch6: "ch6_benchmark.html", ch7: "ch7_terminal.html", ch9: "ch9_outro.html" }[chapter];
-  const secs = { ch1: 15, ch6: 25, ch7: 18, ch9: 15 }[chapter];
+  const secs = { ch1: 28, ch6: 34, ch7: 23, ch9: 29 }[chapter];
   await page.goto("file:///" + join(RAW, "pages", file).replace(/\\/g, "/"));
   await sleep(secs * 1000);
 }

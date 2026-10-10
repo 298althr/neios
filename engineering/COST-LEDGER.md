@@ -24,10 +24,10 @@ resources.** API/service spend belongs to this project and is auditable.
 
 | Metric | Value | As of |
 |---|---|---|
-| Total billed | **~$1.96** ($5.00 − $3.04 credit) | 2026-10-10 |
-| Credit remaining | **$3.041** | 2026-10-10 (verified `vastai show user --raw`) |
+| Total billed | **~$2.69** ($5.00 − $2.31 credit) | 2026-10-10 |
+| Credit remaining | **$2.307** | 2026-10-10 (verified `vastai show user --raw`) |
 | Live instance rate | 55001750: ~$0.1815/hr running, ~$0.0481/hr storage stopped | — |
-| Instance state | 55001750 **STOPPED** after v2 eval+recording session (per owner directive); 55129880 **DESTROYED** same day (never ran — provisioning duplicate) | 2026-10-10 |
+| Instance state | 55001750 **STOPPED** after v3 video recording session; 55129880 **DESTROYED** (never ran — provisioning duplicate) | 2026-10-10 |
 
 ## Transactions
 
@@ -48,6 +48,7 @@ resources.** API/service spend belongs to this project and is auditable.
 | 2026-10-10 | Instance 55129880 — created as provisioning fallback, destroyed before it ever ran | vast.ai | compute/storage | ~$0.00 | ~$1.80 | never reached running state; no model pull, no charge observed |
 | 2026-10-10 | Instance 55001750 — GPU compute, v2 session (eval harness 10 fixtures + 11 video takes, ~0.9 hr) | vast.ai | compute | ~$0.16 | ~$1.96 | reconciled to credit delta; exact split on next invoice post. Reused cached model — $0 re-pull bandwidth |
 | 2026-10-10 | **Local ASR: 4× NCAIR1 checkpoints (~4 GB) on owner's RTX 4060** | HF/home | — | **$0.00** | — | gated repos accepted by owner; HF token in local `.env` only; zero Vast spend for ASR wedge |
+| 2026-10-10 | Instance 55001750 — GPU compute + storage, v3 video re-record session (~1.5 hr running for live-model chapters, plus interim stopped-storage accrual) | vast.ai | compute/storage | ~$0.73 | ~$2.69 | reconciled to credit delta ($3.041 → $2.307). Reused cached model — $0 re-pull bandwidth. Stopped immediately after recording |
 
 ## Known recurring / future cost drivers
 

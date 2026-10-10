@@ -5,6 +5,8 @@ raw/qa/
 raw/pages/
 raw/segments/
 raw/audio/
-final/
+final/*
+!final/neios_demo.mp4
+!final/neios_demo.srt
 tools/_*.mjs
 tools/*.png
