@@ -1,22 +1,33 @@
-# NEIOS — N-ATLAS Enterprise Integration OS
+# NEIOS — developer infrastructure for integrating, testing and deploying N-ATLAS safely
 
-**A governed integration layer for organisations deploying N-ATLAS-powered AI.**
+**The problem PS1 states:** N-ATLAS is open-source and downloadable, but
+Nigerian-maintained tooling is needed to move from *accessing* the model to
+**integrating, testing, adapting and deploying** it. NEIOS is that tooling —
+four components a developer can take independently:
 
-NEIOS standardises how work is requested, contextualised, authorised, executed,
-validated and recorded — so developers move from a raw N-ATLAS model call to
-controlled organisational workflows, rather than rebuilding the same mechanisms
-every time. First worked example: an oil & gas procurement request →
-structured, validated, approved invoice draft. Requests can be typed or spoken —
-the voice-intake wedge runs the official N-ATLAS ASR checkpoints locally.
+| Component | What a developer gets |
+|---|---|
+| `packages/natlas-adapter` | JavaScript/TypeScript SDK over any OpenAI-compatible N-ATLAS endpoint — typed errors (timeout/http/network/malformed), zero vendor lock, env-configured |
+| `packages/governance` | Integration toolkit: APSOS intake packaging, deterministic policy gate (runs **before** the model), output schema validation + deterministic arithmetic repair, per-field provenance, append-only audit |
+| `benchmarks/` + `fixtures/` | Golden-request evaluation harness — 10 fixtures (4 languages + injection/missing-field/arithmetic edge cases), scored report, prompt-version pinning |
+| `services/natlas-asr` | Local serving shim for the **official NCAIR1 ASR checkpoints** (en/ha/yo/ig) at the official `/v1/audio/transcriptions` shape — voice input for N-ATLAS apps on a laptop GPU |
 
-- **Status:** Working vertical slice — real N-ATLaS inference through the full governed loop (Gate G0 passed 2026-10-08; see `engineering/evidence/`)
+The procurement console in `apps/vlthr-hr-web` is the **reference
+implementation** — proof the infrastructure works end-to-end, and a live
+playground for testing N-ATLAS outputs (typed or spoken, in English/Pidgin,
+Hausa, Yoruba or Igbo).
+
+- **Status:** Working and benchmarked — live run 2026-10-10: **10/10 golden fixtures pass, mean 93/100, 4.4 s latency** against real N-ATLaS (`engineering/metrics/`)
 - **Current objective:** NAIC 2026 submission ("Build with N-ATLAS"), PS1 — Developer Infrastructure, deadline 2026-10-12 23:59 WAT
-- **Controlling direction:** [`docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md`](docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md) — read this before changing anything
-- **Future extension layer:** the fuller "AI Workforce Infrastructure" vision (originally scaffolded under the working name "VLTHR HR" — Workforce marketplace + ARWOS governance control plane) is *not* this competition deliverable. Its original specification is preserved as context in [`docs/01-context/supplied/`](docs/01-context/supplied/) and its architectural DNA (gateway, single call path, audit, reversibility lanes) shapes NEIOS's design without being fully implemented here.
+- **As-built architecture:** [`docs/04-architecture/NEIOS-CURRENT-SYSTEM.md`](docs/04-architecture/NEIOS-CURRENT-SYSTEM.md)
+- **Controlling direction:** [`docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md`](docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md)
+- **Positioning decision:** [ADR-0005](engineering/decisions/ADR-0005-ps1-positioning-developer-infrastructure.md) — submitted as developer infrastructure; the app is the demonstration
 
 ## What NEIOS is NOT
 
-- Not another SDK/prompt-wrapper/playground (explicitly avoided — see direction doc §3).
+- Not a *bare* SDK or prompt-wrapper — the adapter only earns its place because
+  the governance toolkit wraps every call in policy, validation and audit
+  (see direction doc §3).
 - Not a claim of official N-ATLAS/NITDA/Awarri affiliation.
 - Not the full ARWOS specification (138 requirements) or the full Workforce marketplace.
 - Not a system that lets the model itself decide policy, authority, or approval.
