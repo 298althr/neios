@@ -1,20 +1,46 @@
-# QA Log — NEIOS demo video
+# QA Log — NEIOS demo video v2
 
-## Checks performed
-- [x] Final MP4 probes: 181.4s, h264 1920x1080, aac audio present (neios_demo.mp4)
-- [x] All 10 segments mapped and present (ch1–ch8 incl. ch4b/ch4c cutaways)
-- [x] Frame inspection at 12s/32s/60s/97s/107s/113s/125s/140s/155s/175s — correct chapter content at each offset
-- [x] Cursor overlay visible in live-UI frames (amber ring); click ripples triggered on chip/Run/Approve interactions
-- [x] Live-model evidence: trace shows `http://127.0.0.1:18000/v1` + `hf.co/QuantFactory/N-ATLaS-GGUF:Q4_K_M`, real `chatcmpl-*` ids in audit log
-- [x] Narration placed at segment offsets (adelay+amix), video length preserved (no -shortest truncation bug — fixed)
-- [x] SRT generated: 33 cues, timings offset to chapter starts
-- [x] No secrets in frames: no API keys, no .env values; audit path shown is relative
-- [x] Old `VLTHR-HR` absolute path removed from rendered evidence page (rebuilt via build_pages.py)
+Date: 2026-10-10 · Artifact: `final/neios_demo.mp4` + `final/neios_demo.srt`
 
-## Known cosmetic issues (accepted)
-- ch1/ch8 rendered cards sit on a plain dark-gray frame — content is legible, styling is minimal.
-- Still-hold pads (ch2 +5.6s, ch3 +8.4s, ch6 +4.2s, ch7 +4.6s) freeze the final frame while narration finishes — reads as intentional dwell.
-- Yoruba take shows imperfect model extraction (see production-manifest honesty notes) — kept as genuine evidence of the approval lane's value.
+## Technical verification (programmatic)
 
-## Not verified
-- Human watch-through for pacing/audio subjective quality — owner to do one pass.
+| Check | Result |
+|---|---|
+| Container / codecs | MP4, h264 1920x1080 + aac narration — PASS |
+| Duration | ~176s vs planned ~175.5s (sum of segment targets) — PASS |
+| SRT | 29 cues, timestamps shifted by chapter offsets — PASS |
+| Segment assembly | all 11 takes re-encoded, normalized, concat clean — PASS |
+| Narration alignment | adelay+amix at chapter offsets; no back-to-back mp3 concat drift — PASS |
+
+## Frame-level review (one+ frame per chapter, `raw/qa/v2_f*.png`)
+
+| t | Chapter | Verified |
+|---|---|---|
+| 7s | ch1 title | NEIOS card, voice+text tagline, PS1 tag — OK |
+| 25s | ch2 tour | intake page light theme, nav sweep — OK |
+| 45s | ch3 voice | voice row visible, "transcribing uploaded audio…" state, cursor ring — OK |
+| 72s | ch4 EN/Pidgin | live "Running…" state, real request text — OK |
+| 87s | ch5a Hausa | run result — OK |
+| 93s | ch5b Yoruba | run result — OK |
+| 99s | ch5c Igbo | completed draft, provenance chips, Approve/Reject — OK (qty 1/1/1 imperfection, see manifest) |
+| 114s | ch6 benchmark | real eval table: 10/10 PASS, 93/100 mean, invoice-v1 — OK |
+| 134s | ch7 terminal | blocked-run trace, POLICY BLOCK line — OK |
+| 150s | ch8 approvals | real queue, pending_approval rows incl. eval-harness entries — OK |
+| 168s | ch9 outro | outro card, repo URL — OK |
+
+## Claims audit
+
+- No invented functionality narrated; every chapter maps to a real code path or real evidence file.
+- ASR claims limited to the working local wedge; no PS2 validation claimed.
+- Benchmark numbers on screen are the actual harness output, not staged values.
+- No secrets, tokens, or absolute local paths visible in any sampled frame (tunnel shown as `127.0.0.1:18000/v1`, no credentials).
+
+## Known imperfections (accepted, documented)
+
+- ch3 tail: 8.1s still-hold (transcript completed before narration finished).
+- ch5c: real model qty extraction imperfection kept on camera (approval lane catches it).
+- `fx-yoruba` eval score 85/100 shown honestly in benchmark table (not hidden).
+
+## Outstanding
+
+- Owner subjective watch-through pending (pacing/voice notes).

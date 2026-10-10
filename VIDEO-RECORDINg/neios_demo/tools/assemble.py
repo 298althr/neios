@@ -20,17 +20,17 @@ SEG_DIR.mkdir(exist_ok=True)
 # ch5.mp3 narrates across the Hausa/Yoruba/Igbo segments. Targets are narration
 # duration + ~1.5 s padding, adjusted per segment mode below.
 SEGMENTS = [
-    ("ch1.webm",  "ch1.mp3", 15.0, "full"),
-    ("ch2.webm",  "ch2.mp3", 22.0, "full"),
-    ("ch3.webm",  "ch3.mp3", 24.5, "full"),
-    ("ch4.webm",  "ch4.mp3", 22.0, "full"),
-    ("ch5a.webm", "ch5.mp3",  7.0, "tail"),
-    ("ch5b.webm", None,       5.5, "tail"),
-    ("ch5c.webm", None,       5.5, "tail"),
-    ("ch6.webm",  "ch6.mp3", 24.5, "full"),
-    ("ch7.webm",  "ch7.mp3", 17.0, "full"),
-    ("ch8.webm",  "ch8.mp3", 17.0, "full"),
-    ("ch9.webm",  "ch9.mp3", 15.5, "full"),
+    ("v2_ch1.webm",  "ch1.mp3", 15.0, "full"),
+    ("v2_ch2.webm",  "ch2.mp3", 22.0, "full"),
+    ("v2_ch3.webm",  "ch3.mp3", 24.5, "full"),
+    ("v2_ch4.webm",  "ch4.mp3", 22.0, "full"),
+    ("v2_ch5a.webm", "ch5.mp3",  7.0, "tail"),
+    ("v2_ch5b.webm", None,       5.5, "tail"),
+    ("v2_ch5c.webm", None,       5.5, "tail"),
+    ("v2_ch6.webm",  "ch6.mp3", 24.5, "full"),
+    ("v2_ch7.webm",  "ch7.mp3", 17.0, "full"),
+    ("v2_ch8.webm",  "ch8.mp3", 17.0, "full"),
+    ("v2_ch9.webm",  "ch9.mp3", 15.5, "full"),
 ]
 
 def ffprobe_dur(f):

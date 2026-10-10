@@ -24,10 +24,10 @@ resources.** API/service spend belongs to this project and is auditable.
 
 | Metric | Value | As of |
 |---|---|---|
-| Total billed | **$1.112** | 2026-10-09 ~11:00 UTC |
-| Credit remaining | **$3.887** | 2026-10-09 ~11:00 UTC |
-| Live instance rate | 55001750: ~$0.1815/hr running, ~$0.0481/hr storage stopped; 54838985: ~$0.0185/hr storage stopped | — |
-| Instance state | 55001750 **STOPPED** after demo recording; 54838985 **DESTROYED** (storage bleed ended, owner-approved) | 2026-10-09 |
+| Total billed | **~$1.96** ($5.00 − $3.04 credit) | 2026-10-10 |
+| Credit remaining | **$3.041** | 2026-10-10 (verified `vastai show user --raw`) |
+| Live instance rate | 55001750: ~$0.1815/hr running, ~$0.0481/hr storage stopped | — |
+| Instance state | 55001750 **STOPPED** after v2 eval+recording session (per owner directive); 55129880 **DESTROYED** same day (never ran — provisioning duplicate) | 2026-10-10 |
 
 ## Transactions
 
@@ -44,6 +44,10 @@ resources.** API/service spend belongs to this project and is auditable.
 | 2026-10-09 | Instance 55001750 — storage | vast.ai | storage | $0.041 | $1.033 | ~$0.0481/hr while stopped (larger disk rate than 54838985) |
 | 2026-10-09 | Instance 55001750 — download bandwidth (4.99 GB model re-pull @ $0.016/GB) | vast.ai | bandwidth | $0.078 | $1.111 | fresh instance = fresh pull; cheaper rate than 54838985's host |
 | 2026-10-09 | Instance 55001750 — upload bandwidth | vast.ai | bandwidth | $0.001 | $1.112 | trivial |
+| 2026-10-09→10 | Instance 55001750 — storage accrual while stopped (~14 hr @ $0.0481/hr, net of session compute below) | vast.ai | storage | ~$0.69 | ~$1.80 | reconciled via credit delta ($5.00 − $3.041 = $1.959 billed) |
+| 2026-10-10 | Instance 55129880 — created as provisioning fallback, destroyed before it ever ran | vast.ai | compute/storage | ~$0.00 | ~$1.80 | never reached running state; no model pull, no charge observed |
+| 2026-10-10 | Instance 55001750 — GPU compute, v2 session (eval harness 10 fixtures + 11 video takes, ~0.9 hr) | vast.ai | compute | ~$0.16 | ~$1.96 | reconciled to credit delta; exact split on next invoice post. Reused cached model — $0 re-pull bandwidth |
+| 2026-10-10 | **Local ASR: 4× NCAIR1 checkpoints (~4 GB) on owner's RTX 4060** | HF/home | — | **$0.00** | — | gated repos accepted by owner; HF token in local `.env` only; zero Vast spend for ASR wedge |
 
 ## Known recurring / future cost drivers
 

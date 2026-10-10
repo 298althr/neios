@@ -5,8 +5,9 @@
 NEIOS standardises how work is requested, contextualised, authorised, executed,
 validated and recorded — so developers move from a raw N-ATLAS model call to
 controlled organisational workflows, rather than rebuilding the same mechanisms
-every time. First worked example: a Nigerian SME procurement request →
-structured, validated, approved invoice draft.
+every time. First worked example: an oil & gas procurement request →
+structured, validated, approved invoice draft. Requests can be typed or spoken —
+the voice-intake wedge runs the official N-ATLAS ASR checkpoints locally.
 
 - **Status:** Working vertical slice — real N-ATLaS inference through the full governed loop (Gate G0 passed 2026-10-08; see `engineering/evidence/`)
 - **Current objective:** NAIC 2026 submission ("Build with N-ATLAS"), PS1 — Developer Infrastructure, deadline 2026-10-12 23:59 WAT
@@ -24,14 +25,17 @@ structured, validated, approved invoice draft.
 
 | Path | Contents |
 |---|---|
-| `apps/vlthr-hr-web/` | Next.js 15 app — NEIOS control-first UI + API routes (`/api/work`, `/api/approve`, `/api/audit`) (folder name is legacy from the original scaffold; see direction doc §18) |
+| `apps/vlthr-hr-web/` | Next.js 15 app — NEIOS control-first UI + API routes (`/api/work`, `/api/approve`, `/api/audit`, `/api/asr`) (folder name is legacy from the original scaffold; see direction doc §18) |
+| `services/natlas-asr/` | Local ASR shim — official NCAIR1 Whisper-Small checkpoints (en/ha/yo/ig) behind `/v1/audio/transcriptions` on a local GPU |
 | `apps/arwos-api/` | Governance API skeleton — retained only if useful per direction doc §18 |
 | `packages/natlas-adapter/` | `NAtlasProvider` interface + OpenAI-compatible implementation (endpoint/model/key all env-configurable) |
 | `packages/governance/` | Core governed loop: APSOS intake, deterministic policy gate, invoice schema + arithmetic validation/repair, field provenance, approval, JSONL audit |
 | `packages/role-cards/` | Role Card config schema — reused for NEIOS Role Cards (config, not authority) |
 | `packages/shared/` | Shared types/utilities |
 | `scripts/` | `natlas-smoke-test.ts` (direct provider test), `neios-run.ts` (full governed loop, incl. `--blocked`/`--missing` demo modes) |
-| `data/audit/` | Append-only JSONL audit trail written by every run |
+| `benchmarks/` | `eval.ts` — golden-request benchmark scoring the live pipeline (parse/extraction/arithmetic composite + policy match), reports to `engineering/metrics/` |
+| `fixtures/` | `golden-requests.json` — 10 scored fixtures: 4 languages + injection, missing-field, ambiguous-quantity, policy-block and arithmetic-trap edge cases |
+| `data/audit/` | Append-only JSONL audit trail written by every run (prompt version pinned per record) |
 | `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md` | **Primary source of truth** for NEIOS: product, architecture, plan, risks |
 | `docs/` | Controlled engineering documentation (00-governance → 15-handover) |
 | `engineering/` | Work-management records: issues, tasks, decisions (ADRs), risks, evidence, changes |
@@ -80,14 +84,25 @@ node --experimental-strip-types scripts/neios-run.ts [--blocked|--missing]
 
 # 5. or run the web UI
 corepack pnpm --filter vlthr-hr-web dev    # http://localhost:3000
+
+# 6. optional — local voice intake (official N-ATLAS ASR, needs HF token
+#    for the gated NCAIR1 checkpoints + ffmpeg; ~7 GB free VRAM)
+pip install -r services/natlas-asr/requirements.txt
+python services/natlas-asr/main.py        # http://127.0.0.1:8765
+
+# 7. optional — golden-request benchmark against the live model
+node benchmarks/eval.ts                   # report -> engineering/metrics/
 ```
 
 Config (`.env.local`, never committed): `NATLAS_BASE_URL` (default
-`http://127.0.0.1:18000/v1`), `NATLAS_MODEL`, `NATLAS_API_KEY`, `NEIOS_AUDIT_DIR`.
+`http://127.0.0.1:18000/v1`), `NATLAS_MODEL`, `NATLAS_API_KEY`, `NEIOS_AUDIT_DIR`,
+`NEIOS_ASR_URL` (default `http://127.0.0.1:8765`), `HF_TOKEN` (ASR checkpoints).
 
-The UI playground walks the full request → context → policy → model → result →
+The UI walks the full request → context → policy → model → result →
 evidence → approval → audit trace, with one-click example requests in English
-(Pidgin), Hausa and Yoruba.
+(Pidgin), Hausa, Yoruba and Igbo, plus a voice-intake row (record or upload
+audio → official N-ATLAS ASR transcript → editable request). Views: Intake,
+Approvals queue, Audit explorer.
 
 ## License
 

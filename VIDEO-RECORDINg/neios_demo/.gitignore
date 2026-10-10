@@ -1,6 +1,7 @@
 tools/node_modules/
 raw/*.webm
 raw/*.png
+raw/qa/
 raw/pages/
 raw/segments/
 raw/audio/
