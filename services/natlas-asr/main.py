@@ -34,6 +34,7 @@ if _env.exists():
 import soundfile as sf
 import torch
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from starlette.concurrency import run_in_threadpool
 from transformers import pipeline
 
 MODELS = {
@@ -88,6 +89,20 @@ def health() -> dict:
     }
 
 
+def _transcribe_sync(lang: str, data: bytes, suffix: str) -> str:
+    """Blocking part: model load (first call) + inference. Runs in a
+    threadpool so downloads/inference don't freeze /health."""
+    pipe = get_pipe(lang)
+    with tempfile.TemporaryDirectory() as tmp:
+        src = Path(tmp) / f"in{suffix}"
+        dst = Path(tmp) / "in_16k.wav"
+        src.write_bytes(data)
+        to_16k_mono(src, dst)
+        audio, sr = sf.read(str(dst), dtype="float32")
+        result = pipe({"array": audio, "sampling_rate": sr})
+    return result["text"].strip() if isinstance(result, dict) else str(result).strip()
+
+
 @app.post("/v1/audio/transcriptions")
 async def transcribe(
     file: UploadFile = File(...),
@@ -95,18 +110,14 @@ async def transcribe(
     response_format: str = Form("json"),
 ):
     lang = (language or "en").lower()[:2]
-    pipe = get_pipe(lang)
-
+    if lang not in MODELS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"unsupported language '{lang}'; expected one of {sorted(MODELS)}",
+        )
+    data = await file.read()
     suffix = Path(file.filename or "audio.bin").suffix or ".bin"
-    with tempfile.TemporaryDirectory() as tmp:
-        src = Path(tmp) / f"in{suffix}"
-        dst = Path(tmp) / "in_16k.wav"
-        src.write_bytes(await file.read())
-        to_16k_mono(src, dst)
-        audio, sr = sf.read(str(dst), dtype="float32")
-        result = pipe({"array": audio, "sampling_rate": sr})
-
-    text = result["text"].strip() if isinstance(result, dict) else str(result).strip()
+    text = await run_in_threadpool(_transcribe_sync, lang, data, suffix)
     if response_format == "text":
         return text
     return {"text": text, "language": lang, "model": MODELS[lang]}

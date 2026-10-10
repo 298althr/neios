@@ -16,7 +16,27 @@ basis that a project merely "appears usable" — license is verified before use.
 
 | Component | Version pinned | License (verified) | Source | What was reused | Date added |
 |---|---|---|---|---|---|
-| *(none shipped yet)* | — | — | — | — | — |
+| Next.js | ^15.1.0 | MIT | npm / github.com/vercel/next.js | App framework (`apps/vlthr-hr-web`) | 2026-10-08 |
+| React | ^19.0.0 | MIT | npm / github.com/facebook/react | UI runtime (via Next.js) | 2026-10-08 |
+| TypeScript | ^5.6.0 | Apache-2.0 | npm / github.com/microsoft/TypeScript | All TS packages | 2026-10-08 |
+| FastAPI | latest at install (services/natlas-asr) | MIT | pypi / github.com/fastapi/fastapi | ASR service HTTP shim | 2026-10-10 |
+| uvicorn | latest at install | BSD-3-Clause | pypi / github.com/encode/uvicorn | ASR service ASGI server | 2026-10-10 |
+| transformers | 5.15.1 | Apache-2.0 | pypi / github.com/huggingface/transformers | Loads official NCAIR1 ASR checkpoints | 2026-10-10 |
+| torch | 2.6.0+cu124 | BSD-3-Clause | pypi / github.com/pytorch/pytorch | GPU inference for ASR checkpoints | 2026-10-10 |
+| soundfile | latest at install | BSD-3-Clause | pypi | Audio decode in ASR service | 2026-10-10 |
+| python-multipart | latest at install | Apache-2.0 | pypi | Multipart `/v1/audio/transcriptions` uploads | 2026-10-10 |
+| ffmpeg | system binary | LGPL-2.1+ (binary invoked, not linked) | ffmpeg.org | 16 kHz mono normalisation in ASR service; video assembly | 2026-10-10 |
+| Ollama | 0.32.x (local) / container image (vast.ai) | MIT | github.com/ollama/ollama | Model runtime on the eval instance | 2026-10-08 |
+| N-ATLaS GGUF Q4_K_M | QuantFactory mirror, pulled 2026-10-08 | N-ATLaS Open-Source Research and Innovation License (see LEG-001) | hf.co/QuantFactory/N-ATLaS-GGUF | The model under test — not our code | 2026-10-08 |
+| NCAIR1 ASR checkpoints ×4 (`NigerianAccentedEnglish`, `Hausa-ASR`, `Igbo-ASR`, `Yoruba-ASR`) | gated HF repos, pulled 2026-10-10 | N-ATLaS license (gated; owner accepted terms) | hf.co/NCAIR1/* | Voice-intake ASR models — not our code | 2026-10-10 |
+
+## Development-only tooling (not shipped in the product)
+
+| Component | License | Use |
+|---|---|---|
+| Playwright | Apache-2.0 | Demo-video screen capture (`VIDEO-RECORDINg/`) |
+| edge-tts | GPL-3.0 | Demo narration TTS — dev-time media generation only; never shipped in the app; explicitly NOT presented as N-ATLAS output |
+| vast.ai | commercial service | Temporary eval/recording GPU host — infra, not a code dependency |
 
 ## Candidates evaluated, not yet adopted
 

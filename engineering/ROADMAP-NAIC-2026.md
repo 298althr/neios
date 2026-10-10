@@ -148,13 +148,23 @@ conflicting ordering above for the remaining days.
 
 ### Remaining gates before push/submission
 
-| Gate | Task | Exit test |
-|---|---|---|
-| G1 | Port the light design system + stage-rail mental model into `apps/vlthr-hr-web` (same decluttering rules: one nav, provenance chips kept, no duplicated status rows) | routes render, `pnpm -r typecheck` clean, screenshot pass |
-| G2 | Eval harness (`packages/eval` or `scripts/eval`): golden request set → real model → benchmark report (schema-valid %, extraction completeness, repair count, quality score) | JSON report in `engineering/metrics/` |
-| G3 | Beta sessions: 2 testers run the session script on the prototype (file or screen-share; zero GPU) | 2 filled report templates committed |
-| G4 | Video v2: re-record against the ported app, same demo-video-production skill | QA log green + owner watch-through |
-| G5 | Final assembly: README refresh, cost reconciliation, submission | owner submits |
+| Gate | Task | Exit test | Status |
+|---|---|---|---|
+| G1 | Port the light design system + stage-rail mental model into `apps/vlthr-hr-web` (same decluttering rules: one nav, provenance chips kept, no duplicated status rows) | routes render, `pnpm -r typecheck` clean, screenshot pass | **DONE 2026-10-10** — cream/blue system live on all views, voice intake row added, typecheck clean (`b98986b`) |
+| G2 | Eval harness: golden request set → real model → benchmark report (schema-valid %, extraction completeness, repair count, quality score) | JSON report in `engineering/metrics/` | **DONE 2026-10-10 — live run: 10/10 pass, mean 93/100, mean latency 4,369 ms, prompt `invoice-v1`** (`eval-invoice-v1-1791598995558.json`) |
+| G3 | Beta sessions: 2 testers run the session script on the **ported app** (decision changed from prototype) | 2 filled report templates committed | **Owner must schedule** |
+| G4 | Video v2: re-record against the ported app, same demo-video-production skill | QA log green + owner watch-through | **RECORDED+ASSEMBLED 2026-10-10** — `final/neios_demo.mp4` (~176s, 9 chapters, incl. ASR voice wedge + benchmark chapters); QA log green; owner watch-through pending |
+| G5 | Final assembly: README refresh, cost reconciliation, submission | owner submits | IN PROGRESS — README updated (voice wedge + eval), cost ledger reconciled 2026-10-10 ($3.04 credit remains); docs/legal + clean-machine check + submission checklist remain |
+
+### PS2 wedge delivered (Q-0004 → option b built)
+
+- `services/natlas-asr/` FastAPI shim, official `/v1/audio/transcriptions` shape,
+  all four gated NCAIR1 checkpoints on the owner's RTX 4060 (CUDA, $0).
+- Verified live: en + ha transcribed end-to-end; yo checkpoint loaded;
+  ig download in progress at last check.
+- In-app voice row: record/upload → `/api/asr` → editable transcript →
+  governed pipeline. Shown in video ch3.
+- Honest label: **PS2-ready wedge only** — no claim of PS2 validation.
 
 ### PS2 wedge (Q-0004) — cost answer
 
