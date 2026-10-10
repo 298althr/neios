@@ -1,6 +1,7 @@
 """Build styled HTML pages for chapters recorded as rendered views (not live UI):
-ch1/ch8 title cards, ch5 blocked-run terminal trace (real evidence JSON),
-ch7 audit-log table (real audit-log.jsonl). Run from repo root:
+ch1/ch9 title+outro cards (light design system), ch6 benchmark results (real
+eval JSON), ch7 blocked-run terminal trace (real evidence JSON, dark terminal).
+Run from repo root:
   py VIDEO-RECORDINg/neios_demo/tools/build_pages.py
 """
 import json, html, pathlib, glob, re
@@ -10,41 +11,78 @@ REPO = ROOT.parent.parent                                       # repo root
 PAGES = ROOT / "raw" / "pages"
 PAGES.mkdir(parents=True, exist_ok=True)
 
-CSS = """<style>
-body{background:#0b0b0b;color:#e8e8e8;font-family:Consolas,monospace;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh}
-.card{max-width:1500px;padding:60px}
-h1{font-size:64px;margin:0 0 24px}
-h2{font-size:34px;color:#888;font-weight:normal;margin:8px 0}
-.sub{color:#fc6;font-size:26px;margin-top:36px}
-.line{font-size:24px;padding:6px 0;white-space:pre}
-.ok{color:#6c6}.warn{color:#fc6}.fail{color:#f66}.skip{color:#555}
-table{border-collapse:collapse;font-size:18px}
-td,th{border:1px solid #333;padding:8px 12px;text-align:left}
-th{color:#888}
-.dim{color:#888}
+LIGHT = """<style>
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&family=Newsreader:wght@500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap');
+body{background:#f5f3ec;color:#1f1e1d;font-family:Inter,system-ui,sans-serif;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh}
+.card{max-width:1560px;padding:56px 72px;background:#fff;border:1px solid #e6e3d8;border-radius:20px;box-shadow:0 1px 2px #0000000a}
+h1{font:800 84px 'Bricolage Grotesque',sans-serif;letter-spacing:-.04em;margin:0 0 18px}
+h1 b{color:#1f5bff}
+h2{font:500 36px Newsreader,Georgia,serif;margin:8px 0;color:#1f1e1d}
+.dim{color:#73726c}
+.sub{font:500 15px 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:#1f5bff;margin-top:34px}
+table{border-collapse:collapse;font-size:17px;width:100%}
+td,th{padding:9px 14px;border-bottom:1px solid #e6e3d8;text-align:left}
+th{font:500 11px 'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;color:#73726c}
+.pass{color:#0f9d6b;font-weight:600}
+.failt{color:#d93a52;font-weight:600}
+.mono{font-family:'JetBrains Mono',monospace;font-size:15px}
+.kpi{font:800 40px 'Bricolage Grotesque',sans-serif;color:#1f5bff}
 </style>"""
 
-def write(name, body):
-    (PAGES / name).write_text(f"<!doctype html><meta charset=utf-8>{CSS}<body>{body}", encoding="utf-8")
+DARK = """<style>
+body{background:#0b0b0b;color:#e8e8e8;font-family:Consolas,'Cascadia Code',monospace;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh}
+.card{max-width:1500px;padding:60px}
+.line{font-size:24px;padding:6px 0;white-space:pre}
+.ok{color:#6c6}.warn{color:#fc6}.fail{color:#f66}.skip{color:#555}.dim{color:#888}
+</style>"""
+
+def write(name, body, css=LIGHT):
+    (PAGES / name).write_text(f"<!doctype html><meta charset=utf-8>{css}<body>{body}", encoding="utf-8")
     print("wrote", name)
 
 # --- ch1 title card ---
 write("ch1_title.html", """<div class=card>
-<h1>NEIOS</h1>
+<h1>NEI<b>OS</b></h1>
 <h2>N-ATLAS Enterprise Integration OS</h2>
-<h2 class=dim>Turning N-ATLAS intelligence into governed, auditable work</h2>
+<h2 class=dim>Voice and text work requests, in four Nigerian languages, governed end to end</h2>
 <div class=sub>NAIC 2026 &middot; PS1 &mdash; Developer Infrastructure</div>
 </div>""")
 
-# --- ch8 outro card ---
-write("ch8_outro.html", """<div class=card>
-<h1>NEIOS</h1>
-<h2>Real N-ATLAS inference &middot; deterministic controls &middot; auditable evidence</h2>
-<h2 class=dim>Full demo ran on &lt; $1 of rented GPU &mdash; cost ledger in repo</h2>
+# --- ch9 outro card ---
+write("ch9_outro.html", """<div class=card>
+<h1>NEI<b>OS</b></h1>
+<h2>Real N-ATLAS inference &middot; official N-ATLAS ASR &middot; deterministic controls &middot; auditable evidence</h2>
+<h2 class=dim>Voice-first wedge included &mdash; PS2-ready architecture</h2>
 <div class=sub>github.com/vlthrlabs/NEIOS</div>
 </div>""")
 
-# --- ch5: blocked-run trace from real evidence ---
+# --- ch6: benchmark results from the real eval report ---
+reports = sorted(glob.glob(str(REPO / "engineering/metrics/eval-*.json")))
+rows = []
+meta = ""
+if reports:
+    rep = json.loads(pathlib.Path(reports[-1]).read_text(encoding="utf-8"))
+    for r in rep["rows"]:
+        cls = "pass" if r["pass"] and r["policyOk"] else "failt"
+        lat = f'{r["latencyMs"]:,} ms' if r["latencyMs"] else "—"
+        rows.append(
+            f'<tr><td class=mono>{r["fixture"]}</td><td>{html.escape(r["label"].split("—")[0].strip())}</td>'
+            f'<td class="mono dim">{lat}</td><td class="mono">{r["score"]}/100</td>'
+            f'<td class="{cls}">{"PASS" if r["pass"] and r["policyOk"] else "FAIL"}</td></tr>')
+    meta = (f'<div class="dim" style="margin-top:22px;font-size:18px">'
+            f'{rep["passed"]}/{rep["total"]} fixtures pass &middot; mean score {rep["meanScore"]}/100 '
+            f'&middot; mean latency {rep["meanLatencyMs"]:,} ms &middot; prompt <b class=mono>{rep["promptVersion"]}</b> '
+            f'&middot; {html.escape(rep["provider"].split("//")[-1])}</div>')
+else:
+    rows.append('<tr><td class=failt>no eval report found — run node benchmarks/eval.ts first</td></tr>')
+write("ch6_benchmark.html", f"""<div class=card>
+<div class=sub style="margin:0 0 10px">Golden-request benchmark &middot; live N-ATLaS</div>
+<h2 style="margin-top:0">Every fixture is a real governed run</h2>
+<table><tr><th>fixture</th><th>case</th><th>latency</th><th>score</th><th>result</th></tr>{''.join(rows)}</table>
+{meta}
+</div>""")
+
+# --- ch7: blocked-run trace from real evidence (terminal aesthetic on purpose) ---
 ev = sorted(glob.glob(str(REPO / "engineering/evidence/run-*.json")))
 blocked = None
 for f in ev:
@@ -57,28 +95,14 @@ CLS = {"ok": "ok", "warn": "warn", "fail": "fail", "skipped": "skip"}
 rows = []
 if blocked:
     for s in blocked["trace"]:
-        d = re.sub(r"[A-Z]:[\\/].*?(?=data[\\/]audit)", "…/", s["detail"])  # hide local abs path on screen
+        d = re.sub(r"[A-Z]:[\\/].*?(?=data[\\/]audit)", "…/", s["detail"])
         rows.append(f'<div class="line {CLS[s["status"]]}">{ICON[s["status"]]} {s["stage"]:9} {html.escape(d[:96])}</div>')
     rows.append(f'<div class="line dim">final: {html.escape(blocked["auditRecord"]["finalState"])} &nbsp; approval: {html.escape(blocked["approval"])}</div>')
 else:
     rows.append('<div class="line fail">no blocked-run evidence found</div>')
-write("ch5_terminal.html", f"""<div class=card style="justify-content:flex-start;align-items:flex-start">
+write("ch7_terminal.html", f"""<div class=card style="justify-content:flex-start;align-items:flex-start">
 <div class="line dim">$ node scripts/neios-run.ts --blocked</div>
 {''.join(rows)}
-</div>""")
+</div>""", css=DARK)
 
-# --- ch7: audit log table from real JSONL ---
-logf = REPO / "data/audit/audit-log.jsonl"
-recs = [json.loads(l) for l in logf.read_text(encoding="utf-8").splitlines() if l.strip()][-12:]
-trs = "".join(
-    f'<tr><td class=dim>{r["timestamp"][11:19]}</td><td>{r["requestId"][:8]}…</td>'
-    f'<td>{html.escape(r["role"])}</td><td>{html.escape(r["policyResult"])}</td>'
-    f'<td class=dim>{html.escape(str(r["modelRequestId"])[:20])}</td>'
-    f'<td>{html.escape(r["validationResult"])}</td><td>{html.escape(r["approvalResult"])}</td>'
-    f'<td><b>{html.escape(r["finalState"])}</b></td></tr>' for r in reversed(recs))
-write("ch7_audit.html", f"""<div class=card>
-<h2 style="font-size:28px">data/audit/audit-log.jsonl — append-only, every run</h2>
-<table><tr><th>time</th><th>request</th><th>role</th><th>policy</th><th>model req</th><th>validation</th><th>approval</th><th>final</th></tr>{trs}</table>
-<div class="dim" style="margin-top:20px;font-size:20px">{len(recs)} most recent of all records &middot; input/output SHA-256 hashes recorded per run</div>
-</div>""")
 print("done")

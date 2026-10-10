@@ -14,21 +14,23 @@ SEG_DIR = RAW / "segments"
 SEG_DIR.mkdir(exist_ok=True)
 
 # (video_file, narration_mp3|None, target_secs, mode)
-#   mode "full"  — take from t=0 (trim or clone-pad to target)
+#   mode "full"  — take from t=0 (trim or still-hold to target)
 #   mode "seek:N"— take target secs starting at N
 #   mode "tail"  — take the LAST target secs (completed-result dwell)
-# ch4.mp3 narrates across the Hausa/Yoruba/Igbo segments.
+# ch5.mp3 narrates across the Hausa/Yoruba/Igbo segments. Targets are narration
+# duration + ~1.5 s padding, adjusted per segment mode below.
 SEGMENTS = [
-    ("ch1.webm",  "ch1.mp3", 25.0, "full"),
+    ("ch1.webm",  "ch1.mp3", 15.0, "full"),
     ("ch2.webm",  "ch2.mp3", 22.0, "full"),
-    ("ch3.webm",  "ch3.mp3", 44.0, "full"),
-    ("ch4.webm",  "ch4.mp3", 13.0, "seek:4"),
-    ("ch4b.webm", None,       6.5, "tail"),
-    ("ch4c.webm", None,       6.5, "tail"),
-    ("ch5.webm",  "ch5.mp3", 15.0, "full"),
-    ("ch6.webm",  "ch6.mp3", 17.0, "full"),
+    ("ch3.webm",  "ch3.mp3", 24.5, "full"),
+    ("ch4.webm",  "ch4.mp3", 22.0, "full"),
+    ("ch5a.webm", "ch5.mp3",  7.0, "tail"),
+    ("ch5b.webm", None,       5.5, "tail"),
+    ("ch5c.webm", None,       5.5, "tail"),
+    ("ch6.webm",  "ch6.mp3", 24.5, "full"),
     ("ch7.webm",  "ch7.mp3", 17.0, "full"),
-    ("ch8.webm",  "ch8.mp3", 16.0, "full"),
+    ("ch8.webm",  "ch8.mp3", 17.0, "full"),
+    ("ch9.webm",  "ch9.mp3", 15.5, "full"),
 ]
 
 def ffprobe_dur(f):

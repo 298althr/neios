@@ -1,6 +1,7 @@
-"""Generate narration MP3 + VTT subtitles per chapter from narration_script.md.
+"""Generate narration MP3 + VTT subtitles per chapter from a narration script.
 
-Usage: py narrate.py [voice]
+Usage: py narrate.py [script_file] [voice]
+Default script: documentation/narration_script_v2.md
 Default voice: en-NG-AbeoNeural (Nigerian English, male).
 Outputs raw/audio/chN.mp3 + raw/audio/chN.vtt per chapter.
 """
@@ -9,11 +10,12 @@ import re, subprocess, sys, pathlib
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "raw" / "audio"
 OUT.mkdir(parents=True, exist_ok=True)
-VOICE = sys.argv[1] if len(sys.argv) > 1 else "en-NG-AbeoNeural"
+SCRIPT = sys.argv[1] if len(sys.argv) > 1 else "narration_script_v2.md"
+VOICE = sys.argv[2] if len(sys.argv) > 2 else "en-NG-AbeoNeural"
 
-script = (ROOT / "documentation" / "narration_script.md").read_text(encoding="utf-8")
-# chapters: "## CHn — Title" ... narration block is the "> " lines that follow
-chapters = re.findall(r"## (CH\d+) — ([^\n]+)\n[\s\S]*?\*\*Narration:\*\*\n((?:>.*\n?)+)", script)
+script = (ROOT / "documentation" / SCRIPT).read_text(encoding="utf-8")
+# chapters: "## chN — Title" ... narration = the "> " blockquote lines that follow
+chapters = re.findall(r"## (ch\d+)\s+—\s+([^\n]+)\n[\s\S]*?((?:^>.*\n?)+)", script, re.M | re.I)
 if not chapters:
     sys.exit("no chapters parsed from narration_script.md")
 
