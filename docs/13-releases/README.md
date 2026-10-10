@@ -14,4 +14,6 @@ approver, rollback plan, post-release observations.
 No release ships on tribal knowledge. Gate G6 must pass:
 authorized, operational controls ready, rollback/recovery defined.
 
-Status: EMPTY — no releases yet.
+Status: no versioned release yet. Current submission candidate state is
+described in `engineering/ROADMAP-NAIC-2026.md` (gates G1–G5) — the NAIC
+submission itself functions as the first "release" under this scheme.

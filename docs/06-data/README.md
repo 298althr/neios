@@ -1,28 +1,26 @@
 ---
 document_id: DAT-DIR
-title: Data engineering
+title: Data
 status: ACTIVE
-version: 0.1.0
+version: 0.2.0
 created: 2026-10-08
+updated: 2026-10-10
 ---
 
 # 06-data
 
-Data contracts, schemas, dictionaries, lineage, quality, retention, privacy.
+## Data the system actually produces
 
-## Known data domains (from supplied spec)
-
-- Operational DB (Postgres + RLS): tenants, users, jobs, tasks, credits, ratings
-- **Audit store (separate, immutable, hash-chained):** agent actions, approvals, evidence
-- Agent identity registry: fingerprints, capability vectors, clearances
-- Deliverables: MinIO/S3 objects with pre-signed URLs
-- Secrets: Infisical (never in operational DB)
+| Store | Location | Shape |
+|---|---|---|
+| Audit log | `data/audit/audit-log.jsonl` | Append-only JSONL; one record per pipeline run incl. blocked/failed; carries `promptVersion` when a model call occurred |
+| Eval reports | `engineering/metrics/eval-*.json` | Per-fixture scores, latency, repairs, policy decision, provider errors |
+| Golden fixtures | `fixtures/golden-requests.json` | 10 labelled requests across 4 languages + engineered edge cases |
+| Raw model evidence | `engineering/evidence/*.json` | Captured request/response pairs from verification runs |
 
 ## Rules
 
-- Document: source, owner, schema, lineage, freshness, quality, sensitivity,
-  retention, transformation, validation, deletion, access.
-- No mock data presented as production data. Synthetic/stale/estimated values
-  are explicitly classified.
-- Audit retention: 7 years per spec FR-A07.
-- NDPA: consent tracking, right-to-deletion, cross-border transfer terms — owner: COMPLIANCE.
+- Audit records are append-only — nothing edits or deletes them.
+- `.env*`, HF caches, audio clips and scratch outputs are gitignored.
+- No personal data is stored: fixtures use fictional suppliers/buyers
+  ("Fictional NigerDelta Industrial Supplies", "Fictional Crestfield Energy").

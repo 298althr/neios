@@ -2,21 +2,31 @@
 document_id: OPS-DIR
 title: Operations
 status: ACTIVE
-version: 0.1.0
+version: 0.2.0
 created: 2026-10-08
+updated: 2026-10-10
 ---
 
 # 09-operations
 
-Runbooks, observability, on-call, incident procedures.
+## Runbooks that exist
 
-## Required operational capabilities (from supplied docs)
+- `engineering/runbooks/VASTAI-NATLAS.md` — provision/verify/stop the model
+  instance, SSH tunnel, warm-up call, cost discipline.
+- `services/natlas-asr/README.md` — ASR service setup incl. the HF gated-repo
+  token step and the cache-lock fix (stale `.lock`/`.incomplete` hangs loads).
 
-- Observability: Langfuse + OpenTelemetry (MPLOY §8 proposal — unvalidated)
-- Kill switch runbook: halt all agents in a project <30s (FR-A08)
-- Audit store monitoring: hash-chain validation, tamper alerts
-- Approval queue monitoring: timeout rate target <5%
-- Cost alerting: per-job caps, runaway detection (R-005)
-- DR: cross-region backups; DR drill before public beta
+## Operated resources
 
-Status: EMPTY — runbooks written during Phase 1 alongside first deployable services.
+| Resource | State | Cost behaviour |
+|---|---|---|
+| vast.ai `55001750` | STOPPED | ~$0.1815/hr running, ~$0.0481/hr storage while stopped |
+| Local ASR (RTX 4060) | runs on demand | $0 |
+| Dev server `:3000` | on demand | $0 |
+
+## Cost discipline
+
+Every dollar logged in `engineering/COST-LEDGER.md` (owner directive);
+`vastai show user` is the reconciliation source of truth. Rule: stop instances
+immediately after batched sessions; re-pulling the model (~$0.08) is cheaper
+than idle storage if the gap is days.
