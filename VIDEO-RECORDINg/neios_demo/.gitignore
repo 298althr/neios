@@ -5,3 +5,5 @@ raw/pages/
 raw/segments/
 raw/audio/
 final/
+tools/_*.mjs
+tools/*.png
