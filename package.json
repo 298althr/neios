@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "NEIOS — N-ATLAS Enterprise Integration OS (monorepo). Future-extension layer formerly scaffolded as \"VLTHR HR\" (Workforce + ARWOS) retained under apps/ and docs/01-context/supplied/.",
+  "description": "NEIOS — developer infrastructure for N-ATLAS: governed-integration SDK, policy toolkit, evaluation harness, and local NCAIR1 ASR shim (monorepo).",
   "packageManager": "pnpm@9.15.0",
   "scripts": {
     "dev:web": "pnpm --filter vlthr-hr-web dev",

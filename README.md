@@ -38,7 +38,6 @@ Hausa, Yoruba or Igbo).
 |---|---|
 | `apps/vlthr-hr-web/` | Next.js 15 app — NEIOS control-first UI + API routes (`/api/work`, `/api/approve`, `/api/audit`, `/api/asr`) (folder name is legacy from the original scaffold; see direction doc §18) |
 | `services/natlas-asr/` | Local ASR shim — official NCAIR1 Whisper-Small checkpoints (en/ha/yo/ig) behind `/v1/audio/transcriptions` on a local GPU |
-| `apps/arwos-api/` | Governance API skeleton — retained only if useful per direction doc §18 |
 | `packages/natlas-adapter/` | `NAtlasProvider` interface + OpenAI-compatible implementation (endpoint/model/key all env-configurable) |
 | `packages/governance/` | Core governed loop: APSOS intake, deterministic policy gate, invoice schema + arithmetic validation/repair, field provenance, approval, JSONL audit |
 | `packages/role-cards/` | Role Card config schema — reused for NEIOS Role Cards (config, not authority) |

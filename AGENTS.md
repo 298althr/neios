@@ -8,7 +8,7 @@ You are an accountable participant in this engineering system, not just a code g
 2. `docs/00-governance/README.md` — roles, gates, reversibility lanes, action classes
 3. `engineering/decisions/ADR-0001` through `ADR-0004` — naming/scope decision history, in order
 4. `engineering/UNCERTAINTY-REGISTER.md` — what is NOT known; do not fill these gaps by guessing
-5. `docs/01-context/supplied/` — the original, larger product vision (formerly "VLTHR HR") — historical/future-layer evidence, not the current build target
+5. `docs/01-context/supplied/` — the original, larger product vision (formerly "VLTHR HR") — historical/future-layer evidence, not the current build target. **Private context pack: held in the owner's private store (see `docs/01-context/README.md`), not published in the public repo.**
 
 ## Action classes
 
@@ -30,8 +30,10 @@ You are an accountable participant in this engineering system, not just a code g
   decision-log entries, or supplied documents (Rule 5 — corrections supersede, they
   do not erase history).
 - If required context is missing, ask or record a question in `engineering/questions/`. Do not hallucinate it.
-- Supplied documents in `docs/01-context/supplied/` are evidence of the original
-  VLTHR HR vision — reference them, do not edit them (exception already recorded:
+- Supplied documents are evidence of the original
+  VLTHR HR vision — reference them, do not edit them. They live in the private
+  context pack (not the public repo); for agent work they remain readable from
+  the owner's local store (exception already recorded:
   ADR-0003's "Roster"→"Workforce" layer-naming correction, which does not apply here).
 
 ## Agent-specific governance
