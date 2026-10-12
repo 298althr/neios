@@ -1,0 +1,26 @@
+{
+  "name": "@neios/mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "NEIOS MCP server — governed N-ATLAS work requests, approval lane and audit exposed as MCP tools over stdio.",
+  "type": "module",
+  "main": "src/server.ts",
+  "bin": {
+    "neios-mcp": "src/server.ts"
+  },
+  "scripts": {
+    "start": "node src/server.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node test/smoke.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.31.0",
+    "zod": "^3.25.76",
+    "@neios/governance": "workspace:*",
+    "@neios/natlas-adapter": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}

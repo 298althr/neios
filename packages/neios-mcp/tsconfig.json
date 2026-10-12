@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "types": ["node"],
+    "paths": {
+      "@neios/governance": ["../governance/src/index.ts"],
+      "@neios/natlas-adapter": ["../natlas-adapter/src/index.ts"]
+    }
+  },
+  "include": ["src"]
+}

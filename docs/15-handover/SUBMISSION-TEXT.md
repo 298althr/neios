@@ -25,13 +25,15 @@ means rebuilding the same machinery: request intake, permission checks,
 output validation, provenance, approval, audit. NEIOS ships that machinery
 as developer infrastructure.
 
-Four components, each independently usable: `natlas-adapter` (typed SDK over
+Five components, each independently usable: `natlas-adapter` (typed SDK over
 any OpenAI-compatible endpoint), `packages/governance` (deterministic policy
 gate that runs before the model, schema validation, deterministic arithmetic
-repair, provenance, append-only audit), a golden-fixture evaluation harness
-(10 fixtures, 4 languages, scored report, prompt-version pinning), and a
-local FastAPI shim serving the four official NCAIR1 ASR checkpoints at the
-official `/v1/audio/transcriptions` shape.
+repair, provenance, append-only audit), `packages/neios-mcp` (the governed
+loop exposed as MCP tools for any agent/IDE client — submissions return
+`pending_approval`, no tool executes work), a golden-fixture evaluation
+harness (10 fixtures, 4 languages, scored report, prompt-version pinning),
+and a local FastAPI shim serving the four official NCAIR1 ASR checkpoints at
+the official `/v1/audio/transcriptions` shape.
 
 A multilingual procurement reference app proves the stack end-to-end: live
 benchmark 10/10 fixtures, mean 93/100, ~4.4 s model latency on real N-ATLaS,

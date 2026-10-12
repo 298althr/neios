@@ -11,6 +11,7 @@ four components a developer can take independently:
 | `packages/governance` | Integration toolkit: APSOS intake packaging, deterministic policy gate (runs **before** the model), output schema validation + deterministic arithmetic repair, per-field provenance, append-only audit |
 | `benchmarks/` + `fixtures/` | Golden-request evaluation harness — 10 fixtures (4 languages + injection/missing-field/arithmetic edge cases), scored report, prompt-version pinning |
 | `services/natlas-asr` | Local serving shim for the **official NCAIR1 ASR checkpoints** (en/ha/yo/ig) at the official `/v1/audio/transcriptions` shape — voice input for N-ATLAS apps on a laptop GPU |
+| `packages/neios-mcp` | **MCP server** — the governed loop exposed as 4 stdio tools (`neios_submit_request`, `neios_pending_approvals`, `neios_record_decision`, `neios_audit_tail`) for Claude Desktop / IDEs / agent frameworks. Submissions return `pending_approval`; no tool executes consequential work |
 
 The procurement console in `apps/vlthr-hr-web` is the **reference
 implementation** — proof the infrastructure works end-to-end, and a live
@@ -42,6 +43,7 @@ Hausa, Yoruba or Igbo).
 | `packages/governance/` | Core governed loop: APSOS intake, deterministic policy gate, invoice schema + arithmetic validation/repair, field provenance, approval, JSONL audit |
 | `packages/role-cards/` | Role Card config schema — reused for NEIOS Role Cards (config, not authority) |
 | `packages/shared/` | Shared types/utilities |
+| `packages/neios-mcp/` | MCP server (stdio) — governed submit/pending/decision/audit tools for any MCP client |
 | `scripts/` | `natlas-smoke-test.ts` (direct provider test), `neios-run.ts` (full governed loop, incl. `--blocked`/`--missing` demo modes) |
 | `benchmarks/` | `eval.ts` — golden-request benchmark scoring the live pipeline (parse/extraction/arithmetic composite + policy match), reports to `engineering/metrics/` |
 | `fixtures/` | `golden-requests.json` — 10 scored fixtures: 4 languages + injection, missing-field, ambiguous-quantity, policy-block and arithmetic-trap edge cases |
