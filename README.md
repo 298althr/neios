@@ -46,6 +46,7 @@ Hausa, Yoruba or Igbo).
 | `packages/neios-mcp/` | MCP server (stdio) — governed submit/pending/decision/lookup/audit tools for any MCP client |
 | `scripts/` | `natlas-smoke-test.ts` (direct provider test), `neios-run.ts` (full governed loop, incl. `--blocked`/`--missing` demo modes) |
 | `benchmarks/` | `eval.ts` — golden-request benchmark scoring the live pipeline (parse/extraction/arithmetic composite + policy match), reports to `engineering/metrics/` |
+| `demos/` | `neios-governance-workbench.html` — standalone interactive explainer of the 8-stage governed loop (6 real-evidence fixtures; scripted, clearly labelled, opens in any browser — also a release asset) |
 | `fixtures/` | `golden-requests.json` — 10 scored fixtures: 4 languages + injection, missing-field, ambiguous-quantity, policy-block and arithmetic-trap edge cases |
 | `data/audit/` | Append-only JSONL audit trail written by every run (prompt version pinned per record) |
 | `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md` | **Primary source of truth** for NEIOS: product, architecture, plan, risks |

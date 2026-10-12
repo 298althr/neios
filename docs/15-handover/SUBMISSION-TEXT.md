@@ -49,6 +49,7 @@ in the UI.
 | Real-world validation | `engineering/validations/` (benchmark report now; 2 beta reports pending — see roadmap G3) |
 | Technical documentation | **PDF upload:** `docs/13-releases/naic-2026/TECHNICAL-DOCUMENTATION-NEIOS.pdf` (v2026-10-12) + `docs/04-architecture/NEIOS-CURRENT-SYSTEM.md`, `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md`, package/service READMEs |
 | Video demonstration | GitHub Release asset — https://github.com/298althr/neios/releases/tag/v1.0-naic-2026 (`neios_demo.mp4`, 4:51, + SRT captions; ch8b is a real MCP session vs live N-ATLaS) |
+| Interactive explainer (optional extra) | Same release — `neios-governance-workbench.html`: single-file walk-through of the 8-stage loop with 6 real-evidence fixtures (open in any browser; scripted, labelled as such) — `demos/` in repo |
 | Team profile | Owner supplies |
 | Endorsement/registration | Owner's valid Nigerian ID (Track B individual) |
 
