@@ -13,7 +13,7 @@ const RAW = join(ROOT, "raw");
 mkdirSync(RAW, { recursive: true });
 
 const BASE = "http://localhost:3000";
-const VOICE_CLIP = "C:/Users/Sav-Dev/Documents/NEIOS/services/natlas-asr/asr_test.mp3";
+const VOICE_CLIP = join(ROOT, "../../services/natlas-asr/asr_test.mp3");
 const chapter = process.argv[2];
 if (!chapter) { console.error("usage: node record.mjs <chapter>"); process.exit(1); }
 

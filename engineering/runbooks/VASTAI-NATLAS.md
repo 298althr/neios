@@ -3,19 +3,19 @@
 > Path locked by D-0015/D-0016. Budget: $5 vast.ai credit. Billing is **per
 > second** from the moment the instance is created — stop when not in use.
 
-## Live instance (created 2026-10-08, G0-passed)
+## Instance profile (values redacted — see owner key store)
 
 | Field | Value |
 |---|---|
-| Instance ID | `54838985` |
-| Offer | #53250098 — 1× RTX 3090 24 GB, Sweden, verified, EPYC 7443, ~3200 MB/s disk, ~7.8 Gbps net |
-| Rate | ~$0.178/hr compute (~$0.195/hr all-in incl. 40 GB disk) |
-| SSH | `ssh -p 15170 root@ssh3.vast.ai` (proxy; key `~/.ssh/id_ed25519`, registered as vast key id 1514879) |
-| Public IP | `194.14.47.19` (port 11434 auto-mapped to :23326 — **unauthenticated**, do not rely on it) |
+| Instance ID | `<vast instance id>` — current ID held in the owner's private ops notes |
+| Offer | RTX 3090 24 GB class host — filter offers by `disk_bw` ≥ ~3000 MB/s |
+| Rate | ~$0.18/hr compute + ~$0.05/hr disk while stopped |
+| SSH | `ssh -p <port> root@<region>.vast.ai` (proxy; key registered in owner's vast account) |
+| Public IP | `<redacted>` — vast auto-maps container port 11434 to a public port with **no auth**; never rely on it, use the SSH tunnel only |
 | Image | `ollama/ollama:latest` (~1.5 GB — boots in minutes, unlike the 18 GB vLLM image that stalled >60 min on a slow-disk host) |
 | Model | `hf.co/QuantFactory/N-ATLaS-GGUF:Q4_K_M` — official NCAIR1/N-ATLaS 8B weights, Q4_K_M quant, **ungated mirror** (no HF token needed) |
 | API | Ollama OpenAI-compatible server on container `:11434` |
-| Exposure | SSH tunnel preferred; the auto-mapped public port has no auth — treat as temporary |
+| Exposure | SSH tunnel only; the auto-mapped public port has no auth — treat as temporary |
 
 ## Destroyed predecessor
 
@@ -26,17 +26,17 @@ avoid hosts <300 MB/s disk for anything image-pull heavy.
 ## Daily workflow
 
 ```bash
-VASTAI="/c/Users/Sav-Dev/AppData/Local/Programs/Python/Python313/Scripts/vastai.exe"
+VASTAI="<path-to-vastai-cli>"
 
 # 1. start (if stopped)
-"$VASTAI" start instance 54838985
-"$VASTAI" show instance 54838985       # wait for actual_status=running
+"$VASTAI" start instance <instance-id>
+"$VASTAI" show instance <instance-id>       # wait for actual_status=running
 #    (ssh port may CHANGE on restart — re-check ssh_host/ssh_port in the raw output)
 
 # 2. tunnel the API to localhost:18000 (separate terminal, leave running)
 #    DO NOT use local port 11434 — this machine runs its own Ollama
 #    (llama3.2:1b) on 127.0.0.1:11434; hitting it silently swaps the model.
-ssh -N -L 18000:localhost:11434 -o ServerAliveInterval=30 -i ~/.ssh/id_ed25519 -p 15170 root@ssh3.vast.ai
+ssh -N -L 18000:localhost:11434 -o ServerAliveInterval=30 -i ~/.ssh/<key> -p <port> root@<region>.vast.ai
 
 # 3. verify you reached N-ATLaS, NOT local Ollama:
 curl -s http://127.0.0.1:18000/v1/models
@@ -49,8 +49,8 @@ node scripts/neios-run.ts                    # full governed loop
 pnpm --filter vlthr-hr-web dev               # playground UI on :3000
 
 # 5. STOP WHEN DONE — billing does not pause by itself
-"$VASTAI" stop instance 54838985             # disk preserved; storage still billed ~$0.01/hr
-"$VASTAI" destroy instance 54838985          # end of project only — deletes model cache
+"$VASTAI" stop instance <instance-id>             # disk preserved; storage still billed ~$0.01/hr
+"$VASTAI" destroy instance <instance-id>          # end of project only — deletes model cache
 ```
 
 ## Notes / caveats
