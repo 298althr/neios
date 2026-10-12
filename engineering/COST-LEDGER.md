@@ -49,6 +49,7 @@ resources.** API/service spend belongs to this project and is auditable.
 | 2026-10-10 | Instance 55001750 — GPU compute, v2 session (eval harness 10 fixtures + 11 video takes, ~0.9 hr) | vast.ai | compute | ~$0.16 | ~$1.96 | reconciled to credit delta; exact split on next invoice post. Reused cached model — $0 re-pull bandwidth |
 | 2026-10-10 | **Local ASR: 4× NCAIR1 checkpoints (~4 GB) on owner's RTX 4060** | HF/home | — | **$0.00** | — | gated repos accepted by owner; HF token in local `.env` only; zero Vast spend for ASR wedge |
 | 2026-10-10 | Instance 55001750 — GPU compute + storage, v3 video re-record session (~1.5 hr running for live-model chapters, plus interim stopped-storage accrual) | vast.ai | compute/storage | ~$0.73 | ~$2.69 | reconciled to credit delta ($3.041 → $2.307). Reused cached model — $0 re-pull bandwidth. Stopped immediately after recording |
+| 2026-10-10→12 | Instance 55001750 — stopped-storage accrual (~2 days) + GPU compute for MCP dev/live-test session (live scenario suite vs real N-ATLaS, ~1.5 hr) | vast.ai | compute/storage | ~$1.90 | ~$4.59 | reconciled to credit delta ($2.307 → $0.409). Cached model reused — $0 re-pull. **Instance stopped after session; credit nearly exhausted ($0.41) — storage accrual will drain the rest within ~1 day; destroy disk if the instance is still needed later** |
 
 ## Known recurring / future cost drivers
 
