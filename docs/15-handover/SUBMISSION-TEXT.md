@@ -46,7 +46,7 @@ in the UI.
 | N-ATLAS integration evidence | `engineering/metrics/eval-invoice-v1-*.json`, `engineering/evidence/*.json`, `data/audit/audit-log.jsonl`, README §quickstart |
 | Real-world validation | `engineering/validations/` (benchmark report now; 2 beta reports pending — see roadmap G3) |
 | Technical documentation | `docs/04-architecture/NEIOS-CURRENT-SYSTEM.md`, `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md`, package/service READMEs |
-| Video demonstration | `VIDEO-RECORDINg/neios_demo/final/neios_demo.mp4` (+ SRT captions) |
+| Video demonstration | GitHub Release asset — https://github.com/298althr/neios/releases/tag/v1.0-naic-2026 (`neios_demo.mp4` + SRT captions) |
 | Team profile | Owner supplies |
 | Endorsement/registration | Owner's valid Nigerian ID (Track B individual) |
 

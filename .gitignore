@@ -53,3 +53,6 @@ services/natlas-asr/*.mp3
 services/natlas-asr/*.wav
 services/natlas-asr/test_*.json
 services/natlas-asr/*.log
+
+# Video production workspace (local only — deliverables published as GitHub Release assets)
+VIDEO-RECORDINg/
