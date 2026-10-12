@@ -57,3 +57,4 @@ services/natlas-asr/*.log
 # Video production workspace (local only — deliverables published as GitHub Release assets)
 VIDEO-RECORDINg/
 engineering/_templates/IDEA-REFERENCE/
+demos/qa-*.png

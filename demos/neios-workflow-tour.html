@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEIOS — The Governed Workflow (2-min tour)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+:root{
+  --bg:#090b0f;--panel:#10141a;--line:#252d38;
+  --text:#e8edf4;--muted:#8793a3;--dim:#5d6978;
+  --lime:#c7f36b;--orange:#ffb86b;--red:#ff6b79;--cyan:#76d9d0;--blue:#6b8fff;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;overflow:hidden;height:100vh}
+.stage-area{height:calc(100vh - 140px);display:flex;align-items:center;justify-content:center;padding:40px}
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px;opacity:0;transform:translateY(14px);transition:opacity .55s,transform .55s;pointer-events:none}
+.scene.on{opacity:1;transform:none;pointer-events:auto}
+.eyebrow{font:600 13px 'JetBrains Mono',monospace;letter-spacing:.3em;text-transform:uppercase;color:var(--lime);margin-bottom:22px}
+h1{font:800 clamp(52px,7vw,96px) 'Bricolage Grotesque',sans-serif;letter-spacing:-.045em;text-align:center}
+h1 b{color:var(--blue)}
+h2{font:600 clamp(30px,3.6vw,50px) 'Bricolage Grotesque',sans-serif;letter-spacing:-.02em;text-align:center;margin-bottom:10px}
+.lede{font-size:clamp(15px,1.4vw,20px);color:var(--muted);text-align:center;max-width:760px;line-height:1.6}
+
+/* language cards */
+.langs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px;max-width:1080px;width:100%}
+.lang-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px;opacity:0;transform:translateY(10px);transition:.5s}
+.lang-card.show{opacity:1;transform:none}
+.lang-tag{font:600 11px 'JetBrains Mono',monospace;letter-spacing:.2em;color:var(--cyan);text-transform:uppercase;margin-bottom:8px}
+.lang-text{font-size:14px;line-height:1.55;color:#c6d0dc}
+
+/* pipeline */
+.pipe{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;width:min(1240px,92vw);margin-top:34px}
+.node{border:1px solid var(--line);border-radius:10px;padding:16px 10px;text-align:center;background:#0d1116;transition:.4s}
+.node .n-num{font:500 10px 'JetBrains Mono',monospace;color:var(--dim)}
+.node .n-ic{font-size:22px;margin:8px 0 6px}
+.node .n-name{font-size:11px;font-weight:600;color:#b5c0ce}
+.node.done{border-color:#435c2b;background:#121a10}.node.done .n-name{color:var(--lime)}
+.node.blocked{border-color:#5b3037;background:#1c1013}.node.blocked .n-name{color:var(--red)}
+.node.active{border-color:var(--cyan);box-shadow:0 0 24px #76d9d022}
+.pipe-cap{margin-top:22px;font:500 13px 'JetBrains Mono',monospace;color:var(--muted)}
+
+/* generic content blocks */
+.cards{display:flex;gap:14px;margin-top:28px;flex-wrap:wrap;justify-content:center;max-width:1100px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px;min-width:250px;max-width:340px}
+.card .k{font:600 11px 'JetBrains Mono',monospace;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.card .v{font-size:14px;line-height:1.55;color:#c6d0dc}
+.card.bad{border-color:#5b3037}.card.bad .k{color:var(--red)}
+.card.good{border-color:#435c2b}.card.good .k{color:var(--lime)}
+.card.warn{border-color:#5b4628}.card.warn .k{color:var(--orange)}
+pre{background:#0b0f14;border:1px solid var(--line);border-radius:12px;padding:20px 26px;font:12.5px/1.7 'JetBrains Mono',monospace;color:#a9b7c8;margin-top:26px;text-align:left;max-width:980px;width:100%;overflow:hidden}
+pre .ok{color:var(--lime)}pre .no{color:var(--red)}pre .wn{color:var(--orange)}pre .dm{color:var(--dim)}pre .cy{color:var(--cyan)}
+.tag{display:inline-block;font:600 10px 'JetBrains Mono',monospace;letter-spacing:.12em;padding:3px 9px;border-radius:5px;border:1px solid var(--line);color:var(--muted)}
+.tag.t-in{color:var(--cyan)}.tag.t-mod{color:var(--blue)}.tag.t-sys{color:var(--orange)}
+.big-num{font:800 clamp(48px,6vw,84px) 'Bricolage Grotesque';color:var(--lime);letter-spacing:-.03em}
+.stat-row{display:flex;gap:44px;margin-top:24px;flex-wrap:wrap;justify-content:center}
+.stat{text-align:center}.stat .lbl{font:500 11px 'JetBrains Mono',monospace;letter-spacing:.18em;color:var(--dim);text-transform:uppercase;margin-top:6px}
+.stat .num{font:800 clamp(36px,4vw,56px) 'Bricolage Grotesque';color:var(--text)}
+.stat .num.blue{color:var(--blue)}.stat .num.lime{color:var(--lime)}.stat .num.org{color:var(--orange)}
+
+/* narration bar + controls */
+.narr{position:fixed;left:0;right:0;bottom:52px;background:rgba(9,11,15,.92);border-top:1px solid var(--line);padding:16px 40px;display:flex;gap:18px;align-items:center;backdrop-filter:blur(8px)}
+.narr .mic{font-size:20px}
+.narr-text{font-size:clamp(14px,1.25vw,17px);line-height:1.5;color:#dbe3ec;max-width:1500px}
+.progress{position:fixed;left:0;bottom:0;height:52px;width:100%;background:#0b0e12;border-top:1px solid var(--line);display:flex;align-items:center;gap:16px;padding:0 22px}
+.prog-track{flex:1;height:4px;background:#1a212b;border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:var(--lime);width:0;transition:width .3s linear}
+.p-meta{font:500 11px 'JetBrains Mono',monospace;color:var(--dim);white-space:nowrap}
+.keys{font:500 10px 'JetBrains Mono',monospace;color:var(--dim)}
+.keys b{color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-weight:600}
+
+/* start overlay */
+#start{position:fixed;inset:0;background:var(--bg);z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;cursor:pointer;transition:opacity .5s}
+#start.hide{opacity:0;pointer-events:none}
+#start h1{font-size:clamp(44px,6vw,80px)}
+.play{width:92px;height:92px;border-radius:50%;border:2px solid var(--lime);display:grid;place-items:center;font-size:30px;color:var(--lime)}
+.hint{font:500 12px 'JetBrains Mono',monospace;color:var(--dim);letter-spacing:.15em}
+</style>
+</head>
+<body>
+
+<div class="stage-area" id="stageArea">
+
+<!-- 1 · TITLE -->
+<section class="scene" data-dur="7500">
+  <div class="eyebrow">VLTHR Labs · NAIC 2026 · PS1</div>
+  <h1>NEI<b>OS</b></h1>
+  <p class="lede" style="margin-top:14px">Developer infrastructure for N-ATLAS — SDK · governance toolkit ·<br>evaluation harness · ASR shim · MCP server</p>
+</section>
+
+<!-- 2 · LANGUAGES -->
+<section class="scene" data-dur="15000">
+  <div class="eyebrow">01 · Intake</div>
+  <h2>A request arrives — in any of four languages</h2>
+  <p class="lede">Text or voice. These are the real fixture inputs.</p>
+  <div class="langs">
+    <div class="lang-card"><div class="lang-tag">English (Pidgin)</div><div class="lang-text">"Oga prepare invoice for flowstation resupply: 12 butterfly valves DN150 at 185000 naira each, 40 gasket kits at 12500 each…"</div></div>
+    <div class="lang-card"><div class="lang-tag">Hausa</div><div class="lang-text">"Ina so ka shirya min invoice na kayan flowstation: butterfly valves DN150 guda 12 a naira 185000 kowanne…"</div></div>
+    <div class="lang-card"><div class="lang-tag">Yoruba</div><div class="lang-text">"Jowo se invoice fun ohun elo flowstation: butterfly valves DN150 mejila ni 185000 naira fun okan…"</div></div>
+    <div class="lang-card"><div class="lang-tag">Igbo</div><div class="lang-text">"Biko mee invoice maka ihe flowstation: butterfly valves DN150 iri na abụọ na 185000 naira otu otu…"</div></div>
+  </div>
+</section>
+
+<!-- 3 · PIPELINE INTRO -->
+<section class="scene" data-dur="8000">
+  <div class="eyebrow">02 · The governed loop</div>
+  <h2>Every request crosses eight control points</h2>
+  <p class="lede">The code runs the show — the model only drafts inside the envelope the code defines.</p>
+  <div class="pipe" data-pipe></div>
+  <div class="pipe-cap">one call path — UI, script, or MCP client, same eight gates</div>
+</section>
+
+<!-- 4 · REQUEST + CONTEXT -->
+<section class="scene" data-dur="9000">
+  <div class="eyebrow">03 · Request → Context</div>
+  <h2>Intake is structured before the model is touched</h2>
+  <div class="cards">
+    <div class="card"><div class="k">APSOS pack</div><div class="v"><b>WHO</b> requests · <b>WHAT</b> work type + items · <b>WHY</b> purpose + criticality · <b>WHEN</b> urgency</div></div>
+    <div class="card warn"><div class="k">Missing fields</div><div class="v">Required APSOS paths are checked up front — "bill the patient" stops here, flagged, before any model call.</div></div>
+  </div>
+  <div class="pipe" data-pipe="01"></div>
+</section>
+
+<!-- 5 · POLICY -->
+<section class="scene" data-dur="11000">
+  <div class="eyebrow">04 · Policy</div>
+  <h2>A deterministic gate runs <em>before</em> the model</h2>
+  <div class="cards">
+    <div class="card good"><div class="k">Allowed</div><div class="v">Work type in the Role Card's allowed actions → proceeds to the model.</div></div>
+    <div class="card bad"><div class="k">Blocked</div><div class="v">"Wire ₦200,000 to the supplier account" — <b>0&nbsp;ms, no model call.</b> The refusal is still audited.</div></div>
+  </div>
+  <div class="pipe" data-pipe="012"></div>
+</section>
+
+<!-- 6 · MODEL -->
+<section class="scene" data-dur="8000">
+  <div class="eyebrow">05 · Model</div>
+  <h2>Only now does N-ATLaS run</h2>
+  <p class="lede">Real endpoint, real request IDs — <span class="tag">openai-compat</span> any OpenAI-compatible server</p>
+  <pre><span class="ok">✓ MODEL</span>    openai-compat:http://127.0.0.1:18000/v1 responded in <span class="cy">3679ms</span>
+           hf.co/QuantFactory/N-ATLaS-GGUF:Q4_K_M · request id <span class="cy">chatcmpl-*</span></pre>
+  <div class="pipe" data-pipe="0123"></div>
+</section>
+
+<!-- 7 · RESULT -->
+<section class="scene" data-dur="10000">
+  <div class="eyebrow">06 · Result</div>
+  <h2>Output is parsed, validated, repaired — not trusted</h2>
+  <div class="cards">
+    <div class="card"><div class="k">Schema</div><div class="v">Strict <b>invoice_draft</b> JSON — malformed output gets one bounded retry.</div></div>
+    <div class="card warn"><div class="k">Deterministic repair</div><div class="v">Model wrote 20×8,000 as ₦1,600,000 → validator corrected to ₦160,000. Repairs are <b>named</b>, not silent.</div></div>
+  </div>
+  <div class="pipe" data-pipe="01234"></div>
+</section>
+
+<!-- 8 · EVIDENCE -->
+<section class="scene" data-dur="8000">
+  <div class="eyebrow">07 · Evidence</div>
+  <h2>Every field carries provenance</h2>
+  <div class="cards">
+    <div class="card"><div class="k"><span class="tag t-in">input_fact</span></div><div class="v">Verified against the request — quantities, named parties.</div></div>
+    <div class="card"><div class="k"><span class="tag t-mod">model_derived</span></div><div class="v">The model's contribution — descriptions, line structure.</div></div>
+    <div class="card"><div class="k"><span class="tag t-sys">system_derived</span></div><div class="v">Computed by code — totals, dates, hashes.</div></div>
+  </div>
+  <div class="pipe" data-pipe="012345"></div>
+</section>
+
+<!-- 9 · APPROVAL -->
+<section class="scene" data-dur="9000">
+  <div class="eyebrow">08 · Approval</div>
+  <h2>Consequential output waits for a person</h2>
+  <p class="lede">Lane-2 drafts hold at <b>pending_approval</b> — content never grants authority.</p>
+  <pre><span class="wn">! APPROVAL</span> draft pending human approval (lane 2)
+→ human approved → linked audit record: <span class="ok">finalState "approved"</span></pre>
+  <div class="pipe" data-pipe="0123456"></div>
+</section>
+
+<!-- 10 · AUDIT -->
+<section class="scene" data-dur="9000">
+  <div class="eyebrow">09 · Audit</div>
+  <h2>One append-only record per run — always</h2>
+  <pre><span class="dm">{</span> <span class="cy">"finalState": "approved"</span>, <span class="cy">"policyDecision": "REVIEW"</span>,
+  <span class="cy">"modelRequestId": "chatcmpl-…"</span>, <span class="cy">"promptVersion": "invoice-v1"</span>,
+  <span class="cy">"repairs": ["subtotal","total"]</span>, <span class="cy">"inputHash": "sha256:…"</span> <span class="dm">}</span></pre>
+  <div class="pipe" data-pipe="01234567"></div>
+</section>
+
+<!-- 11 · MCP -->
+<section class="scene" data-dur="11000">
+  <div class="eyebrow">10 · Any client, same loop</div>
+  <h2>The MCP server — five tools, same governance</h2>
+  <pre><span class="wn">&gt;&gt;&gt;</span> tools/call neios_submit_request    <span class="dm">(16.4s)</span>
+<span class="ok">finalState=pending_approval</span> | repairs=[subtotal,total] | total=1085000
+<span class="wn">&gt;&gt;&gt;</span> tools/call neios_submit_request    <span class="dm">(0.0s)</span>
+<span class="no">policy=BLOCK</span> | finalState=blocked   <span class="dm">— model never called</span></pre>
+  <p class="lede" style="margin-top:14px">Claude Desktop · IDEs · agent frameworks — the tool contract caps at pending_approval.</p>
+</section>
+
+<!-- 12 · STATS + OUTRO -->
+<section class="scene" data-dur="10000">
+  <div class="eyebrow">Verified on real N-ATLaS · 2026-10-12</div>
+  <div class="stat-row">
+    <div class="stat"><div class="num lime">10/10</div><div class="lbl">benchmark fixtures</div></div>
+    <div class="stat"><div class="num">93/100</div><div class="lbl">mean score</div></div>
+    <div class="stat"><div class="num blue">4</div><div class="lbl">languages, live</div></div>
+    <div class="stat"><div class="num org">83</div><div class="lbl">audit records</div></div>
+    <div class="stat"><div class="num lime">0ms</div><div class="lbl">policy block, no model</div></div>
+  </div>
+  <p class="lede" style="margin-top:34px"><b>github.com/298althr/neios</b> — clone it, point it at your endpoint, ship something governed.</p>
+</section>
+
+</div>
+
+<div class="narr"><span class="mic">🎙</span><div class="narr-text" id="narrText"></div></div>
+
+<div class="progress">
+  <span class="p-meta" id="pMeta">SCENE 1 / 12</span>
+  <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+  <span class="keys"><b>space</b> pause · <b>→/←</b> scene · <b>R</b> restart</span>
+</div>
+
+<div id="start">
+  <div class="eyebrow">NEIOS · governed workflow tour · ~1m45s</div>
+  <div class="play">▶</div>
+  <div class="hint">CLICK TO START — RECORD YOUR SCREEN NOW</div>
+</div>
+
+<script>
+const STAGES = ["REQUEST","CONTEXT","POLICY","MODEL","RESULT","EVIDENCE","APPROVAL","AUDIT"];
+const ICONS  = ["▤","◫","⚖","◈","✓","⌗","☑","≡"];
+
+const NARR = [
+ "NEIOS — developer infrastructure for N-ATLAS. This is the governed workflow, end to end, in all four languages.",
+ "A work request arrives as text or voice — English, Pidgin, Hausa, Yoruba or Igbo. These are the real inputs, not mockups.",
+ "Every request crosses the same eight control points. The code runs the show — the model only drafts inside it.",
+ "First the request is structured: who, what, why, when. Missing required fields are flagged before the model is ever called.",
+ "Then a deterministic policy gate — decided by code, not the model. A wire-transfer request is blocked in zero milliseconds; the model never sees it.",
+ "Only permitted work reaches N-ATLAS — a real model call, latency and request ID recorded.",
+ "The output is parsed against a strict schema. Arithmetic is verified and repaired deterministically — every correction is named.",
+ "Each field gets a provenance tag — what came from the input, what the model derived, what the system computed.",
+ "Consequential output is never executed — it waits in the approval lane until a human approves or rejects it.",
+ "Then everything lands in an append-only audit log — the request, the model call, the repairs, the decision. Eighty-three records and counting.",
+ "The same loop is exposed as five MCP tools — any agent or IDE can submit work, but the contract caps out at pending approval. Governance is the interface.",
+ "Ten of ten benchmark fixtures, four live languages, eighty-three audit records. NEIOS — clone it, point it at your endpoint, ship something governed."
+];
+
+const scenes = [...document.querySelectorAll('.scene')];
+const narrEl = document.getElementById('narrText');
+const pMeta = document.getElementById('pMeta');
+const progFill = document.getElementById('progFill');
+let idx = -1, playing = false, timer = null, elapsed = 0, lastTick = 0;
+
+function renderPipe(el, lit){
+  const set = new Set(lit === undefined ? [] : String(lit).split('').map(Number));
+  el.innerHTML = STAGES.map((s,i)=>`<div class="node ${set.has(i)?'done':''}"><div class="n-num">0${i+1}</div><div class="n-ic">${ICONS[i]}</div><div class="n-name">${s}</div></div>`).join('');
+}
+document.querySelectorAll('[data-pipe]').forEach(el=>renderPipe(el, el.dataset.pipe));
+
+function show(i){
+  clearTimeout(timer); elapsed = 0; lastTick = performance.now();
+  scenes.forEach((s,j)=>s.classList.toggle('on', j===i));
+  idx = i;
+  narrEl.textContent = NARR[i] || '';
+  pMeta.textContent = `SCENE ${i+1} / ${scenes.length}`;
+  // stagger language cards
+  if(i===1) scenes[i].querySelectorAll('.lang-card').forEach((c,k)=>setTimeout(()=>c.classList.add('show'), 500+k*650));
+  const dur = parseInt(scenes[i].dataset.dur,10);
+  if(playing) timer = setTimeout(()=> i+1 < scenes.length ? show(i+1) : pause(), dur);
+}
+function tick(){
+  if(!playing) return;
+  const now = performance.now(); elapsed += now - lastTick; lastTick = now;
+  const dur = parseInt(scenes[Math.max(idx,0)].dataset.dur,10);
+  const total = scenes.reduce((a,s)=>a+parseInt(s.dataset.dur,10),0);
+  const before = scenes.slice(0,Math.max(idx,0)).reduce((a,s)=>a+parseInt(s.dataset.dur,10),0);
+  progFill.style.width = Math.min(100, (before+elapsed)/total*100) + '%';
+  requestAnimationFrame(tick);
+}
+function play(){ if(playing) return; playing=true; lastTick=performance.now(); if(idx<0) show(0); else show(idx); requestAnimationFrame(tick); }
+function pause(){ playing=false; clearTimeout(timer); }
+document.getElementById('start').addEventListener('click', e=>{ e.currentTarget.classList.add('hide'); play(); });
+document.addEventListener('keydown', e=>{
+  if(e.key===' '){ e.preventDefault(); playing?pause():play(); }
+  if(e.key==='ArrowRight' && idx<scenes.length-1){ show(idx+1); }
+  if(e.key==='ArrowLeft' && idx>0){ show(idx-1); }
+  if(e.key==='r'||e.key==='R'){ pause(); idx=-1; show(0); play(); }
+});
+</script>
+</body>
+</html>
