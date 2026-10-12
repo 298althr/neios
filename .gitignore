@@ -58,3 +58,4 @@ services/natlas-asr/*.log
 VIDEO-RECORDINg/
 engineering/_templates/IDEA-REFERENCE/
 demos/qa-*.png
+archive/

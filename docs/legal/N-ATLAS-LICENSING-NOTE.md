@@ -24,7 +24,7 @@ NEIOS satisfies this via its own naming and this note.
 "Open-Source Research and Innovation License" (Awarri Technologies / Federal
 Ministry of Communications, Innovation and Digital Economy), inspired by
 Apache 2.0/MIT with additional restrictions. Full terms:
-`docs/01-context/supplied/` model-card fetch, 2026-10-08 (see
+private context pack model-card fetch, 2026-10-08 (see
 `docs/03-research/N-ATLAS-ACCESS-FINDINGS.md` for source).
 
 ## User cap

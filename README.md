@@ -61,7 +61,7 @@ This repository is governed by the Software Engineering Operating Repository mod
 Before writing code, read, in order:
 
 1. [`docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md`](docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md) — the controlling NEIOS direction
-2. [`docs/00-governance/README.md`](docs/00-governance/README.md) — roles, gates, reversibility lanes
+2. `archive/docs/00-governance/README.md` — roles, gates, reversibility lanes *(local archive, untracked)*
 3. [`engineering/decisions/`](engineering/decisions/) — ADR-0001 through ADR-0004 (naming/scope history, read in order — later ADRs supersede earlier ones where they conflict)
 4. [`engineering/UNCERTAINTY-REGISTER.md`](engineering/UNCERTAINTY-REGISTER.md) — open blockers
 
@@ -78,7 +78,7 @@ Before writing code, read, in order:
 **Requirements:** Node.js 24+, pnpm 9 (via `corepack enable`), and an N-ATLaS
 endpoint. We use Ollama serving `hf.co/QuantFactory/N-ATLaS-GGUF:Q4_K_M` on a
 rented GPU — the full setup, including the SSH tunnel, is in
-[`engineering/runbooks/VASTAI-NATLAS.md`](engineering/runbooks/VASTAI-NATLAS.md).
+`archive/engineering/runbooks/VASTAI-NATLAS.md` *(local archive — deployment details are kept out of the public repo; available to evaluators on request)*.
 Any OpenAI-compatible endpoint works; nothing is hardcoded.
 
 ```bash

@@ -5,10 +5,10 @@ You are an accountable participant in this engineering system, not just a code g
 ## Mandatory first reads
 
 1. `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md` — the controlling direction for the current build (NEIOS)
-2. `docs/00-governance/README.md` — roles, gates, reversibility lanes, action classes
+2. `archive/docs/00-governance/README.md` — roles, gates, reversibility lanes, action classes *(local archive, untracked — not in the public repo)*
 3. `engineering/decisions/ADR-0001` through `ADR-0004` — naming/scope decision history, in order
 4. `engineering/UNCERTAINTY-REGISTER.md` — what is NOT known; do not fill these gaps by guessing
-5. `docs/01-context/supplied/` — the original, larger product vision (formerly "VLTHR HR") — historical/future-layer evidence, not the current build target. **Private context pack: held in the owner's private store (see `docs/01-context/README.md`), not published in the public repo.**
+5. The original, larger product vision (formerly "VLTHR HR") — historical/future-layer evidence, not the current build target. **Private context pack: held in the owner's private store (`NEIOS-PRIVATE/`), not published in the public repo.**
 
 ## Action classes
 

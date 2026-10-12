@@ -117,4 +117,4 @@ genuine N-ATLAS integration (same model), quantized serving form.
 vast.ai + Ollama (like vLLM / HF Endpoints / Ollama-local) exposes an
 **OpenAI-compatible HTTP API**. `NAtlasProvider` targets the tunneled
 `baseURL` (`http://localhost:11434/v1`); config-driven, backend-swappable.
-Daily ops in `engineering/runbooks/VASTAI-NATLAS.md`.
+Daily ops runbook held in the local archive (infrastructure details not published).

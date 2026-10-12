@@ -29,8 +29,8 @@ erase history.
 
 | Artifact | Source of truth |
 |---|---|
-| Product requirements | `product/requirements/` (extracted) + `docs/01-context/supplied/` (spec, until extraction completes) |
-| ARWOS normative requirements | `docs/01-context/supplied/ARWOS v1.2.md` |
+| Product requirements | maintained in the local archive (not published) |
+| Historical product context | private context pack, available to evaluators on request |
 | Architecture decisions | `engineering/decisions/` (ADRs) |
 | System architecture | `architecture/system/` |
 | Implementation | `apps/`, `packages/` |

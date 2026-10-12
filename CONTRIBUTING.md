@@ -8,7 +8,7 @@ This repository operates under the Software Engineering Operating Repository mod
 
 ## Before you write code
 
-1. Find or create a **requirement** in `product/requirements/` (or the spec in `docs/01-context/supplied/`).
+1. Find or create a **requirement** — see `engineering/decisions/` ADRs for scope (requirements catalogue is maintained in the local archive).
 2. Find or create a **task** in `engineering/tasks/` linked to that requirement.
 3. Check `engineering/UNCERTAINTY-REGISTER.md` and `engineering/assumptions/` for anything your work depends on.
 4. If your work involves a consequential choice (schema, protocol, dependency, security boundary), propose an **ADR** in `engineering/decisions/` before committing to it.
