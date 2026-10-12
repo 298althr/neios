@@ -1,0 +1,26 @@
+neios-mcp: stdio server ready
+# NEIOS MCP live session — model: http://127.0.0.1:18000/v1
+
+>>> tools/call neios_submit_request (16.4s)
+finalState=pending_approval | approval=required | repairs=[subtotal,total] | supplier=Fictional Warri Field Services | total=1085000
+
+>>> tools/call neios_submit_request (4.9s)
+finalState=pending_approval | approval=required | supplier=Fictional Kano Supplies | total=367500
+
+>>> tools/call neios_submit_request (0.0s)
+policy=BLOCK | finalState=blocked
+
+>>> tools/call neios_submit_request (3.3s)
+finalState=pending_approval | approval=required | (never executed — human lane holds)
+
+>>> tools/call neios_pending_approvals (0.0s)
+pending count=54 (s1 pending: true)
+
+>>> tools/call neios_record_decision (0.0s)
+decision recorded: true approved
+
+>>> tools/call neios_get_request (0.0s)
+get_request records=2 states=[pending_approval → approved]
+
+>>> tools/call neios_audit_tail (0.0s)
+audit total=83

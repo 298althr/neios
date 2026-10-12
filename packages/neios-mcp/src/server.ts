@@ -25,7 +25,10 @@ const AUDIT_FILE = join(AUDIT_DIR, "audit-log.jsonl");
 const BASE_URL = process.env.NATLAS_BASE_URL ?? "http://127.0.0.1:18000/v1";
 const ROLE_ID = "procurement-assistant";
 
-const text = (obj: unknown) => ({ content: [{ type: "text" as const, text: JSON.stringify(obj, null, 2) }] });
+const text = (obj: { [x: string]: unknown }) => ({
+  content: [{ type: "text" as const, text: JSON.stringify(obj, null, 2) }],
+  structuredContent: obj,
+});
 const err = (e: unknown) => ({
   isError: true as const,
   content: [{ type: "text" as const, text: e instanceof Error ? e.message : String(e) }],
@@ -161,6 +164,27 @@ server.registerTool(
         finalState: args.decision === "approved" ? "approved" : "rejected",
       });
       return text({ ok: true, requestId: args.requestId, decision: args.decision, by: args.by });
+    } catch (e) {
+      return err(e);
+    }
+  },
+);
+
+server.registerTool(
+  "neios_get_request",
+  {
+    title: "Look up a request in the audit log",
+    description:
+      "All audit records for one requestId — the run record plus any approval decision. " +
+      "Use after neios_submit_request to check final state.",
+    inputSchema: {
+      requestId: z.string(),
+    },
+  },
+  async (args) => {
+    try {
+      const records = readAudit().filter((r) => r.requestId === args.requestId);
+      return text({ requestId: args.requestId, found: records.length > 0, records });
     } catch (e) {
       return err(e);
     }

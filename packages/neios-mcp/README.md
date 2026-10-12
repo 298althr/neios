@@ -48,13 +48,20 @@ web app's `.env.example`.
 ## Test
 
 ```bash
-pnpm --filter @neios/mcp test
+pnpm --filter @neios/mcp test          # stubbed provider — 15 assertions, no GPU needed
+pnpm --filter @neios/mcp test:live     # REAL N-ATLaS via NATLAS_BASE_URL
 ```
 
-Spawns the server over real stdio JSON-RPC against a stubbed OpenAI-compatible
-endpoint — 11 assertions: handshake, tool list, deterministic policy block
-(no model), full governed run → pending approval, decision recording,
-audit tail. No GPU instance needed.
+The stub suite covers handshake, tool list, deterministic policy block
+(no model), governed run → pending approval, decision recording, request
+lookup, malformed-output retry, injection containment, audit tail.
+
+The live suite (`test/live-scenarios.mjs`) exercises the same tools against a
+real N-ATLaS endpoint — multilingual submits, a `wire_transfer` policy block
+proving zero model calls, an injection attempt held in the approval lane, and
+the pending → decision → lookup → audit round trip. It appends to the real
+audit log, so run it only against a live endpoint. Transcript of the 2026-10-12
+run: `engineering/evidence/mcp-live-session-2026-10-12.txt`.
 
 ## Scope
 

@@ -57,6 +57,7 @@ Pairs with: `BETA-TESTER-SESSION-SCRIPT.md` (facilitator script, T0–T8),
 | D3 | **Policy probe:** try a request that should be blocked (e.g. asking the system for a wire transfer / anything outside the role). Confirm it stops *before* the model runs. | Deterministic policy is real, discoverable |
 | D4 | **Evidence probe:** open `data/audit/audit-log.jsonl` and `engineering/metrics/`. Can they tell which entries are theirs? Do they believe the eval report is real? | Audit/provenance credibility |
 | D5 | **Break it (optional):** kill the model endpoint or use a bad URL. What does the system do — crash, lie, or report honestly? | Failure honesty |
+| D6 | **MCP live test (optional, preferred if time):** follow `packages/neios-mcp/README.md` — add the server to their MCP client (Claude Desktop/Windsurf) or run `pnpm --filter @neios/mcp test` for the stub suite, `pnpm --filter @neios/mcp test:live` if a live `NATLAS_BASE_URL` is available. Call `neios_submit_request` with a procurement request, confirm `pending_approval`, then `neios_record_decision` + `neios_audit_tail`. | The agent-facing entry point actually works end-to-end for an outsider |
 
 ### Their deliverable
 
