@@ -97,6 +97,34 @@ command or step where setup failed or confused** — that's the gold.
 quotes matter most here (especially U7). Failures count as findings — a
 confused tester on camera is worth more than a smooth one.
 
+### Domain variant — non-procurement tester (e.g. hospital billing)
+
+The pipeline machinery is domain-neutral: `invoice_draft` maps supplier =
+hospital/clinic, buyer = patient/insurer, items = billable services. Run the
+U-path **as-is** with billing content — do NOT re-skin the app for the
+session. Tell the tester upfront that the UI is the procurement reference
+implementation and their domain would get its own Role Card (the documented
+extension path, not a rewrite); log any confusion this causes as a finding,
+not a defect.
+
+Billing-flavoured substitutions:
+
+- **U2 example:** *"Draft an invoice for patient Mrs. Adebayo at St. Mary's
+  Clinic Lekki — 2 consultations @ ₦15,000, 1 malaria RDT @ ₦4,500,
+  10 amoxicillin caps @ ₦200"* (or their own real wording).
+- **Missing-field probe:** *"bill the patient"* — vague request, flagged
+  before the model runs.
+- **Policy-block demo:** the UI can't emit a prohibited `workType`, so show
+  `node --experimental-strip-types scripts/neios-run.ts --blocked` (or the
+  MCP suite) and narrate: "a wire-transfer/refund ask is refused before the
+  model ever runs" — that IS the safety case.
+- **U7 rephrased:** *"would you let this draft patient invoices at your
+  hospital? what would need to change first?"*
+
+Expected: same `pending_approval` draft behaviour, correct arithmetic with
+named repairs, provenance tags, audit record — measuring whether a
+non-developer billing professional understands the approval lane.
+
 ---
 
 ## What "counts" as a completed session (acceptance)
