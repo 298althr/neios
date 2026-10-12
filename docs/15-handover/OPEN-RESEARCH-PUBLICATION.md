@@ -120,8 +120,8 @@ All artefacts below are committed in the repository.
   submit → pending → decision → lookup → audit round trip
   (`engineering/evidence/mcp-live-session-2026-10-12.txt`).
 - **Audit trail** — 83 append-only records in `data/audit/audit-log.jsonl`.
-- **Demo** — 4:51 video (release `v1.0-naic-2026`): live model runs, the real
-  benchmark table, the policy-block terminal, and a real MCP session chapter.
+- **Demo** — ~3-minute video (release `v1.0-naic-2026`): the governed
+  workflow end-to-end, including evidence drawn from real live sessions.
 - **Failure honesty** — endpoint-unreachable produces a labelled MODEL
   failure with downstream stages skipped and the audit still appended.
 
@@ -189,7 +189,7 @@ If you use or build on this work, please cite the repository and this note:
 ## Links
 
 - Repository: https://github.com/298althr/neios
-- Demo video + captions: https://github.com/298althr/neios/releases/tag/v1.0-naic-2026
+- Demo video: https://github.com/298althr/neios/releases/tag/v1.0-naic-2026
 - Technical documentation (PDF): `docs/13-releases/naic-2026/TECHNICAL-DOCUMENTATION-NEIOS.pdf`
 - Submission form copy: `docs/15-handover/SUBMISSION-TEXT.md`
 - Cost transparency: `engineering/COST-LEDGER.md`

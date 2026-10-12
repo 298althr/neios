@@ -46,9 +46,9 @@ in the UI.
 |---|---|
 | Working artefact | This repository — `README.md` quickstart reproduces it. Public mirror: **https://github.com/298althr/neios** |
 | N-ATLAS integration evidence | `engineering/metrics/eval-invoice-v1-*.json`, `engineering/evidence/` (incl. `mcp-live-session-2026-10-12.txt` — real MCP session vs live N-ATLaS), `data/audit/audit-log.jsonl` (83 records) |
-| Real-world validation | `engineering/validations/` (benchmark report now; 2 beta reports pending — see roadmap G3) |
+| Real-world validation | `engineering/validations/` (benchmark report + `BETA-TEST-RESULT-BT-02.md` instrumented session filed; external human sessions pending — see roadmap G3) |
 | Technical documentation | **PDF upload:** `docs/13-releases/naic-2026/TECHNICAL-DOCUMENTATION-NEIOS.pdf` (v2026-10-12) + `docs/04-architecture/NEIOS-CURRENT-SYSTEM.md`, `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md`, package/service READMEs |
-| Video demonstration | GitHub Release asset — https://github.com/298althr/neios/releases/tag/v1.0-naic-2026 (`neios_demo.mp4`, 4:51, + SRT captions; ch8b is a real MCP session vs live N-ATLaS) |
+| Video demonstration | GitHub Release asset — https://github.com/298althr/neios/releases/tag/v1.0-naic-2026 (`neios_demo.mp4`, ~3 min; the live MCP session transcript is at `engineering/evidence/mcp-live-session-2026-10-12.txt`) |
 | Interactive explainer (optional extra) | Same release — `neios-governance-workbench.html`: single-file walk-through of the 8-stage loop with 6 real-evidence fixtures (open in any browser; scripted, labelled as such) — `demos/` in repo |
 | Team profile | Owner supplies |
 | Endorsement/registration | Owner's valid Nigerian ID (Track B individual) |
