@@ -25,7 +25,7 @@
 
 <h1>NEIOS — N-ATLAS Enterprise Integration OS</h1>
 <p class="sub">Technical Documentation — NAIC 2026, Track: Innovation &amp; Enterprise, Problem Statement PS1 (Developer Infrastructure)<br>
-Repository: github.com/vlthrlabs/NEIOS &nbsp;·&nbsp; License: MIT &nbsp;·&nbsp; Date: 2026-10-08</p>
+Repository: github.com/298althr/neios &nbsp;·&nbsp; License: MIT &nbsp;·&nbsp; Date: 2026-10-12</p>
 
 <h2>1. What NEIOS is</h2>
 <p>NEIOS is governed developer infrastructure for N-ATLAS. It is the layer between a raw
@@ -44,7 +44,10 @@ single provider interface; all output flows through the same governed loop.</p>
 <tr><th>Component</th><th>Role</th></tr>
 <tr><td><code>packages/natlas-adapter</code></td><td><code>NAtlasProvider</code> interface + OpenAI-compatible implementation. Endpoint, model and key fully configurable via env (<code>NATLAS_BASE_URL</code>, <code>NATLAS_MODEL</code>, <code>NATLAS_API_KEY</code>) — works against Ollama, vLLM or HF Inference Endpoints with zero code changes.</td></tr>
 <tr><td><code>packages/governance</code></td><td>The governed loop: APSOS intake packager, deterministic policy engine, invoice schema validation + deterministic arithmetic repair, field provenance annotator, approval routing, JSONL audit writer.</td></tr>
-<tr><td><code>apps/vlthr-hr-web</code></td><td>Next.js 15 control-first UI + API routes (<code>/api/work</code>, <code>/api/approve</code>, <code>/api/audit</code>). Shows the live 8-stage execution trace — not a chat box.</td></tr>
+<tr><td><code>packages/neios-mcp</code></td><td>MCP server (stdio) — the governed loop exposed as 5 tools (<code>neios_submit_request</code>, <code>neios_pending_approvals</code>, <code>neios_record_decision</code>, <code>neios_get_request</code>, <code>neios_audit_tail</code>) with machine-readable <code>structuredContent</code>, for Claude Desktop / IDEs / agent frameworks. The tool contract caps at <code>pending_approval</code> — no tool can execute consequential work.</td></tr>
+<tr><td><code>benchmarks/eval.ts</code></td><td>Golden-fixture evaluation harness — 10 cases across 4 languages + injection + missing-field + arithmetic-trap, scored report pinned to a prompt version (<code>engineering/metrics/</code>).</td></tr>
+<tr><td><code>services/natlas-asr</code></td><td>Local FastAPI shim serving the four official NCAIR1 ASR checkpoints at the official <code>/v1/audio/transcriptions</code> shape — any N-ATLAS app can accept spoken Hausa/Yoruba/Igbo/Nigerian English without its own ASR stack.</td></tr>
+<tr><td><code>apps/vlthr-hr-web</code></td><td><b>Reference implementation</b> — Next.js 15 control-first UI + API routes (<code>/api/work</code>, <code>/api/approve</code>, <code>/api/audit</code>). Shows the live 8-stage execution trace — not a chat box.</td></tr>
 <tr><td><code>data/audit/audit-log.jsonl</code></td><td>Append-only audit trail; every run — successful, blocked, failed, approved, rejected — appends a record with input/output SHA-256 hashes.</td></tr>
 </table>
 
@@ -76,7 +79,9 @@ single provider interface; all output flows through the same governed loop.</p>
 <tr><td>Cold latency (first call after model load)</td><td>45.7 s</td></tr>
 <tr><td>Warm latency (min / median / max)</td><td>1.76 / 3.66 / 4.15 s (6 runs)</td></tr>
 <tr><td>Languages verified live</td><td>English/Nigerian Pidgin, Hausa, Yoruba, Igbo — real work requests, not translated demos</td></tr>
-<tr><td>Audit records written</td><td>22 — 11 pending_approval, 3 approved, 1 rejected, 3 policy-blocked, 4 controlled failures</td></tr>
+<tr><td>Audit records written</td><td>83 — incl. pending_approval, approved, rejected, policy-blocked and controlled failures</td></tr>
+<tr><td>Benchmark (live N-ATLaS)</td><td>10/10 fixtures pass, mean score 93/100, mean latency ~4.4 s, prompt <code>invoice-v1</code> (<code>engineering/metrics/eval-invoice-v1-*.json</code>)</td></tr>
+<tr><td>MCP live session</td><td>Real stdio session vs live N-ATLaS: Pidgin invoice ₦1,085,000 (subtotal+total repaired), Hausa ₦367,500, wire_transfer BLOCK in 0 ms (no model call), injection held at pending_approval, decision→lookup→audit round trip (<code>engineering/evidence/mcp-live-session-2026-10-12.txt</code>)</td></tr>
 <tr><td>Failure handling</td><td>Endpoint unreachable → MODEL fails, downstream skips, audit still appended. No unhandled errors.</td></tr>
 <tr><td>Arithmetic enforcement</td><td>Model emitted 20×8000 as 1,600,000 — caught by validator, corrected deterministically to 160,000/2,410,000, repairs named in trace + audit</td></tr>
 </table>
@@ -105,21 +110,38 @@ single provider interface; all output flows through the same governed loop.</p>
 <li>Secrets in <code>.env.local</code> only — gitignored, never committed; history verified clean pre-push.</li>
 <li>SSH-tunnelled model access; no public inference port.</li>
 <li>Append-only audit with SHA-256 input/output hashes — tamper-evident.</li>
-<li>Full deployment + restart runbook: <code>engineering/runbooks/VASTAI-NATLAS.md</code>. Running cost to date: $0.337 of a $5 credit (itemised in <code>engineering/COST-LEDGER.md</code>).</li>
+<li>Full deployment + restart runbook: <code>engineering/runbooks/VASTAI-NATLAS.md</code>. Running cost to date: ~$4.59 of a $5 credit (itemised in <code>engineering/COST-LEDGER.md</code>).</li>
 </ul>
 
 <h2>7. Reproduce</h2>
 <pre>corepack pnpm install
-ssh -N -L 18000:localhost:11434 -p &lt;port&gt; root@&lt;host&gt;   # model tunnel
+ssh -N -L 18000:localhost:11434 -p &lt;port&gt; root@&lt;host&gt;   # model tunnel (any N-ATLaS endpoint works)
 node --experimental-strip-types scripts/natlas-smoke-test.ts
 node --experimental-strip-types scripts/neios-run.ts [--blocked|--missing]
-corepack pnpm --filter vlthr-hr-web dev                  # http://localhost:3000</pre>
+corepack pnpm --filter vlthr-hr-web dev                  # http://localhost:3000
+corepack pnpm --filter @neios/mcp test                   # stub suite — governed path, no endpoint needed
+corepack pnpm --filter @neios/mcp test:live              # real N-ATLaS via NATLAS_BASE_URL</pre>
 
-<h2>8. Status &amp; roadmap</h2>
-<p>Gate G0 (real N-ATLAS inference through the governed loop) passed 2026-10-08.
-Remaining to submission: external beta sessions (2 testers, protocol ready in
-<code>engineering/validations/BETA-TESTER-ONBOARDING.md</code>), demo video, submission
-assembly. Full task board: <code>engineering/ROADMAP-NAIC-2026.md</code>.</p>
+<h2>8. Live endpoint status (read before evaluation)</h2>
+<p>The live runs shown in the demo video and the evidence transcripts were executed
+against real N-ATLaS on a rented GPU instance (vast.ai), since stopped — the
+compute budget is exhausted, and no hosted N-ATLAS API exists yet. The system is
+endpoint-agnostic by design: <code>NATLAS_BASE_URL</code> is the only configuration
+knob. If the organisers provide an N-ATLAS API key or hosted endpoint for
+evaluation, the full benchmark and MCP scenario suite can be re-run and results
+returned within a day. Without an endpoint, <code>pnpm --filter @neios/mcp test</code>
+still exercises the entire governed path — policy-before-model, validation,
+approval lane, audit append — against a stubbed provider; every stage is labelled
+in the trace, so the difference between stub and live is visible, not claimed.</p>
+
+<h2>9. Status &amp; roadmap</h2>
+<p>Gate G0 (real N-ATLAS inference through the governed loop) passed 2026-10-08;
+G1–G5 build-out complete: reference app with voice intake, 10/10 benchmark,
+4:51 demo video with real MCP session chapter, public repository with curated
+history. Remaining: external beta sessions (2 testers, protocol ready in
+<code>engineering/validations/BETA-TEST-PLAN.md</code> — stub suite needs no
+endpoint; live path needs any N-ATLaS endpoint). Demo video:
+github.com/298althr/neios/releases/tag/v1.0-naic-2026.</p>
 
 </body>
 </html>

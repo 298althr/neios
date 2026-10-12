@@ -45,12 +45,27 @@ in the UI.
 | Required component | Where it lives |
 |---|---|
 | Working artefact | This repository — `README.md` quickstart reproduces it. Public mirror: **https://github.com/298althr/neios** |
-| N-ATLAS integration evidence | `engineering/metrics/eval-invoice-v1-*.json`, `engineering/evidence/*.json`, `data/audit/audit-log.jsonl`, README §quickstart |
+| N-ATLAS integration evidence | `engineering/metrics/eval-invoice-v1-*.json`, `engineering/evidence/` (incl. `mcp-live-session-2026-10-12.txt` — real MCP session vs live N-ATLaS), `data/audit/audit-log.jsonl` (83 records) |
 | Real-world validation | `engineering/validations/` (benchmark report now; 2 beta reports pending — see roadmap G3) |
-| Technical documentation | `docs/04-architecture/NEIOS-CURRENT-SYSTEM.md`, `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md`, package/service READMEs |
-| Video demonstration | GitHub Release asset — https://github.com/298althr/neios/releases/tag/v1.0-naic-2026 (`neios_demo.mp4` + SRT captions) |
+| Technical documentation | **PDF upload:** `docs/13-releases/naic-2026/TECHNICAL-DOCUMENTATION-NEIOS.pdf` (v2026-10-12) + `docs/04-architecture/NEIOS-CURRENT-SYSTEM.md`, `docs/04-architecture/ENGINEERING-DIRECTION-NAIC-2026.md`, package/service READMEs |
+| Video demonstration | GitHub Release asset — https://github.com/298althr/neios/releases/tag/v1.0-naic-2026 (`neios_demo.mp4`, 4:51, + SRT captions; ch8b is a real MCP session vs live N-ATLaS) |
 | Team profile | Owner supplies |
 | Endorsement/registration | Owner's valid Nigerian ID (Track B individual) |
+
+## Live endpoint status — paste verbatim if the form asks about running/testing
+
+> Live runs in the demo video and
+> `engineering/evidence/mcp-live-session-2026-10-12.txt` were executed against
+> real N-ATLaS on a rented GPU instance (vast.ai), since stopped — the compute
+> budget is exhausted, and no hosted N-ATLAS API exists yet. The system is
+> endpoint-agnostic by design: `NATLAS_BASE_URL` is the only configuration
+> knob. If the organisers provide an N-ATLAS API key or hosted endpoint for
+> evaluation, the full benchmark and MCP scenario suite can be re-run and
+> results returned within a day. Without an endpoint,
+> `pnpm --filter @neios/mcp test` exercises the entire governed path — policy
+> before model, validation, approval lane, audit append — against a stubbed
+> provider; every stage is labelled in the trace, so the difference between
+> stub and live is visible, not claimed.
 
 ## Phrasing rules for anything you write yourself
 
