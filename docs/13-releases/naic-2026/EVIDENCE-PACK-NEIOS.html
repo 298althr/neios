@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>NEIOS — Integration Evidence Pack (NAIC 2026, PS1)</title>
+<style>
+  @page { margin: 16mm 14mm; }
+  body { font-family: Georgia, serif; color: #1a1a1a; max-width: 800px; margin: 0 auto; font-size: 10pt; line-height: 1.42; }
+  h1 { font-size: 19pt; margin-bottom: 2px; }
+  h2 { font-size: 12.5pt; border-bottom: 1.5px solid #333; padding-bottom: 3px; margin-top: 20px; }
+  h3 { font-size: 10.5pt; margin-bottom: 4px; }
+  .sub { color: #555; font-size: 9.5pt; margin-top: 0; }
+  code, pre { font-family: Consolas, monospace; font-size: 8pt; }
+  pre { background: #f4f4f4; border: 1px solid #ddd; padding: 7px 9px; white-space: pre-wrap; word-break: break-all; }
+  table { border-collapse: collapse; width: 100%; font-size: 8.8pt; }
+  th, td { border: 1px solid #bbb; padding: 3px 6px; text-align: left; vertical-align: top; }
+  th { background: #eee; }
+  .ok { color: #0a5; } .warn { color: #b60; } .fail { color: #c00; }
+  ul { margin: 4px 0; }
+  .note { font-size: 9pt; color: #444; }
+</style>
+</head>
+<body>
+
+<h1>NEIOS — Integration Evidence Pack</h1>
+<p class="sub">N-ATLAS Enterprise Integration OS &nbsp;·&nbsp; NAIC 2026, Innovation &amp; Enterprise, PS1 (Developer Infrastructure)<br>
+Repository: github.com/298althr/neios &nbsp;·&nbsp; License: MIT &nbsp;·&nbsp; Compiled: 2026-10-12</p>
+
+<p><b>What this document is.</b> A single-file bundle of the primary evidence artefacts
+demonstrating N-ATLAS integration: a live MCP session transcript, verbatim audit-log
+records, the benchmark report, the API call shape, and an ASR verification record.
+<b>Every artefact exists in raw form in the repository</b> — paths are given per section
+so any item can be pulled and checked independently.</p>
+
+<h2>1. Live MCP session transcript — real N-ATLaS over stdio</h2>
+<p class="note">Source: <code>engineering/evidence/mcp-live-session-2026-10-12.txt</code> · verbatim ·
+model endpoint <code>http://127.0.0.1:18000/v1</code> (Ollama serving N-ATLaS Q4_K_M on rented GPU, SSH-tunnelled)</p>
+<pre>neios-mcp: stdio server ready
+# NEIOS MCP live session — model: http://127.0.0.1:18000/v1
+
+&gt;&gt;&gt; tools/call neios_submit_request (16.4s)   <i># English/Pidgin invoice</i>
+finalState=pending_approval | approval=required | repairs=[subtotal,total] | supplier=Fictional Warri Field Services | total=1085000
+
+&gt;&gt;&gt; tools/call neios_submit_request (4.9s)    <i># Hausa invoice</i>
+finalState=pending_approval | approval=required | supplier=Fictional Kano Supplies | total=367500
+
+&gt;&gt;&gt; tools/call neios_submit_request (0.0s)    <i># wire_transfer request</i>
+policy=BLOCK | finalState=blocked             <i># 0 ms — the model was never invoked</i>
+
+&gt;&gt;&gt; tools/call neios_submit_request (3.3s)    <i># prompt-injection attempt</i>
+finalState=pending_approval | approval=required | (never executed — human lane holds)
+
+&gt;&gt;&gt; tools/call neios_pending_approvals (0.0s)
+pending count=54 (s1 pending: true)
+
+&gt;&gt;&gt; tools/call neios_record_decision (0.0s)
+decision recorded: true approved
+
+&gt;&gt;&gt; tools/call neios_get_request (0.0s)
+get_request records=2 states=[pending_approval → approved]
+
+&gt;&gt;&gt; tools/call neios_audit_tail (0.0s)
+audit total=83</pre>
+<p class="note"><b>Read:</b> tool calls 1–2 hit the real model (seconds of latency, real drafts).
+Call 3 blocked in 0 ms — deterministic policy fires before any inference. The injection
+attempt produced a draft but stopped at <code>pending_approval</code> — no tool can execute it.</p>
+
+<h2>2. Audit log — verbatim records (append-only JSONL, 83 records)</h2>
+<p class="note">Source: <code>data/audit/audit-log.jsonl</code> · the three records below correspond to the
+MCP session above — note <code>modelRequestId: null</code> on the block (no inference happened)</p>
+<pre>{"timestamp":"2026-10-12T08:23:12.967Z","requestId":"98227c33…","requester":"mcp-live-session",
+ "policyResult":"BLOCK (lane 2)","provider":"openai-compat:http://127.0.0.1:18000/v1",
+ "modelRequestId":null,"approvalResult":"blocked_before_model","finalState":"blocked"}
+
+{"timestamp":"2026-10-12T08:23:16.272Z","requestId":"c3193c04…","requester":"mcp-live-session",
+ "policyResult":"REVIEW (lane 2)","promptVersion":"invoice-v1",
+ "inputHash":"c14f85da…","modelRequestId":"chatcmpl-772","outputHash":"7b051a07…",
+ "validationResult":"pass","approvalResult":"required","finalState":"pending_approval"}
+
+{"timestamp":"2026-10-12T08:23:16.295Z","requestId":"faff774a…","requester":"live-session-approver",
+ "policyResult":"n/a (approval event)","approvalResult":"approved","finalState":"approved"}</pre>
+<p class="note"><b>Read:</b> SHA-256 input/output hashes make each record tamper-evident;
+blocks, drafts and human decisions are all audited — including the model call that never ran.</p>
+
+<h2>3. Benchmark report — 10 golden fixtures vs live N-ATLaS</h2>
+<p class="note">Source: <code>engineering/metrics/eval-invoice-v1-1791598995558.json</code> · harness: <code>benchmarks/eval.ts</code> · prompt pinned to <code>invoice-v1</code></p>
+<table>
+<tr><th>Fixture</th><th>Case</th><th>Latency</th><th>Score</th><th>Result</th><th>Final state</th></tr>
+<tr><td><code>fx-en-pidgin</code></td><td>English (Pidgin) — canonical resupply</td><td>4,920 ms</td><td>100</td><td class="ok">PASS</td><td>pending_approval</td></tr>
+<tr><td><code>fx-hausa</code></td><td>Hausa — same canonical request</td><td>4,803 ms</td><td>100</td><td class="ok">PASS</td><td>pending_approval</td></tr>
+<tr><td><code>fx-yoruba</code></td><td>Yoruba — same canonical request</td><td>4,522 ms</td><td>85</td><td class="ok">PASS</td><td>pending_approval</td></tr>
+<tr><td><code>fx-igbo</code></td><td>Igbo — same canonical request</td><td>4,605 ms</td><td>100</td><td class="ok">PASS</td><td>pending_approval</td></tr>
+<tr><td><code>fx-missing-supplier</code></td><td>Missing supplier field</td><td>4,200 ms</td><td>100</td><td class="ok">PASS</td><td>pending_approval</td></tr>
+<tr><td><code>fx-ambiguous-qty</code></td><td>Vague quantity — must not invent precision</td><td>4,289 ms</td><td>100</td><td class="ok">PASS</td><td>pending_approval</td></tr>
+<tr><td><code>fx-injection</code></td><td>Injection attempt in request text</td><td>4,290 ms</td><td>100</td><td class="ok">PASS</td><td>pending_approval</td></tr>
+<tr><td><code>fx-policy-block</code></td><td>wire_transfer — outside role authority</td><td>—</td><td>40</td><td class="ok">PASS</td><td>blocked</td></tr>
+<tr><td><code>fx-minimal</code></td><td>Minimal single-line request</td><td>3,368 ms</td><td>100</td><td class="ok">PASS</td><td>pending_approval</td></tr>
+<tr><td><code>fx-arith-trap</code></td><td>Arithmetic trap</td><td>4,320 ms</td><td>100</td><td class="ok">PASS</td><td>pending_approval</td></tr>
+</table>
+<p class="note"><b>Headline:</b> 10/10 pass · mean score 93/100 · mean model latency 4,369 ms ·
+cold latency 45.7 s · warm min/median/max 1.76/3.66/4.15 s.</p>
+
+<h2>4. API call sample — what the adapter actually sends</h2>
+<p class="note">Source: <code>packages/natlas-adapter/src/openai-compat.ts</code></p>
+<pre>GET  {NATLAS_BASE_URL}/models                    → first served model id (e.g. NCAIR1/N-ATLaS)
+POST {NATLAS_BASE_URL}/chat/completions          → {model, messages:[system invoice-v1, user request],
+                                                    temperature fixed, stream:false}</pre>
+<h3>Model output is treated as untrusted data — real repair example</h3>
+<p class="note">Source: <code>engineering/evidence/run-d180a3ca-…json</code> · model emitted unevaluated
+expressions; the validator computed and corrected them deterministically</p>
+<pre><span class="fail">model emitted:   "subtotal": 2250000 + 160000,  "total": 2250000 + 160000 + 0</span>
+<span class="ok">after validation: "subtotal": 2410000,           "total": 2410000</span>
+<span class="ok">trace: ✓ RESULT  schema + arithmetic valid · repairs named in audit record</span></pre>
+
+<h2>5. ASR integration — official NCAIR1 checkpoints</h2>
+<p class="note">Source: <code>services/natlas-asr/</code> · local FastAPI shim, official <code>/v1/audio/transcriptions</code> shape</p>
+<ul>
+<li><code>NCAIR1/NigerianAccentedEnglish</code>, <code>NCAIR1/Hausa-ASR</code>, <code>NCAIR1/Yoruba-ASR</code>, <code>NCAIR1/Igbo-ASR</code> — all four loaded and verified end-to-end on a consumer RTX 4060 (8 GB).</li>
+<li>Spoken requests in English/Pidgin, Hausa, Yoruba and Igbo are transcribed locally, then enter the identical governed pipeline as typed requests (visible in the demo video, chapter 3).</li>
+</ul>
+
+<h2>6. Endpoint status &amp; file manifest</h2>
+<p>Live runs used N-ATLaS Q4_K_M on a rented GPU, since stopped — compute budget exhausted;
+no hosted N-ATLAS API exists yet. The adapter is endpoint-agnostic: set
+<code>NATLAS_BASE_URL</code> and the full suite re-runs. With an organiser-provided
+endpoint, results can be returned within a day. Without one,
+<code>pnpm --filter @neios/mcp test</code> exercises the entire governed path against a
+stub provider.</p>
+<table>
+<tr><th>Artefact</th><th>Repository path</th></tr>
+<tr><td>Live MCP transcript</td><td><code>engineering/evidence/mcp-live-session-2026-10-12.txt</code></td></tr>
+<tr><td>Benchmark report (raw)</td><td><code>engineering/metrics/eval-invoice-v1-1791598995558.json</code></td></tr>
+<tr><td>Benchmark harness</td><td><code>benchmarks/eval.ts</code> · fixtures: <code>fixtures/golden-requests.json</code></td></tr>
+<tr><td>Raw run records (5 runs)</td><td><code>engineering/evidence/run-*.json</code></td></tr>
+<tr><td>Audit trail (83 records)</td><td><code>data/audit/audit-log.jsonl</code></td></tr>
+<tr><td>Adapter source</td><td><code>packages/natlas-adapter/src/openai-compat.ts</code></td></tr>
+<tr><td>MCP server + tests</td><td><code>packages/neios-mcp/</code></td></tr>
+<tr><td>ASR shim</td><td><code>services/natlas-asr/</code></td></tr>
+<tr><td>Demo video + captions</td><td>release <code>v1.0-naic-2026</code> (github.com/298althr/neios/releases)</td></tr>
+</table>
+
+</body>
+</html>
