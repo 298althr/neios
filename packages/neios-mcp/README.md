@@ -63,14 +63,20 @@ the pending → decision → lookup → audit round trip. It appends to the real
 audit log, so run it only against a live endpoint. Transcript of the 2026-10-12
 run: `engineering/evidence/mcp-live-session-2026-10-12.txt`.
 
-## Running the live suite without vast.ai (free)
+## Live endpoint options (vast.ai is not required)
 
-The model is a public GGUF — you do **not** need the hosted instance. Any
-OpenAI-compatible endpoint serving N-ATLaS works; local Ollama is the
-zero-cost path (a Q4_K_M quant fits an 8 GB GPU):
+Any OpenAI-compatible endpoint serving N-ATLaS works — `NATLAS_BASE_URL` is
+the only knob. Options:
+
+- **Hosted GPU instance** (how the recorded runs were made): Ollama on a
+  rented GPU, tunnelled to `127.0.0.1:18000`. ~$0.18/hr on vast.ai.
+- **Local Ollama** — only on a machine with enough memory: the model is an
+  8 B-param GGUF (Q4_K_M ≈ 4.9 GB weights + KV cache), so you need ~8-12 GB
+  of free VRAM or accept slow CPU offload. Do not expect a laptop GPU with
+  8 GB total VRAM to run it comfortably.
 
 ```bash
-ollama pull hf.co/QuantFactory/N-ATLaS-GGUF:Q4_K_M   # ~3 GB, once
+ollama pull hf.co/QuantFactory/N-ATLaS-GGUF:Q4_K_M   # on a machine that can fit it
 set NATLAS_BASE_URL=http://localhost:11434/v1        # PowerShell: $env:NATLAS_BASE_URL=...
 set NATLAS_MODEL=hf.co/QuantFactory/N-ATLaS-GGUF:Q4_K_M
 pnpm --filter @neios/mcp test:live
