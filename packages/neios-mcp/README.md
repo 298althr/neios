@@ -63,6 +63,25 @@ the pending → decision → lookup → audit round trip. It appends to the real
 audit log, so run it only against a live endpoint. Transcript of the 2026-10-12
 run: `engineering/evidence/mcp-live-session-2026-10-12.txt`.
 
+## Running the live suite without vast.ai (free)
+
+The model is a public GGUF — you do **not** need the hosted instance. Any
+OpenAI-compatible endpoint serving N-ATLaS works; local Ollama is the
+zero-cost path (a Q4_K_M quant fits an 8 GB GPU):
+
+```bash
+ollama pull hf.co/QuantFactory/N-ATLaS-GGUF:Q4_K_M   # ~3 GB, once
+set NATLAS_BASE_URL=http://localhost:11434/v1        # PowerShell: $env:NATLAS_BASE_URL=...
+set NATLAS_MODEL=hf.co/QuantFactory/N-ATLaS-GGUF:Q4_K_M
+pnpm --filter @neios/mcp test:live
+```
+
+Same env vars work for the web app and `scripts/neios-run.ts`. If no endpoint
+is reachable at all, `pnpm --filter @neios/mcp test` still proves the full
+governed path (policy block, approval lane, audit append) against a stub — the
+trace labels every stage, so the difference between stub and live is visible,
+not claimed.
+
 ## Scope
 
 Reference implementation for the NAIC 2026 PS1 submission. The role is fixed to
